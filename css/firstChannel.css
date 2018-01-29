@@ -1,0 +1,136 @@
+body{
+    font-size: 14px;
+    font-family: arial, sans-serif;
+    color: rgb(117,117,117);
+}
+
+* {
+    box-sizing: border-box;
+	  font-stretch: normal;
+    font-weight: 700;
+    letter-spacing: normal;
+}
+
+table tbody td{
+  font-weight: normal !important;
+}
+
+.main_container
+{
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  padding: 5px;
+}
+
+.frame_elts
+{
+  position:absolute;
+  top:0px;
+  left:0;
+  width:100%;
+  height: 100%;
+}
+
+.row{
+  margin: 0 !important;
+}
+
+.tableButtons{
+    text-align: center;
+}
+
+table th:nth-child(1){
+  width: 20px !important;
+}
+
+table th:nth-child(2){
+  width: 15px !important;
+}
+
+table th:nth-child(8){
+  width: 15px !important;
+}
+
+
+.resourceSelect{
+  position: absolute;
+}
+
+.rowModifiedHighlight{
+  background: #fdfda7 !important;
+  opacity: 1;
+  animation: fade .5s linear;
+}
+
+@keyframes fade {
+  0%,100% { opacity: 0 }
+  50% { opacity: 1 }
+}
+
+
+/*arrange select in dialog*/
+#modifyFieldDialog > div > div > div > button{
+  height: 37px;
+}
+
+#modifyFieldDialog > div > div > div > button > span{
+  top: 3px;
+}
+
+#modifyFieldDialog > div > div > div > button > div{
+  top: 5px;
+}
+
+/*#firstChannelGeneralTable tbody td:nth-child(1)::before{
+    content : "\f047";
+    display: inline-block;
+    position: absolute;
+    left: 5px;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 14px;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    color: grey;
+}*/
+
+
+
+/*common*/
+.tabs-header .tabs-pill li.tabs-selected a.tabs-inner {
+    background: #33b5e5 !important;
+    color: #ffffff !important;
+    border-color: #4c72a7 !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #eaf7fb;
+}
+
+.table>tbody>tr:hover{
+  background: #f1eeee ;
+}
+
+.table>thead{
+  background: #2a3b4c;
+  color: white;
+}
+
+
+
+
+::-webkit-scrollbar {
+    width: .8em;
+    height: .8em
+}
+::-webkit-scrollbar-button {
+    background: #ccc
+}
+::-webkit-scrollbar-track-piece {
+    background: #eee
+}
+::-webkit-scrollbar-thumb {
+    background: #888
+}​

@@ -1,0 +1,262 @@
+
+
+.main_container
+{
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+}
+.header
+{
+  position:relative;
+  top:0;
+  left:0;
+  width:100%;
+  height:35px;
+  background-color:#2a3b4c;
+}
+.frame_elts
+{
+  position:absolute;
+  top:35px;
+  left:0;
+  width:100%;
+  height: calc(100% - 52px);
+  border:1px solid;
+}
+footer{
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: #2a3b4c;
+  height: 17px !important;
+
+}
+
+#imageDiv{
+	height: 100%;
+}
+
+#imageDiv img{
+    padding: 3px;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background: white;
+}
+
+#clientName{
+  color: white;
+  font-size: 18px !important;
+  height: 100%;
+  margin-left: 15px;
+  line-height: 3;
+  font-weight: normal !important;
+}
+
+#topBarButtons{
+  position: absolute;
+  right: 10px;
+  height: 100%;
+
+}
+
+
+#appLogo{
+  font-size: 20px;
+    line-height: 20px;
+    color: #ffffff;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+}
+
+.navbar-header{
+    height: 100%;
+    background: #2f4355;
+    display: flex;
+    flex-direction: row;
+}
+
+.btn{
+  /*border-radius: 6px !important;*/
+  -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+.dropdown-menu>li>a{
+  padding: 0;
+}
+
+
+/*User Status right side styling*/
+.show-on-hover:hover > ul.dropdown-menu {
+    display: block;    
+}
+
+.show-on-hover img{
+  position: relative;
+    width: 19px;
+    height: 19px;
+    display: inline-block;
+    float: left;
+    top: 8px;
+}
+
+#userStatusUl{
+	right: 0 !important;
+	left: auto;
+	top :32px;
+}
+#userStatusUl i{
+  margin-right: 9px;
+}
+#userStatusUl a{
+  	color: #777777;
+	padding: 9px 10px;
+	font-size: 13px;
+	text-decoration: none;
+}
+#userStatusButton{
+    background-color: transparent;
+    color: white;
+    border: none;
+    height: 39px;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    outline: none !important;
+    font-family: inherit;
+}
+
+
+
+#logoName {
+    color: white;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    line-height: 2.3;
+    font-weight: 700;
+    padding-left: 6px;
+}
+
+
+#loadingDiv{
+    z-index: 9999999;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+
+#loadingWashout {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: block;
+    opacity: 0.7;
+    background-color: rgba(195, 195, 195,.7);
+    z-index: 99;
+    text-align: center;
+}
+
+
+input[type=search]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
+.progress{
+    right: 11%;
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    margin-right: 100%;
+    height: 20%;
+}
+
+.myAppMenu{
+	padding: 0;
+}
+
+.myAppMenu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.myAppMenu li {
+    padding: 8px;
+    margin-bottom: 7px;
+    background-color: #33b5e5;
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.myAppMenu li:hover {
+    background-color: #0099cc;
+    cursor: pointer;
+}
+
+.row{
+	margin: 0 !important;
+}
+
+#channelMenu li.active{
+  background: #e59c33 !important;
+  zoom : 1.5;
+  /*font-size: 20px;*/
+  animation: popout .4s ease;
+  -webkit-animation: popout .4s ease;
+
+  
+}
+
+@keyframes popout {
+    from{transform:scale(1)}
+    80%{transform:scale(1.1)}
+    to{transform:scale(1)}
+}
+@-webkit-keyframes popout {
+    from{-webkit-transform:scale(1)}
+    80%{-webkit-transform:scale(1.1)}
+    to{-webkit-transform:scale(1)}
+}
+
+
+/*common*/
+.tabs-header .tabs-pill li.tabs-selected a.tabs-inner {
+    background: #33b5e5 !important;
+    color: #ffffff !important;
+    border-color: #4c72a7 !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #eaf7fb;
+}
+
+.table>tbody>tr:hover{
+  background: #f1eeee ;
+}
+
+.table>thead{
+  background: #2a3b4c;
+  color: white;
+}
+
+::-webkit-scrollbar {
+    width: .8em;
+    height: .8em
+}
+::-webkit-scrollbar-button {
+    background: #ccc
+}
+::-webkit-scrollbar-track-piece {
+    background: #eee
+}
+::-webkit-scrollbar-thumb {
+    background: #888
+}​
+

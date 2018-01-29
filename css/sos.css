@@ -1,0 +1,110 @@
+body{
+    font-size: 14px;
+    font-family: arial, sans-serif;
+    color: rgb(117,117,117);
+}
+
+* {
+    box-sizing: border-box;
+	  font-stretch: normal;
+    font-weight: 700;
+    letter-spacing: normal;
+}
+
+table tbody td{
+  font-weight: normal !important;
+}
+
+.main_container
+{
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  padding: 5px;
+}
+
+.frame_elts
+{
+  position:absolute;
+  top:0px;
+  left:0;
+  width:100%;
+  height: 100%;
+}
+
+.row{
+  margin: 0 !important;
+}
+
+.tableButtons{
+    text-align: center;
+}
+
+/*change dialog overflow so that dropdown and dateTimePicker popsOut of the dialog*/
+.panel.window.panel-htop{
+  overflow: visible;
+}
+
+/*arrange select in dialog*/
+#addNewSosDialog > div.groupNameSelectDiv > div > button{
+  height: 34px;
+}
+
+#addNewSosDialog > div.groupNameSelectDiv > div > button > span{
+  top: 3px;
+}
+
+#addNewSosDialog > div.groupNameSelectDiv > div > button > div{
+  top: 5px;
+}
+
+table th:nth-child(1){
+  width: 10px !important;
+}
+
+table th:nth-child(2){
+  width: 15px !important;
+}
+
+/*table th:nth-child(5){
+  width: 20px !important;
+}*/
+
+/*common*/
+.tabs-header .tabs-pill li.tabs-selected a.tabs-inner {
+    background: #33b5e5 !important;
+    color: #ffffff !important;
+    border-color: #4c72a7 !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #eaf7fb;
+}
+
+.table>tbody>tr:hover{
+  background: #f1eeee ;
+}
+
+.table>thead{
+  background: #2a3b4c;
+  color: white;
+}
+
+
+
+
+::-webkit-scrollbar {
+    width: .8em;
+    height: .8em
+}
+::-webkit-scrollbar-button {
+    background: #ccc
+}
+::-webkit-scrollbar-track-piece {
+    background: #eee
+}
+::-webkit-scrollbar-thumb {
+    background: #888
+}​
