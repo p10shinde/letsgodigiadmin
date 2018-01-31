@@ -1,0 +1,120 @@
+body{
+    font-size: 14px;
+    font-family: arial, sans-serif;
+    color: rgb(117,117,117);
+}
+
+* {
+    box-sizing: border-box;
+	  font-stretch: normal;
+    font-weight: 700;
+    letter-spacing: normal;
+}
+
+table tbody td{
+  font-weight: normal !important;
+}
+
+.main_container
+{
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  padding: 5px;
+}
+
+.frame_elts
+{
+  position:absolute;
+  top:0px;
+  left:0;
+  width:100%;
+  height: 100%;
+}
+
+.row{
+  margin: 0 !important;
+}
+
+.tableButtons{
+    text-align: center;
+}
+
+.removeGroup{
+  border-radius: 75px;
+  height: 20px;
+  line-height: 1;
+}
+
+table th:nth-child(1){
+  width: 20px !important;
+}
+
+table th:nth-child(2){
+  width: 15px !important;
+}
+
+table th:nth-child(6){
+  width: 60px;
+}
+
+
+#allDevicesTable th:nth-child(2){
+  width: inherit; !important;
+}
+
+
+
+/*common*/
+.tabs-header .tabs-pill li.tabs-selected a.tabs-inner {
+    background: #33b5e5 !important;
+    color: #ffffff !important;
+    border-color: #4c72a7 !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #eaf7fb;
+}
+
+.table>tbody>tr:hover{
+  background: #f1eeee ;
+}
+
+.table>thead{
+  background: #2a3b4c;
+  color: white;
+}
+
+/*wrap notification*/
+.notifyjs-bootstrap-base{
+    max-width: 500px;
+    max-height: 640px;
+    overflow-x: hidden;
+    overflow-y: visible;
+    white-space: normal !important;
+    vertical-align: middle;
+    word-break: break-word;
+}
+
+.notifyjs-corner{
+    z-index: 9999999 !important;
+}
+
+
+
+
+::-webkit-scrollbar {
+    width: .8em;
+    height: .8em
+}
+::-webkit-scrollbar-button {
+    background: #ccc
+}
+::-webkit-scrollbar-track-piece {
+    background: #eee
+}
+::-webkit-scrollbar-thumb {
+    background: #888
+}​
