@@ -1,2 +1,6 @@
 1. change advertiser db columns to adverstiserName and same for location
 2. clientName is coming as LGD instead PL
+
+no cluster in ch1
+
+after group select put cluster select

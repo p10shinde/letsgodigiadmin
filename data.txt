@@ -1,0 +1,20 @@
+ch1_g-->
+
+{
+	groupName : 'plaoa',
+	data : [
+		{
+			duration : 15,
+			resName : 'image1.jpg'
+		},
+		{
+			duration : 15,
+			resName : 'image2.jpg'
+		}
+	]
+}
+
+
+
+ch1_p-->
+

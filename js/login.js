@@ -53,8 +53,8 @@ window.onload = function(){
 		if(!isInvalid){
 			$.ajax({
 				// url : "http://68.66.200.220:49161/api/AUTH",
-				// url : "http://10.13.67.32:49161/api/AUTH",
-				url : "http://192.168.1.11:49161/api/AUTH",
+				url : "http://10.13.67.174:49161/api/AUTH",
+				// url : "http://192.168.1.11:49161/api/AUTH",
 				headers: {"Authorization": "Basic " + btoa(username + ":" + password)},
 				async : false,
 				datatype : 'json',
@@ -69,8 +69,8 @@ window.onload = function(){
 						sessionStorage.clientName = jqXHR.responseJSON.clientName;
 						sessionStorage.password = password;
 						// sessionStorage.apiurl = "http://68.66.200.220:49161/api/";
-						// sessionStorage.apiurl = "http://10.13.67.32:49161/api/";
-						sessionStorage.apiurl = "http://192.168.1.11:49161/api/";
+						sessionStorage.apiurl = "http://10.13.67.174:49161/api/";
+						// sessionStorage.apiurl = "http://192.168.1.11:49161/api/";
 						window.location.href = window.location.pathname.split('login.html')[0]
 
 					}else if(textstatus == "error"){
