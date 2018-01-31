@@ -239,8 +239,8 @@ window.onload = function(){
     	clientDataObj = {}
     	clientDataObj.clientName = clientName;
     	clientDataObj.clientLocation = clientLocation;
-    	clientDataObj.masterAccount = "";
-    	clientDataObj.slaveAccount = "";
+    	// clientDataObj.masterAccount = "";
+    	// clientDataObj.slaveAccount = "";
     	
 
 

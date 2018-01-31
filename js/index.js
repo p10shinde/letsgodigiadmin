@@ -4,6 +4,7 @@ if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.passwor
 	window.onload = function(){
 		$("#userStatusButton").html(sessionStorage.username + ' <span class="caret"></span>')
 		$("#clientName").text(sessionStorage.clientName);
+		$("#channelMenu li").first().click()
 		$("#channelMenu li").off('click').on('click',function(evt){
 			$(this).parent().find('li').removeClass('active')
 			$(this).toggleClass('active')
@@ -38,5 +39,6 @@ if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.passwor
 			sessionStorage.removeItem('apiurl');
 			window.location.reload();
 		})
+		$("#channelMenu li").first().click();
 	}
 }

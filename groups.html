@@ -81,87 +81,40 @@
             <div class="elementHolder" style="position: fixed;"></div>
         </div>
     </div>
-    <div id="addNewGroupDialog" style="overflow-x: hidden;">
-        <div class="easyui-layout" style="width:100%;height:100%;" id="groupTablesLayout" >
-            <div data-options="region:'west',split:true,collapsible:false" class="easyui-panel" title='Devices in Group' id="groupDevicesTablePanel" style="width: 50%;padding: 5px;height: 100%">
-                <div id="groupDevicesTableDiv" style="margin-top: 10px;width: 100%;position: relative;">
-                    <table id="groupsDevicesTable" class="table table-striped table-bordered" style="width: 100%;height: 100%" tabindex="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th></th>
-                                <th>Device Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <button class="btn btn-success" id="saveGroupOkButton" style="position:absolute;right:32px;top:40px">Save</button>
-            </div>
-            <div data-options="region:'center',split:true" class="easyui-panel" title='All Devices' id="allDevicesTablePanel" style="width: 50%;padding: 5px;height: 100%">
-                <div id="allDevicesTableDiv" style="margin-top: 10px;width: 100%">
-                    <table id="allDevicesTable" class="table table-striped table-bordered" style="width: 100%;height: 100%" tabindex="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Device Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="addNewGroupOkButtonDiv" style="display: none">
-            <div class="input-group">
-                    <span class="input-group-addon">Group Name</span>
-                    <input id="groupName" type="text" class="form-control" value="">
-            </div>
-            <button class="btn btn-success" id="addNewGroupOkButton" style="position:absolute;right:16px;bottom:16px">Add</button>
-        </div>
-    </div>
+    <div id="addNewGroupDialog" style="display: none;padding: 10px;overflow-x: hidden;"></div>
         <div class="main_container">
             <div class="frame_elts">
+                
                 <div class="easyui-layout" style="width:100%;height:100%;" id="mainlayout">
                     <div data-options="region:'center',minWidth:'400px',border:false" class="easyui-panel" title='' id="EditorPanel" style="width: 100%;padding: 5px">
                         <div class="row" style="position: relative;height: 26px;">
                             <div class="col-md-12">
-                                <div data-options="region:'center',minWidth:'400px',border:false" class="easyui-panel" title='' id="EditorPanel" style="width: 100%;padding: 5px">
-                                    <div id="tableButtons">
-                                        <div class="row" >
-                                            <!-- <div class="col-md-2" style="height: inherit;padding: 0;position: absolute;">
-                                                <div id="groupSelectFilterDiv" style="width: 100%;position: absolute;">
-                                                    <select id="groupSelectFilter" data-placement="bottom" title="Choose Group" style="width: 100%;height: inherit;">
-                                                        
-                                                    </select>
-                                                </div>
-                                            </div> -->
-                                            <div class="col-md-2 col-md-offset-10" style="height: inherit;padding: 0">
-                                                <div id="deleteSelectedGroupButtonDiv" style="float: right;z-index: 2;height: 26px">
-                                                    <button id="deleteSelectedGroupButton" class="btn btn-danger" style="height: 26px;padding: 5px;padding-top: 2px;" data-toggle="tooltip" data-placement="bottom" title="Delete Selected Groups"><i class="fa fa-trash-o"></i></button>
-                                                </div>
-                                                <!-- <div id="saveGroupButtonDiv" style="float: right;z-index: 2;height: 26px;padding-right: 10px">
-                                                    <button id="saveGroupButton" class="btn btn-success" style="height: 26px;padding: 5px;padding-top: 2px;" data-toggle="tooltip" data-placement="bottom" title="Save Groups"><i class="fa fa-floppy-o"></i></button>
-                                                </div> -->
-                                                <div id="addNewGroupButtonDiv" style="float: right;z-index: 2;height: 26px;padding-right: 10px">
-                                                    <button id="addNewGroupButton" class="btn btn-success" style="height: 26px;padding: 5px;padding-top: 2px;" data-toggle="tooltip" data-placement="bottom" title="Add new Group"><i class="fa fa-plus"></i></button>
-                                                </div>
+                                <div id="tableButtons">
+                                    <div class="row" >
+                                        <div class="col-md-2 col-md-offset-10" style="height: inherit;padding: 0">
+                                            <div id="deleteSelectedGroupButtonDiv" style="float: right;z-index: 2;height: 26px">
+                                                <button id="deleteSelectedGroupButton" class="btn btn-danger" style="height: 26px;padding: 5px;padding-top: 2px;" data-toggle="tooltip" data-placement="bottom" title="Delete Selected groups"><i class="fa fa-trash-o"></i></button>
                                             </div>
-                                            
+                                            <!-- <div id="saveGroupButtonDiv" style="float: right;z-index: 2;height: 26px;padding-right: 10px">
+                                                <button id="saveGroupButton" class="btn btn-success" style="height: 26px;padding: 5px;padding-top: 2px;" data-toggle="tooltip" data-placement="bottom" title="Save groups"><i class="fa fa-floppy-o"></i></button>
+                                            </div> -->
+                                            <div id="addNewGroupButtonDiv" style="float: right;z-index: 2;height: 26px;padding-right: 10px">
+                                                <button id="addNewGroupButton" class="btn btn-success" style="height: 26px;padding: 5px;padding-top: 2px;" data-toggle="tooltip" data-placement="bottom" title="Add new Group"><i class="fa fa-plus"></i></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="groupListTableDiv" style="margin-top: 10px;width: 100%">
-                            <table id="groupsListTable" class="table table-striped table-bordered" style="width: 100%;height: 100%" tabindex="0">
+
+                        <div id="groupsTableDiv" style="margin-top: 10px;width: 100%">
+                            <table id="groupsTable" class="table table-striped table-bordered" style="width: 100%;height: 100%" tabindex="0">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th></th>
                                         <th>Group Name</th>
+                                        <th>Client Name</th>
                                         <th>Updated By</th>
                                         <th>Updated At</th>
                                         <th></th>

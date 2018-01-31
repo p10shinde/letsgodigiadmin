@@ -34,6 +34,9 @@ table tbody td{
   height: 100%;
 }
 
+
+
+
 .row{
   margin: 0 !important;
 }
@@ -42,30 +45,17 @@ table tbody td{
     text-align: center;
 }
 
-.removeGroup{
-  border-radius: 75px;
-  height: 20px;
-  line-height: 1;
-}
-
 table th:nth-child(1){
-  width: 20px !important;
+  width: 20px;
 }
 
 table th:nth-child(2){
-  width: 15px !important;
+  width: 15px;
 }
 
-table th:nth-child(6){
+table th:nth-child(7){
   width: 60px;
 }
-
-
-#allDevicesTable th:nth-child(2){
-  width: inherit; !important;
-}
-
-
 
 /*common*/
 .tabs-header .tabs-pill li.tabs-selected a.tabs-inner {
@@ -85,21 +75,6 @@ table th:nth-child(6){
 .table>thead{
   background: #2a3b4c;
   color: white;
-}
-
-/*wrap notification*/
-.notifyjs-bootstrap-base{
-    max-width: 500px;
-    max-height: 640px;
-    overflow-x: hidden;
-    overflow-y: visible;
-    white-space: normal !important;
-    vertical-align: middle;
-    word-break: break-word;
-}
-
-.notifyjs-corner{
-    z-index: 9999999 !important;
 }
 
 
