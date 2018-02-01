@@ -28,7 +28,8 @@ window.onload = function(){
 
 	function getAllResources(){
 		$.ajax({
-			url : commonData.apiurl + "resources/" + clientName,
+			// url : commonData.apiurl + "resources/" + clientName,
+			url : "data/resources.json",
 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			async : false,
 			datatype : 'json',
@@ -141,7 +142,8 @@ window.onload = function(){
 
 	function getAllClusters(){
 		$.ajax({
-			url : commonData.apiurl + "clusters/" + clientName,
+			// url : commonData.apiurl + "clusters/" + clientName,
+			url : "data/clusters.json",
 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			async : false,
 			datatype : 'json',
@@ -205,7 +207,7 @@ window.onload = function(){
 				dataSrc : function(data){
 					groupName_temp = data[0].groupName;
 					$.each(data[0].data, function(index, value){
-						value.sno = index +1;
+						value.sno = index + 1;
 						value.groupName = groupName_temp;
 					})
 					return data[0].data;
@@ -272,7 +274,7 @@ window.onload = function(){
 				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 				'async': 'false',
 				dataSrc : function(data){
-					clusterName_temp = data[0].groupName;
+					clusterName_temp = data[0].clusterName;
 					$.each(data[0].data, function(index, value){
 						value.sno = index +1;
 						value.clusterName = clusterName_temp;
@@ -310,7 +312,7 @@ window.onload = function(){
 	            { "data": "clusterName" },
 	            { "data": "resourceName" },
 	            // { "data": "resourceType" },
-	            { "data": "durations" },
+	            { "data": "duration" },
 	            // { "data": "updatedBy" },
 	            // { "data": "updatedAt" }
 	    	],
@@ -324,115 +326,115 @@ window.onload = function(){
     	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
 	}
 
-	// function loadGroupsFirstChannelPlannedTable(groupName){
-	// 	if(firstChannel.groupsFirstChannelPlannedTableJQ) {
-	// 		firstChannel.groupsFirstChannelPlannedTableJQ.fnClearTable();
-	// 		firstChannel.groupsFirstChannelPlannedTableJQ.fnDestroy();
-	// 	}
+	function loadGroupsFirstChannelPlannedTable(groupName){
+		if(firstChannel.groupsFirstChannelPlannedTableJQ) {
+			firstChannel.groupsFirstChannelPlannedTableJQ.fnClearTable();
+			firstChannel.groupsFirstChannelPlannedTableJQ.fnDestroy();
+		}
 
-	//     firstChannel.groupsFirstChannelPlannedTableAPI = $('#groupsFirstChannelPlannedTable').DataTable({
-	//         "ajax" : {
-	// 			// url : commonData.apiurl + "ch1_planGrp/" + clientName + "/" + groupName,
-	// 			url : "data/ch1_planGrp.json",
-	// 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-	// 			'async': 'false',
-	// 			dataSrc : function(data){
-	// 				startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
-	// 				endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
-	// 				var ctr = 0;
-	// 				var newData = [];
-	// 				while(ctr<=60){
-	// 				    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
-	// 				    obj = {};
-	// 				    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
-	// 				    obj.sno = ctr+1;
+	    firstChannel.groupsFirstChannelPlannedTableAPI = $('#groupsFirstChannelPlannedTable').DataTable({
+	        "ajax" : {
+				// url : commonData.apiurl + "ch1_planGrp/" + clientName + "/" + groupName,
+				url : "data/ch1_planGrp.json",
+				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				'async': 'false',
+				dataSrc : function(data){
+					startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
+					endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
+					var ctr = 0;
+					var newData = [];
+					while(ctr<=60){
+					    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
+					    obj = {};
+					    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
+					    obj.sno = ctr+1;
 
-	// 				    foundData =_.where(data,{startTime : obj.startTime})
-	// 				    if(foundData.length != 0){
-	// 				    	foundData = foundData[0];
-	// 					    obj.resourceName = foundData.resourceName;
-	// 					    // obj.resourceType = foundData.resourceType;
-	// 					    obj.groupName = foundData.groupName;
-	// 					    obj.clientName = foundData.clientName;
-	// 					    // obj.updatedBy = foundData.updatedBy;
-	// 					    // obj.updatedAt = foundData.updatedAt;
-	// 					 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
-	// 						// 	obj.resourceType = "image"
-	// 						// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
+					    foundData =_.where(data,{startTime : obj.startTime})
+					    if(foundData.length != 0){
+					    	foundData = foundData[0];
+						    obj.resourceName = foundData.resourceName;
+						    // obj.resourceType = foundData.resourceType;
+						    obj.groupName = foundData.groupName;
+						    obj.clientName = foundData.clientName;
+						    // obj.updatedBy = foundData.updatedBy;
+						    // obj.updatedAt = foundData.updatedAt;
+						 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
+							// 	obj.resourceType = "image"
+							// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
 								
-	// 						// 	obj.resourceType = "video"
-	// 						// }
-	// 					}else{
-	// 						obj.resourceName = ""
-	// 						// obj.resourceType = ""
-	// 						obj.groupName = groupName;
-	// 					    obj.clientName = clientName;
-	// 					    // obj.updatedBy = "";
-	// 					    // obj.updatedAt = "";
-	// 					}
+							// 	obj.resourceType = "video"
+							// }
+						}else{
+							obj.resourceName = ""
+							// obj.resourceType = ""
+							obj.groupName = groupName;
+						    obj.clientName = clientName;
+						    // obj.updatedBy = "";
+						    // obj.updatedAt = "";
+						}
 
 					    
-	// 				    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
-	// 				    newData.push(obj);
-	// 				    ctr++
-	// 				}
+					    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
+					    newData.push(obj);
+					    ctr++
+					}
 
-	// 				// $.each(data, function(index, value){
-	// 				// 	value.sno = index +1;
-	// 				// })
-	// 				return newData;
-	// 			},
-	// 			complete : function(jqXHR, textStatus){
-	// 				if(textStatus == "success"){
-	// 					// console.log(jqXHR)
-	// 				}	
-	// 				else if(textStatus == "error"){
-	// 					if(jqXHR.responseText)
-	// 						$.notify(jqXHR.responseText,'error')
-	// 				}
-	// 			},
-	// 			error : function(jqXHR, textStatus, errorThrown){
-	// 				firstChannel.groupsFirstChannelPlannedTableAPI.clear().draw();
-	// 				// irstChannel.visibleTableAPI = undefined;
-	// 		  //   	firstChannel.visibleTableJQ = undefined;
-	// 		  //   	firstChannel.groupsFirstChannelPlannedTableAPI = undefined;
- //    	// 			firstChannel.groupsFirstChannelPlannedTableJQ = undefined
-	// 			}
-	//  		},
-	//  		keys : true,
-	//         dataType: "json",
-	//         columns: [
-	//         	{ data : "sno"},
-	//             { render : function(data, type, row){
-	//         	  	return `<div class="tableCheckbox">
-	//         	  				<input type="checkbox">
-	//         	  			</div>`;
-	//     	  		}, sortable : false
-	//     	  	},
-	//             { "data": "groupName" },
-	//             { "data": "startTime"
-	//           //    ,
-	//         		// render : function(data, type, row){
-	//         		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
-	//         		// }
-	//         	},
-	//             { "data": "resourceName" },
-	//             // { "data": "resourceType" },
-	//             // { "data": "updatedBy" },
-	//             // { "data": "updatedAt" },
-	//             { render : function(data, type, row){
-	//         	  	return `<div class="tableButtons">
-	//         	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
-	//         	  			</div>`;
-	//         	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-	//     	  		},
-	//     	  		sortable : false
-	//     		}
-	//     	]	    	
-	//     });
-	//     firstChannel.groupsFirstChannelPlannedTableJQ = $('#groupsFirstChannelPlannedTable').dataTable();
+					// $.each(data, function(index, value){
+					// 	value.sno = index +1;
+					// })
+					return newData;
+				},
+				complete : function(jqXHR, textStatus){
+					if(textStatus == "success"){
+						// console.log(jqXHR)
+					}	
+					else if(textStatus == "error"){
+						if(jqXHR.responseText)
+							$.notify(jqXHR.responseText,'error')
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown){
+					firstChannel.groupsFirstChannelPlannedTableAPI.clear().draw();
+					// irstChannel.visibleTableAPI = undefined;
+			  //   	firstChannel.visibleTableJQ = undefined;
+			  //   	firstChannel.groupsFirstChannelPlannedTableAPI = undefined;
+    	// 			firstChannel.groupsFirstChannelPlannedTableJQ = undefined
+				}
+	 		},
+	 		keys : true,
+	        dataType: "json",
+	        columns: [
+	        	{ data : "sno"},
+	            { render : function(data, type, row){
+	        	  	return `<div class="tableCheckbox">
+	        	  				<input type="checkbox">
+	        	  			</div>`;
+	    	  		}, sortable : false
+	    	  	},
+	            { "data": "groupName" },
+	            { "data": "startTime"
+	          //    ,
+	        		// render : function(data, type, row){
+	        		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
+	        		// }
+	        	},
+	            { "data": "resourceName" },
+	            // { "data": "resourceType" },
+	            // { "data": "updatedBy" },
+	            // { "data": "updatedAt" },
+	            { render : function(data, type, row){
+	        	  	return `<div class="tableButtons">
+	        	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
+	        	  			</div>`;
+	        	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+	    	  		},
+	    	  		sortable : false
+	    		}
+	    	]	    	
+	    });
+	    firstChannel.groupsFirstChannelPlannedTableJQ = $('#groupsFirstChannelPlannedTable').dataTable();
 
-	// }
+	}
 
 	// function loadClustersFirstChannelPlannedTable(clusterName){
 	// 	if(firstChannel.clustersFirstChannelPlannedTableJQ) {
@@ -600,7 +602,7 @@ window.onload = function(){
     	}
     })
 
-    $('#groupsFirstChannelGeneralTable tbody').on('click','td:nth-child(3)',function(evt){
+    $('#groupsFirstChannelGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
@@ -613,7 +615,7 @@ window.onload = function(){
 	});
 
 
-	$('#clustersFirstChannelGeneralTable tbody').on('click','td:nth-child(3)',function(evt){
+	$('#clustersFirstChannelGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
@@ -805,7 +807,7 @@ window.onload = function(){
 				})
 			}else if(trgtTd.index() == 4){
 				firstChannel.trgtTd = trgtTd;
-				durations = trgtTd.text();
+				duration = trgtTd.text();
 				$("#modifyFieldDialog").dialog({
 		            constrain : true,
 		            top : trgtTd.offset().top,
@@ -821,16 +823,16 @@ window.onload = function(){
 				});
 				$("#modifyFieldDialog div.elementHolder").empty();
 
-					durationsInput = `<input type="text" id="durations" value="`+ durations +`" style="height:` + (parseInt(trgtTd.height())+16) + `px;
+					durationInput = `<input type="text" id="duration" value="`+ duration +`" style="height:` + (parseInt(trgtTd.height())+16) + `px;
 							 	width:` + (parseInt(trgtTd.width()) + 16) + `px">`;
 
-					$("#modifyFieldDialog div.elementHolder").append(durationsInput)
+					$("#modifyFieldDialog div.elementHolder").append(durationInput)
 					
-					$("#durations").focus();
-					$("#durations").off('keyup').on('keyup', function(evt){
+					$("#duration").focus();
+					$("#duration").off('keyup').on('keyup', function(evt){
 						if(evt.keyCode == 13){
-							durations = $("#durations").val();
-							updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'',durations);
+							duration = $("#duration").val();
+							updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'',duration);
 						}else 
 						if(evt.keyCode == 27){
 							revertTableUpdate(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ);
@@ -838,22 +840,22 @@ window.onload = function(){
 					});
 
 					$(".window-mask").off('click').on('click',function(){
-						durations = $("#durations").val();
-						updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'',durations);
+						duration = $("#duration").val();
+						updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'',duration);
 					})
 
-						$("input#durations").off('input propertychange').on('input propertychange', function (xx,yy,zz) {
-					        $("#durations").val($(this).val().replace(/[A-Z 0a-z.~!@#$%^&*()\-_+=-?></.,":';/\|\{\}\[\]\\]/g, ''))
+						$("input#duration").off('input propertychange').on('input propertychange', function (xx,yy,zz) {
+					        $("#duration").val($(this).val().replace(/[A-Z 0a-z.~!@#$%^&*()\-_+=-?></.,":';/\|\{\}\[\]\\]/g, ''))
 					    })
 			}
 		}
 	}
 
-	$("input").on('input propertychange','#durations', function (xx,yy,zz) {
-        $("#durations").val($(this).val().replace(/[A-Z 0a-z.~!@#$%^&*()\-_+=-?></.,":';/\|\{\}\[\]\\]/g, ''))
+	$("input").on('input propertychange','#duration', function (xx,yy,zz) {
+        $("#duration").val($(this).val().replace(/[A-Z 0a-z.~!@#$%^&*()\-_+=-?></.,":';/\|\{\}\[\]\\]/g, ''))
     })
 
-	function updateTableWithResource(visibleTableAPI, visibleTableJQ, resourceName, durations){
+	function updateTableWithResource(visibleTableAPI, visibleTableJQ, resourceName, duration){
 		rowNo = parseInt(firstChannel.trgtTd.closest('tr').find('td').first().text()) -1
 		// resources.resourcesTableJQ.fnUpdate({resourceName : resourceName, resourceType : 'image'},rowNo);
 		var resourceType = 'image'
@@ -867,27 +869,27 @@ window.onload = function(){
 			resourceType = "";
 		}
 
-		durations = parseInt(durations)
-		if(isNaN(durations)) durations = 15;
+		duration = parseInt(duration)
+		if(isNaN(duration)) duration = 5;
 
 		page = visibleTableAPI.page.info().page;
 		if(visibleTableJQ[0].id == "groupsFirstChannelGeneralTable"){
 			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,2).data(resourceName)
-				visibleTableAPI.cell(rowNo,3).data(resourceType)
+				visibleTableAPI.cell(rowNo,3).data(resourceName)
+				// visibleTableAPI.cell(rowNo,4).data(duration)
 			}
-			if(durations != 0)
-				visibleTableAPI.cell(rowNo,4).data(durations)
+			if(duration != 0)
+				visibleTableAPI.cell(rowNo,4).data(duration)
 		}else if(visibleTableJQ[0].id == "groupsFirstChannelPlannedTable"){
 			visibleTableAPI.cell(rowNo,3).data(resourceName)
 			visibleTableAPI.cell(rowNo,4).data(resourceType)
 		}else if(visibleTableJQ[0].id == "clustersFirstChannelGeneralTable"){
 			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,2).data(resourceName)
-				visibleTableAPI.cell(rowNo,3).data(resourceType)
+				visibleTableAPI.cell(rowNo,3).data(resourceName)
+				// visibleTableAPI.cell(rowNo,3).data(resourceType)
 			}
-			if(durations != 0)
-				visibleTableAPI.cell(rowNo,4).data(durations)
+			if(duration != 0)
+				visibleTableAPI.cell(rowNo,4).data(duration)
 		}else if(visibleTableJQ[0].id == "clustersFirstChannelPlannedTable"){
 			visibleTableAPI.cell(rowNo,3).data(resourceName)
 			visibleTableAPI.cell(rowNo,4).data(resourceType)
@@ -940,7 +942,8 @@ window.onload = function(){
 			}
 
 
-			dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0], resourceType : resourceType, durations : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
+			// dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0], resourceType : resourceType, duration : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
+			dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  duration : 5};
 			dt[groupOrClusterKey] = groupOrCluster;
 
 			firstChannel.visibleTableJQ.fnAddData(dt);
@@ -954,6 +957,15 @@ window.onload = function(){
 
 	$("#saveResourcesButton").off('click').on('click',function(evt){
 		firstChannelDataArray = firstChannel.visibleTableJQ.fnGetData();
+		postData = {}
+		groupOrClusterNameFromTable = firstChannelDataArray[0].groupName;
+		if(typeof(groupOrClusterNameFromTable) == 'undefined'){
+			groupOrClusterNameFromTable = firstChannelDataArray[0].clusterName;
+			postData.clusterName = groupOrClusterNameFromTable;
+		}else{
+			postData.groupName = groupOrClusterNameFromTable;
+		}
+		
 		firstChannelDataArray = _.filter(firstChannelDataArray,function(value){
 			return value.resourceName != ""
 		})
@@ -975,16 +987,18 @@ window.onload = function(){
 			url = commonData.apiurl + 'ch1_planDev' + "/" + clientName + "/" + clusterName
 		}
 
+
     	firstChannelDataArray = _.map(firstChannelDataArray, function(model) {
-			return _.omit(model, 'updatedBy','updatedAt','sno');
+			return _.omit(model, 'sno','groupName','clusterName');
 		});
+		postData.data = firstChannelDataArray;
 
 		$.ajax({
 			  type: "POST",
 			  async : false,
 			  url: url,
 			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  data: JSON.stringify(firstChannelDataArray),
+			  data: JSON.stringify([postData]),
 			  success: function(data){
 			  	$.notify('Success','success')
 			  	firstChannel.visibleTableAPI.ajax.reload();
