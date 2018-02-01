@@ -1,0 +1,7 @@
+[{
+	"clusterName" : "cluster1",
+	"data" : [{
+		"resourceName" : "resource2.jpg",
+		"duration" : 5
+	}]
+}]

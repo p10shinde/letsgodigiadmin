@@ -57,39 +57,39 @@ window.onload = function(){
 				loadGroupsFirstChannelGeneralTable(groupName)
 				firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
 		    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
-		    	$(".devicesFirstChannelGeneralTableDiv").hide();
+		    	$(".clustersFirstChannelGeneralTableDiv").hide();
 				$(".groupsFirstChannelGeneralTableDiv").show();
 		    }else{
 		    	loadGroupsFirstChannelPlannedTable(groupName)
 				firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelPlannedTableAPI;
 		    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelPlannedTableJQ;
-		    	$(".devicesFirstChannelPlannedTableDiv").hide();
+		    	$(".clustersFirstChannelPlannedTableDiv").hide();
 				$(".groupsFirstChannelPlannedTableDiv").show();
 		    }
 
-			$("#deviceSelectFilterDiv").parent().hide();
+			$("#clusterSelectFilterDiv").parent().hide();
 			$("#groupSelectFilterDiv").parent().show();
 			
-		}else if(this.value == "Devices"){
+		}else if(this.value == "Clusters"){
 			tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
-			deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0]
+			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0]
 			if(tabIndex == 0){
-				loadDevicesFirstChannelGeneralTable(deviceName)
-				firstChannel.visibleTableAPI = firstChannel.devicesFirstChannelGeneralTableAPI;
-		    	firstChannel.visibleTableJQ = firstChannel.devicesFirstChannelGeneralTableJQ;
+				loadClustersFirstChannelGeneralTable(clusterName)
+				firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
+		    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
 		    	$(".groupsFirstChannelGeneralTableDiv").hide();
-				$(".devicesFirstChannelGeneralTableDiv").show();
+				$(".clustersFirstChannelGeneralTableDiv").show();
 		    }else{
-		    	loadDevicesFirstChannelPlannedTable(deviceName)
-				firstChannel.visibleTableAPI = firstChannel.devicesFirstChannelPlannedTableAPI;
-		    	firstChannel.visibleTableJQ = firstChannel.devicesFirstChannelPlannedTableJQ;
+		    	loadClustersFirstChannelPlannedTable(clusterName)
+				firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
+		    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
 		    	$(".groupsFirstChannelPlannedTableDiv").hide();
-				$(".devicesFirstChannelPlannedTableDiv").show();
+				$(".clustersFirstChannelPlannedTableDiv").show();
 		    }
 
 
 			$("#groupSelectFilterDiv").parent().hide();
-			$("#deviceSelectFilterDiv").parent().show();
+			$("#clusterSelectFilterDiv").parent().show();
 		}
 	});
 
@@ -139,38 +139,38 @@ window.onload = function(){
 		})
 	}
 
-	function getAllDevices(){
+	function getAllClusters(){
 		$.ajax({
-			url : commonData.apiurl + "devices/" + clientName,
+			url : commonData.apiurl + "clusters/" + clientName,
 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
 				if(textstatus == "success"){
-					devices = _.unique(jqXHR.responseJSON,'deviceName')
-					devices = _.pluck(devices,'deviceName')
+					clusters = _.unique(jqXHR.responseJSON,'clusterName')
+					clusters = _.pluck(clusters,'clusterName')
 					var options = ""
-					$.each(devices, function(index,value){
+					$.each(clusters, function(index,value){
 						options += `<option value="`+value+`">`+value+`</option>`
 					});
-					$("#deviceSelectFilter").empty();
-					$("#deviceSelectFilter").append(options);
+					$("#clusterSelectFilter").empty();
+					$("#clusterSelectFilter").append(options);
 					
-					$("#deviceSelectFilter").multipleSelect({
-						placeholder: "Select Device",
+					$("#clusterSelectFilter").multipleSelect({
+						placeholder: "Select Cluster",
 						filter: true,
 						single : true,
 						onClick : function(view){
 							tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
 							groupName = view.value;
 							if(tabIndex == 0){
-								loadDevicesFirstChannelGeneralTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.devicesFirstChannelGeneralTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.devicesFirstChannelGeneralTableJQ;
+								loadClustersFirstChannelGeneralTable(groupName)
+								firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
+						    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
 						    }else{
-						    	loadDevicesFirstChannelPlannedTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.devicesFirstChannelPlannedTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.devicesFirstChannelPlannedTableJQ;
+						    	loadClustersFirstChannelPlannedTable(groupName)
+								firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
+						    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
 						    }
 						}
 					});
@@ -185,7 +185,7 @@ window.onload = function(){
 	}
 
 	getAllGroups();
-	getAllDevices();
+	getAllClusters();
 	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 	loadGroupsFirstChannelGeneralTable(groupName)
 
@@ -198,14 +198,17 @@ window.onload = function(){
 
 		firstChannel.groupsFirstChannelGeneralTableAPI = $('#groupsFirstChannelGeneralTable').DataTable({
 	        "ajax" : {
-				url : commonData.apiurl + "ch1_genGrp/" + clientName + "/" + groupName,
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				// url : commonData.apiurl + "ch1_genGrp/" + clientName + "/" + groupName,
+				url : "data/ch1_genGrp.json",
+				// headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 				'async': 'false',
 				dataSrc : function(data){
-					$.each(data, function(index, value){
+					groupName_temp = data[0].groupName;
+					$.each(data[0].data, function(index, value){
 						value.sno = index +1;
+						value.groupName = groupName_temp;
 					})
-					return data;
+					return data[0].data;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -239,11 +242,12 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
+	            { "data": "groupName" },
 	            { "data": "resourceName" },
-	            { "data": "resourceType" },
-	            { "data": "durations" },
-	            { "data": "updatedBy" },
-	            { "data": "updatedAt" }
+	            // { "data": "resourceType" },
+	            { "data": "duration" },
+	            // { "data": "updatedBy" },
+	            // { "data": "updatedAt" }
 	    	],
 	    	drawCallback : function(settings){
 	    		// $("#firstChannelGeneralTable tbody td:nth-child(1)").prepend('<div class="reorderHandler">::</div>')
@@ -255,22 +259,25 @@ window.onload = function(){
     	// firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
 	}
 
-	function loadDevicesFirstChannelGeneralTable(deviceName){
-		if(firstChannel.devicesFirstChannelGeneralTableJQ) {
-			firstChannel.devicesFirstChannelGeneralTableJQ.fnClearTable();
-			firstChannel.devicesFirstChannelGeneralTableJQ.fnDestroy();
+	function loadClustersFirstChannelGeneralTable(clusterName){
+		if(firstChannel.clustersFirstChannelGeneralTableJQ) {
+			firstChannel.clustersFirstChannelGeneralTableJQ.fnClearTable();
+			firstChannel.clustersFirstChannelGeneralTableJQ.fnDestroy();
 		}
 
-		firstChannel.devicesFirstChannelGeneralTableAPI = $('#devicesFirstChannelGeneralTable').DataTable({
+		firstChannel.clustersFirstChannelGeneralTableAPI = $('#clustersFirstChannelGeneralTable').DataTable({
 	        "ajax" : {
-				url : commonData.apiurl + "ch1_genDev/" + clientName + "/" + deviceName,
+				// url : commonData.apiurl + "ch1_genDev/" + clientName + "/" + clusterName,
+				url : "data/ch1_genCluster.json",
 				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 				'async': 'false',
 				dataSrc : function(data){
-					$.each(data, function(index, value){
+					clusterName_temp = data[0].groupName;
+					$.each(data[0].data, function(index, value){
 						value.sno = index +1;
+						value.clusterName = clusterName_temp;
 					})
-					return data;
+					return data[0].data;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -282,7 +289,7 @@ window.onload = function(){
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown){
-					firstChannel.devicesFirstChannelGeneralTableAPI.clear().draw();
+					firstChannel.clustersFirstChannelGeneralTableAPI.clear().draw();
 				}
 	 		},
 	 		keys : true,
@@ -300,239 +307,243 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
+	            { "data": "clusterName" },
 	            { "data": "resourceName" },
-	            { "data": "resourceType" },
+	            // { "data": "resourceType" },
 	            { "data": "durations" },
-	            { "data": "updatedBy" },
-	            { "data": "updatedAt" }
+	            // { "data": "updatedBy" },
+	            // { "data": "updatedAt" }
 	    	],
 	    	drawCallback : function(settings){
 	    		// $("#firstChannelGeneralTable tbody td:nth-child(1)").prepend('<div class="reorderHandler">::</div>')
 	    	}
 	    });
-	    firstChannel.devicesFirstChannelGeneralTableJQ = $('#devicesFirstChannelGeneralTable').dataTable();
+	    firstChannel.clustersFirstChannelGeneralTableJQ = $('#clustersFirstChannelGeneralTable').dataTable();
 
-	    // firstChannel.visibleTableAPI = firstChannel.devicesFirstChannelGeneralTableAPI;
-    	// firstChannel.visibleTableJQ = firstChannel.devicesFirstChannelGeneralTableJQ;
+	    // firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
+    	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
 	}
 
-	function loadGroupsFirstChannelPlannedTable(groupName){
-		if(firstChannel.groupsFirstChannelPlannedTableJQ) {
-			firstChannel.groupsFirstChannelPlannedTableJQ.fnClearTable();
-			firstChannel.groupsFirstChannelPlannedTableJQ.fnDestroy();
-		}
+	// function loadGroupsFirstChannelPlannedTable(groupName){
+	// 	if(firstChannel.groupsFirstChannelPlannedTableJQ) {
+	// 		firstChannel.groupsFirstChannelPlannedTableJQ.fnClearTable();
+	// 		firstChannel.groupsFirstChannelPlannedTableJQ.fnDestroy();
+	// 	}
 
-	    firstChannel.groupsFirstChannelPlannedTableAPI = $('#groupsFirstChannelPlannedTable').DataTable({
-	        "ajax" : {
-				url : commonData.apiurl + "ch1_planGrp/" + clientName + "/" + groupName,
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-				'async': 'false',
-				dataSrc : function(data){
-					startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
-					endTime = new moment().add(1,'day').startOf('day').subtract(15,'minutes')//.format('DD-MM-YYYY hh:mm a')
-					var ctr = 0;
-					var newData = [];
-					while(ctr<=60){
-					    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
-					    obj = {};
-					    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
-					    obj.sno = ctr+1;
+	//     firstChannel.groupsFirstChannelPlannedTableAPI = $('#groupsFirstChannelPlannedTable').DataTable({
+	//         "ajax" : {
+	// 			// url : commonData.apiurl + "ch1_planGrp/" + clientName + "/" + groupName,
+	// 			url : "data/ch1_planGrp.json",
+	// 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	// 			'async': 'false',
+	// 			dataSrc : function(data){
+	// 				startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
+	// 				endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
+	// 				var ctr = 0;
+	// 				var newData = [];
+	// 				while(ctr<=60){
+	// 				    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
+	// 				    obj = {};
+	// 				    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
+	// 				    obj.sno = ctr+1;
 
-					    foundData =_.where(data,{startTime : obj.startTime})
-					    if(foundData.length != 0){
-					    	foundData = foundData[0];
-						    obj.resourceName = foundData.resourceName;
-						    obj.resourceType = foundData.resourceType;
-						    obj.groupName = foundData.groupName;
-						    obj.clientName = foundData.clientName;
-						    obj.updatedBy = foundData.updatedBy;
-						    obj.updatedAt = foundData.updatedAt;
-						 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
-							// 	obj.resourceType = "image"
-							// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
+	// 				    foundData =_.where(data,{startTime : obj.startTime})
+	// 				    if(foundData.length != 0){
+	// 				    	foundData = foundData[0];
+	// 					    obj.resourceName = foundData.resourceName;
+	// 					    // obj.resourceType = foundData.resourceType;
+	// 					    obj.groupName = foundData.groupName;
+	// 					    obj.clientName = foundData.clientName;
+	// 					    // obj.updatedBy = foundData.updatedBy;
+	// 					    // obj.updatedAt = foundData.updatedAt;
+	// 					 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
+	// 						// 	obj.resourceType = "image"
+	// 						// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
 								
-							// 	obj.resourceType = "video"
-							// }
-						}else{
-							obj.resourceName = ""
-							obj.resourceType = ""
-							obj.groupName = groupName;
-						    obj.clientName = clientName;
-						    obj.updatedBy = "";
-						    obj.updatedAt = "";
-						}
+	// 						// 	obj.resourceType = "video"
+	// 						// }
+	// 					}else{
+	// 						obj.resourceName = ""
+	// 						// obj.resourceType = ""
+	// 						obj.groupName = groupName;
+	// 					    obj.clientName = clientName;
+	// 					    // obj.updatedBy = "";
+	// 					    // obj.updatedAt = "";
+	// 					}
 
 					    
-					    startTime.add(15,'minutes').format('DD-MM-YYYY HH:mm')
-					    newData.push(obj);
-					    ctr++
-					}
+	// 				    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
+	// 				    newData.push(obj);
+	// 				    ctr++
+	// 				}
 
-					// $.each(data, function(index, value){
-					// 	value.sno = index +1;
-					// })
-					return newData;
-				},
-				complete : function(jqXHR, textStatus){
-					if(textStatus == "success"){
-						// console.log(jqXHR)
-					}	
-					else if(textStatus == "error"){
-						if(jqXHR.responseText)
-							$.notify(jqXHR.responseText,'error')
-					}
-				},
-				error : function(jqXHR, textStatus, errorThrown){
-					firstChannel.groupsFirstChannelPlannedTableAPI.clear().draw();
-					// irstChannel.visibleTableAPI = undefined;
-			  //   	firstChannel.visibleTableJQ = undefined;
-			  //   	firstChannel.groupsFirstChannelPlannedTableAPI = undefined;
-    	// 			firstChannel.groupsFirstChannelPlannedTableJQ = undefined
-				}
-	 		},
-	 		keys : true,
-	        dataType: "json",
-	        columns: [
-	        	{ data : "sno"},
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableCheckbox">
-	        	  				<input type="checkbox">
-	        	  			</div>`;
-	    	  		}, sortable : false
-	    	  	},
-	            { "data": "startTime"
-	          //    ,
-	        		// render : function(data, type, row){
-	        		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
-	        		// }
-	        	},
-	            { "data": "resourceName" },
-	            { "data": "resourceType" },
-	            { "data": "updatedBy" },
-	            { "data": "updatedAt" },
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableButtons">
-	        	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
-	        	  			</div>`;
-	        	  				// <button class="btn btn-danger btn-xs deleteDevice"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-	    	  		},
-	    	  		sortable : false
-	    		}
-	    	]	    	
-	    });
-	    firstChannel.groupsFirstChannelPlannedTableJQ = $('#groupsFirstChannelPlannedTable').dataTable();
+	// 				// $.each(data, function(index, value){
+	// 				// 	value.sno = index +1;
+	// 				// })
+	// 				return newData;
+	// 			},
+	// 			complete : function(jqXHR, textStatus){
+	// 				if(textStatus == "success"){
+	// 					// console.log(jqXHR)
+	// 				}	
+	// 				else if(textStatus == "error"){
+	// 					if(jqXHR.responseText)
+	// 						$.notify(jqXHR.responseText,'error')
+	// 				}
+	// 			},
+	// 			error : function(jqXHR, textStatus, errorThrown){
+	// 				firstChannel.groupsFirstChannelPlannedTableAPI.clear().draw();
+	// 				// irstChannel.visibleTableAPI = undefined;
+	// 		  //   	firstChannel.visibleTableJQ = undefined;
+	// 		  //   	firstChannel.groupsFirstChannelPlannedTableAPI = undefined;
+ //    	// 			firstChannel.groupsFirstChannelPlannedTableJQ = undefined
+	// 			}
+	//  		},
+	//  		keys : true,
+	//         dataType: "json",
+	//         columns: [
+	//         	{ data : "sno"},
+	//             { render : function(data, type, row){
+	//         	  	return `<div class="tableCheckbox">
+	//         	  				<input type="checkbox">
+	//         	  			</div>`;
+	//     	  		}, sortable : false
+	//     	  	},
+	//             { "data": "groupName" },
+	//             { "data": "startTime"
+	//           //    ,
+	//         		// render : function(data, type, row){
+	//         		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
+	//         		// }
+	//         	},
+	//             { "data": "resourceName" },
+	//             // { "data": "resourceType" },
+	//             // { "data": "updatedBy" },
+	//             // { "data": "updatedAt" },
+	//             { render : function(data, type, row){
+	//         	  	return `<div class="tableButtons">
+	//         	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
+	//         	  			</div>`;
+	//         	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+	//     	  		},
+	//     	  		sortable : false
+	//     		}
+	//     	]	    	
+	//     });
+	//     firstChannel.groupsFirstChannelPlannedTableJQ = $('#groupsFirstChannelPlannedTable').dataTable();
 
-	}
+	// }
 
-	function loadDevicesFirstChannelPlannedTable(deviceName){
-		if(firstChannel.devicesFirstChannelPlannedTableJQ) {
-			firstChannel.devicesFirstChannelPlannedTableJQ.fnClearTable();
-			firstChannel.devicesFirstChannelPlannedTableJQ.fnDestroy();
-		}
+	// function loadClustersFirstChannelPlannedTable(clusterName){
+	// 	if(firstChannel.clustersFirstChannelPlannedTableJQ) {
+	// 		firstChannel.clustersFirstChannelPlannedTableJQ.fnClearTable();
+	// 		firstChannel.clustersFirstChannelPlannedTableJQ.fnDestroy();
+	// 	}
 
-	    firstChannel.devicesFirstChannelPlannedTableAPI = $('#devicesFirstChannelPlannedTable').DataTable({
-	        "ajax" : {
-				url : commonData.apiurl + "ch1_planDev/" + clientName + "/" + deviceName,
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-				'async': 'false',
-				dataSrc : function(data){
-					startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
-					endTime = new moment().add(1,'day').startOf('day').subtract(15,'minutes')//.format('DD-MM-YYYY hh:mm a')
-					var ctr = 0;
-					var newData = [];
-					while(ctr<=60){
-					    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
-					    obj = {};
-					    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
-					    obj.sno = ctr+1;
+	//     firstChannel.clustersFirstChannelPlannedTableAPI = $('#clustersFirstChannelPlannedTable').DataTable({
+	//         "ajax" : {
+	// 			url : commonData.apiurl + "ch1_planDev/" + clientName + "/" + clusterName,
+	// 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	// 			'async': 'false',
+	// 			dataSrc : function(data){
+	// 				startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
+	// 				endTime = new moment().add(1,'day').startOf('day').subtract(15,'minutes')//.format('DD-MM-YYYY hh:mm a')
+	// 				var ctr = 0;
+	// 				var newData = [];
+	// 				while(ctr<=60){
+	// 				    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
+	// 				    obj = {};
+	// 				    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
+	// 				    obj.sno = ctr+1;
 
-					    foundData =_.where(data,{startTime : obj.startTime})
-					    if(foundData.length != 0){
-					    	foundData = foundData[0];
-						    obj.resourceName = foundData.resourceName;
-						    obj.resourceType = foundData.resourceType;
-						    obj.deviceName = foundData.deviceName;
-						    obj.clientName = foundData.clientName;
-						    obj.updatedBy = foundData.updatedBy;
-						    obj.updatedAt = foundData.updatedAt;
-						 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
-							// 	obj.resourceType = "image"
-							// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
+	// 				    foundData =_.where(data,{startTime : obj.startTime})
+	// 				    if(foundData.length != 0){
+	// 				    	foundData = foundData[0];
+	// 					    obj.resourceName = foundData.resourceName;
+	// 					    // obj.resourceType = foundData.resourceType;
+	// 					    obj.clusterName = foundData.clusterName;
+	// 					    obj.clientName = foundData.clientName;
+	// 					    // obj.updatedBy = foundData.updatedBy;
+	// 					    // obj.updatedAt = foundData.updatedAt;
+	// 					 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
+	// 						// 	obj.resourceType = "image"
+	// 						// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
 								
-							// 	obj.resourceType = "video"
-							// }
-						}else{
-							obj.resourceName = ""
-							obj.resourceType = ""
-							obj.deviceName = deviceName;
-						    obj.clientName = clientName;
-						    obj.updatedBy = "";
-						    obj.updatedAt = "";
-						}
+	// 						// 	obj.resourceType = "video"
+	// 						// }
+	// 					}else{
+	// 						obj.resourceName = ""
+	// 						// obj.resourceType = ""
+	// 						obj.clusterName = clusterName;
+	// 					    obj.clientName = clientName;
+	// 					    // obj.updatedBy = "";
+	// 					    // obj.updatedAt = "";
+	// 					}
 
 					    
-					    startTime.add(15,'minutes').format('DD-MM-YYYY HH:mm')
-					    newData.push(obj);
-					    ctr++
-					}
+	// 				    startTime.add(15,'minutes').format('DD-MM-YYYY HH:mm')
+	// 				    newData.push(obj);
+	// 				    ctr++
+	// 				}
 
-					// $.each(data, function(index, value){
-					// 	value.sno = index +1;
-					// })
-					return newData;
-				},
-				complete : function(jqXHR, textStatus){
-					if(textStatus == "success"){
-						// console.log(jqXHR)
-					}	
-					else if(textStatus == "error"){
-						if(jqXHR.responseText)
-							$.notify(jqXHR.responseText,'error')
-					}
-				},
-				error : function(jqXHR, textStatus, errorThrown){
-					firstChannel.devicesFirstChannelPlannedTableAPI.clear().draw();
-					// firstChannel.visibleTableAPI = undefined;
-			  //   	firstChannel.visibleTableJQ = undefined;
-			  //   	firstChannel.devicesFirstChannelPlannedTableAPI = undefined;
-    	// 			firstChannel.devicesFirstChannelPlannedTableJQ = undefined
-				}
-	 		},
-	 		keys : true,
-	        dataType: "json",
-	        columns: [
-	        	{ data : "sno"},
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableCheckbox">
-	        	  				<input type="checkbox">
-	        	  			</div>`;
-	    	  		}, sortable : false
-	    	  	},
-	            { "data": "startTime"
-	          //    ,
-	        		// render : function(data, type, row){
-	        		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
-	        		// }
-	        	},
-	            { "data": "resourceName" },
-	            { "data": "resourceType" },
-	            { "data": "updatedBy" },
-	            { "data": "updatedAt" },
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableButtons">
-	        	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
-	        	  			</div>`;
-	        	  				// <button class="btn btn-danger btn-xs deleteDevice"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-	    	  		},
-	    	  		sortable : false
-	    		}
-	    	]
-	    });
-	    firstChannel.devicesFirstChannelPlannedTableJQ = $('#devicesFirstChannelPlannedTable').dataTable();
+	// 				// $.each(data, function(index, value){
+	// 				// 	value.sno = index +1;
+	// 				// })
+	// 				return newData;
+	// 			},
+	// 			complete : function(jqXHR, textStatus){
+	// 				if(textStatus == "success"){
+	// 					// console.log(jqXHR)
+	// 				}	
+	// 				else if(textStatus == "error"){
+	// 					if(jqXHR.responseText)
+	// 						$.notify(jqXHR.responseText,'error')
+	// 				}
+	// 			},
+	// 			error : function(jqXHR, textStatus, errorThrown){
+	// 				firstChannel.clustersFirstChannelPlannedTableAPI.clear().draw();
+	// 				// firstChannel.visibleTableAPI = undefined;
+	// 		  //   	firstChannel.visibleTableJQ = undefined;
+	// 		  //   	firstChannel.clustersFirstChannelPlannedTableAPI = undefined;
+ //    	// 			firstChannel.clustersFirstChannelPlannedTableJQ = undefined
+	// 			}
+	//  		},
+	//  		keys : true,
+	//         dataType: "json",
+	//         columns: [
+	//         	{ data : "sno"},
+	//             { render : function(data, type, row){
+	//         	  	return `<div class="tableCheckbox">
+	//         	  				<input type="checkbox">
+	//         	  			</div>`;
+	//     	  		}, sortable : false
+	//     	  	},
+	//             { "data": "clusterName" },
+	//             { "data": "startTime"
+	//           //    ,
+	//         		// render : function(data, type, row){
+	//         		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
+	//         		// }
+	//         	},
+	//             { "data": "resourceName" },
+	//             // { "data": "resourceType" },
+	//             // { "data": "updatedBy" },
+	//             // { "data": "updatedAt" },
+	//             { render : function(data, type, row){
+	//         	  	return `<div class="tableButtons">
+	//         	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
+	//         	  			</div>`;
+	//         	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+	//     	  		},
+	//     	  		sortable : false
+	//     		}
+	//     	]
+	//     });
+	//     firstChannel.clustersFirstChannelPlannedTableJQ = $('#clustersFirstChannelPlannedTable').dataTable();
 
-	    // firstChannel.visibleTableAPI = firstChannel.devicesFirstChannelPlannedTableAPI;
-    	// firstChannel.visibleTableJQ = firstChannel.devicesFirstChannelPlannedTableJQ;
-	}
+	//     // firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
+ //    	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
+	// }
 
     firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
 	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
@@ -543,19 +554,19 @@ window.onload = function(){
     			if($("input[name='displayTypeRadio']")[0].checked){
     				groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
     				$(".groupsFirstChannelGeneralTableDiv").show();
-					$(".devicesFirstChannelGeneralTableDiv").hide();
+					$(".clustersFirstChannelGeneralTableDiv").hide();
 					loadGroupsFirstChannelGeneralTable(groupName)
 
 			    	firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
 			    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
     			}else{
-    				deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
+    				clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
     				$(".groupsFirstChannelGeneralTableDiv").hide();
-					$(".devicesFirstChannelGeneralTableDiv").show();
-					loadDevicesFirstChannelGeneralTable(deviceName)
+					$(".clustersFirstChannelGeneralTableDiv").show();
+					loadClustersFirstChannelGeneralTable(clusterName)
 
-    				firstChannel.visibleTableAPI = firstChannel.devicesFirstChannelGeneralTableAPI;
-			    	firstChannel.visibleTableJQ = firstChannel.devicesFirstChannelGeneralTableJQ;
+    				firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
+			    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
     			}
 		    	$("#clearSelectedslotsButton").hide()
 		    	$("#addNewResourceButton").show()
@@ -565,7 +576,7 @@ window.onload = function(){
     			if($("input[name='displayTypeRadio']")[0].checked){
 			    	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 			    	$(".groupsFirstChannelPlannedTableDiv").show();
-					$(".devicesFirstChannelPlannedTableDiv").hide();
+					$(".clustersFirstChannelPlannedTableDiv").hide();
 					loadGroupsFirstChannelPlannedTable(groupName)
 
 			    	firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelPlannedTableAPI;
@@ -573,13 +584,13 @@ window.onload = function(){
 
 
     			}else{
-    				deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
+    				clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
     				$(".groupsFirstChannelPlannedTableDiv").hide();
-					$(".devicesFirstChannelPlannedTableDiv").show();
-					loadDevicesFirstChannelPlannedTable(deviceName)
+					$(".clustersFirstChannelPlannedTableDiv").show();
+					loadClustersFirstChannelPlannedTable(clusterName)
 
-    				firstChannel.visibleTableAPI = firstChannel.devicesFirstChannelPlannedTableAPI;
-			    	firstChannel.visibleTableJQ = firstChannel.devicesFirstChannelPlannedTableJQ;
+    				firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
+			    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
     			}
 
 				$("#deleteSelectedresourcesButton").hide()
@@ -602,15 +613,15 @@ window.onload = function(){
 	});
 
 
-	$('#devicesFirstChannelGeneralTable tbody').on('click','td:nth-child(3)',function(evt){
+	$('#clustersFirstChannelGeneralTable tbody').on('click','td:nth-child(3)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
-	$('#devicesFirstChannelPlannedTable tbody').on('click','td:nth-child(4)',function(evt){
+	$('#clustersFirstChannelPlannedTable tbody').on('click','td:nth-child(4)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
-	$('#devicesFirstChannelGeneralTable tbody').on('click','td:nth-child(5)',function(evt){
+	$('#clustersFirstChannelGeneralTable tbody').on('click','td:nth-child(5)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
@@ -670,9 +681,9 @@ window.onload = function(){
 		}
 	});
 
-	$("#devicesFirstChannelGeneralTable").off('keyup').on('keyup', function(event){
+	$("#clustersFirstChannelGeneralTable").off('keyup').on('keyup', function(event){
 		if(event.keyCode == 32){
-			trgt = $("#devicesFirstChannelGeneralTable tbody td.focus").closest('tr').find('.tableCheckbox input')
+			trgt = $("#clustersFirstChannelGeneralTable tbody td.focus").closest('tr').find('.tableCheckbox input')
 			trgt.click();
 		}
 	});
@@ -684,9 +695,9 @@ window.onload = function(){
 		}
 	});
 
-	$("#devicesFirstChannelPlannedTable").off('keyup').on('keyup', function(event){
+	$("#clustersFirstChannelPlannedTable").off('keyup').on('keyup', function(event){
 		if(event.keyCode == 32){
-			trgt = $("#devicesFirstChannelPlannedTable tbody td.focus").closest('tr').find('.tableCheckbox input')
+			trgt = $("#clustersFirstChannelPlannedTable tbody td.focus").closest('tr').find('.tableCheckbox input')
 			trgt.click();
 		}
 	});
@@ -870,14 +881,14 @@ window.onload = function(){
 		}else if(visibleTableJQ[0].id == "groupsFirstChannelPlannedTable"){
 			visibleTableAPI.cell(rowNo,3).data(resourceName)
 			visibleTableAPI.cell(rowNo,4).data(resourceType)
-		}else if(visibleTableJQ[0].id == "devicesFirstChannelGeneralTable"){
+		}else if(visibleTableJQ[0].id == "clustersFirstChannelGeneralTable"){
 			if(resourceName != ""){
 				visibleTableAPI.cell(rowNo,2).data(resourceName)
 				visibleTableAPI.cell(rowNo,3).data(resourceType)
 			}
 			if(durations != 0)
 				visibleTableAPI.cell(rowNo,4).data(durations)
-		}else if(visibleTableJQ[0].id == "devicesFirstChannelPlannedTable"){
+		}else if(visibleTableJQ[0].id == "clustersFirstChannelPlannedTable"){
 			visibleTableAPI.cell(rowNo,3).data(resourceName)
 			visibleTableAPI.cell(rowNo,4).data(resourceType)
 		}
@@ -911,26 +922,26 @@ window.onload = function(){
 			}
 
 			if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelGeneralTable'){
-				groupOrDeviceKey = "groupName";
-		    	groupOrDevice = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+				groupOrClusterKey = "groupName";
+		    	groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 			}
-			if(firstChannel.visibleTableJQ.attr('id') == 'devicesFirstChannelGeneralTable'){
-				groupOrDeviceKey = "deviceName";
-				groupOrDevice = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
+			if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelGeneralTable'){
+				groupOrClusterKey = "clusterName";
+				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 			}
 
 			if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelPlannedTable'){
-				groupOrDeviceKey = "groupName";
-				groupOrDevice = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+				groupOrClusterKey = "groupName";
+				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 			}
-			if(firstChannel.visibleTableJQ.attr('id') == 'devicesFirstChannelPlannedTable'){
-				groupOrDeviceKey = "deviceName";
-				groupOrDevice = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
+			if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelPlannedTable'){
+				groupOrClusterKey = "clusterName";
+				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 			}
 
 
 			dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0], resourceType : resourceType, durations : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
-			dt[groupOrDeviceKey] = groupOrDevice;
+			dt[groupOrClusterKey] = groupOrCluster;
 
 			firstChannel.visibleTableJQ.fnAddData(dt);
 			firstChannel.visibleTableAPI.page( 'last' ).draw( 'page' );
@@ -950,18 +961,18 @@ window.onload = function(){
 			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 			url = commonData.apiurl + 'ch1_genGrp' + "/" + clientName + "/" + groupName
 		}
-		if(firstChannel.visibleTableJQ.attr('id') == 'devicesFirstChannelGeneralTable'){
-			deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'ch1_genDev' + "/" + clientName + "/" + deviceName
+		if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelGeneralTable'){
+			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+			url = commonData.apiurl + 'ch1_genDev' + "/" + clientName + "/" + clusterName
 		}
 
 		if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelPlannedTable'){
 			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 			url = commonData.apiurl + 'ch1_planGrp' + "/" + clientName + "/" + groupName
 		}
-		if(firstChannel.visibleTableJQ.attr('id') == 'devicesFirstChannelPlannedTable'){
-			deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'ch1_planDev' + "/" + clientName + "/" + deviceName
+		if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelPlannedTable'){
+			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+			url = commonData.apiurl + 'ch1_planDev' + "/" + clientName + "/" + clusterName
 		}
 
     	firstChannelDataArray = _.map(firstChannelDataArray, function(model) {
