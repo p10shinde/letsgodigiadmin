@@ -339,50 +339,60 @@ window.onload = function(){
 				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 				'async': 'false',
 				dataSrc : function(data){
-					startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
-					endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
-					var ctr = 0;
-					var newData = [];
-					while(ctr<=60){
-					    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
-					    obj = {};
-					    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
-					    obj.sno = ctr+1;
+					groupName_temp = data[0].groupName;
+					$.each(data[0].data, function(index, value){
+						value.sno = index +1;
+						value.groupName = groupName_temp;
+					})
+					return data[0].data;
 
-					    foundData =_.where(data,{startTime : obj.startTime})
-					    if(foundData.length != 0){
-					    	foundData = foundData[0];
-						    obj.resourceName = foundData.resourceName;
-						    // obj.resourceType = foundData.resourceType;
-						    obj.groupName = foundData.groupName;
-						    obj.clientName = foundData.clientName;
-						    // obj.updatedBy = foundData.updatedBy;
-						    // obj.updatedAt = foundData.updatedAt;
-						 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
-							// 	obj.resourceType = "image"
-							// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
-								
-							// 	obj.resourceType = "video"
-							// }
-						}else{
-							obj.resourceName = ""
-							// obj.resourceType = ""
-							obj.groupName = groupName;
-						    obj.clientName = clientName;
-						    // obj.updatedBy = "";
-						    // obj.updatedAt = "";
+					function old(){
+						startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
+						endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
+						var ctr = 0;
+						var newData = [];
+						while(ctr<=60){
+						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
+						    obj = {};
+						    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
+						    obj.sno = ctr+1;
+
+						    foundData =_.where(data[0].data,{startTime : obj.startTime})
+						    groupName_temp1 = data[0].groupName;
+						    if(foundData.length != 0){
+						    	foundData = foundData[0];
+							    obj.resourceName = foundData.resourceName;
+							    // obj.resourceType = foundData.resourceType;
+							    obj.groupName = groupName_temp1;
+							    obj.clientName = clientName;
+							    // obj.updatedBy = foundData.updatedBy;
+							    // obj.updatedAt = foundData.updatedAt;
+							 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
+								// 	obj.resourceType = "image"
+								// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
+									
+								// 	obj.resourceType = "video"
+								// }
+							}else{
+								obj.resourceName = ""
+								// obj.resourceType = ""
+								obj.groupName = groupName_temp1;
+							    obj.clientName = clientName;
+							    // obj.updatedBy = "";
+							    // obj.updatedAt = "";
+							}
+
+						    
+						    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
+						    newData.push(obj);
+						    ctr++
 						}
 
-					    
-					    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
-					    newData.push(obj);
-					    ctr++
+						// $.each(data, function(index, value){
+						// 	value.sno = index +1;
+						// })
+						return newData;
 					}
-
-					// $.each(data, function(index, value){
-					// 	value.sno = index +1;
-					// })
-					return newData;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -422,130 +432,141 @@ window.onload = function(){
 	            // { "data": "resourceType" },
 	            // { "data": "updatedBy" },
 	            // { "data": "updatedAt" },
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableButtons">
-	        	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
-	        	  			</div>`;
-	        	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-	    	  		},
-	    	  		sortable : false
-	    		}
+	      //       { render : function(data, type, row){
+	      //   	  	return `<div class="tableButtons">
+	      //   	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
+	      //   	  			</div>`;
+	      //   	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+	    	 //  		},
+	    	 //  		sortable : false
+	    		// }
 	    	]	    	
 	    });
 	    firstChannel.groupsFirstChannelPlannedTableJQ = $('#groupsFirstChannelPlannedTable').dataTable();
 
 	}
 
-	// function loadClustersFirstChannelPlannedTable(clusterName){
-	// 	if(firstChannel.clustersFirstChannelPlannedTableJQ) {
-	// 		firstChannel.clustersFirstChannelPlannedTableJQ.fnClearTable();
-	// 		firstChannel.clustersFirstChannelPlannedTableJQ.fnDestroy();
-	// 	}
+	function loadClustersFirstChannelPlannedTable(clusterName){
+		if(firstChannel.clustersFirstChannelPlannedTableJQ) {
+			firstChannel.clustersFirstChannelPlannedTableJQ.fnClearTable();
+			firstChannel.clustersFirstChannelPlannedTableJQ.fnDestroy();
+		}
 
-	//     firstChannel.clustersFirstChannelPlannedTableAPI = $('#clustersFirstChannelPlannedTable').DataTable({
-	//         "ajax" : {
-	// 			url : commonData.apiurl + "ch1_planDev/" + clientName + "/" + clusterName,
-	// 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-	// 			'async': 'false',
-	// 			dataSrc : function(data){
-	// 				startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
-	// 				endTime = new moment().add(1,'day').startOf('day').subtract(15,'minutes')//.format('DD-MM-YYYY hh:mm a')
-	// 				var ctr = 0;
-	// 				var newData = [];
-	// 				while(ctr<=60){
-	// 				    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
-	// 				    obj = {};
-	// 				    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
-	// 				    obj.sno = ctr+1;
+	    firstChannel.clustersFirstChannelPlannedTableAPI = $('#clustersFirstChannelPlannedTable').DataTable({
+	        "ajax" : {
+				// url : commonData.apiurl + "ch1_planDev/" + clientName + "/" + clusterName,
+				url : "data/ch1_planDev.json",
+				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				'async': 'false',
+				dataSrc : function(data){
+					clusterName_temp = data[0].clusterName;
+					$.each(data[0].data, function(index, value){
+						value.sno = index +1;
+						value.clusterName = clusterName_temp;
+					})
+					return data[0].data;
 
-	// 				    foundData =_.where(data,{startTime : obj.startTime})
-	// 				    if(foundData.length != 0){
-	// 				    	foundData = foundData[0];
-	// 					    obj.resourceName = foundData.resourceName;
-	// 					    // obj.resourceType = foundData.resourceType;
-	// 					    obj.clusterName = foundData.clusterName;
-	// 					    obj.clientName = foundData.clientName;
-	// 					    // obj.updatedBy = foundData.updatedBy;
-	// 					    // obj.updatedAt = foundData.updatedAt;
-	// 					 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
-	// 						// 	obj.resourceType = "image"
-	// 						// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
-								
-	// 						// 	obj.resourceType = "video"
-	// 						// }
-	// 					}else{
-	// 						obj.resourceName = ""
-	// 						// obj.resourceType = ""
-	// 						obj.clusterName = clusterName;
-	// 					    obj.clientName = clientName;
-	// 					    // obj.updatedBy = "";
-	// 					    // obj.updatedAt = "";
-	// 					}
+					function old(){
+						startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
+						endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
+						var ctr = 0;
+						var newData = [];
+						while(ctr<=60){
+						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
+						    obj = {};
+						    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
+						    obj.sno = ctr+1;
 
-					    
-	// 				    startTime.add(15,'minutes').format('DD-MM-YYYY HH:mm')
-	// 				    newData.push(obj);
-	// 				    ctr++
-	// 				}
+						    foundData =_.where(data[0].data,{startTime : obj.startTime})
+						    clusterName_temp1 = data[0].clusterName;
+						    if(foundData.length != 0){
+						    	foundData = foundData[0];
+							    obj.resourceName = foundData.resourceName;
+							    // obj.resourceType = foundData.resourceType;
+							    obj.clusterName = clusterName_temp1;
+							    obj.clientName = clientName;
+							    // obj.updatedBy = foundData.updatedBy;
+							    // obj.updatedAt = foundData.updatedAt;
+							 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
+								// 	obj.resourceType = "image"
+								// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
+									
+								// 	obj.resourceType = "video"
+								// }
+							}else{
+								obj.resourceName = ""
+								// obj.resourceType = ""
+								obj.clusterName = clusterName_temp1;
+							    obj.clientName = clientName;
+							    // obj.updatedBy = "";
+							    // obj.updatedAt = "";
+							}
 
-	// 				// $.each(data, function(index, value){
-	// 				// 	value.sno = index +1;
-	// 				// })
-	// 				return newData;
-	// 			},
-	// 			complete : function(jqXHR, textStatus){
-	// 				if(textStatus == "success"){
-	// 					// console.log(jqXHR)
-	// 				}	
-	// 				else if(textStatus == "error"){
-	// 					if(jqXHR.responseText)
-	// 						$.notify(jqXHR.responseText,'error')
-	// 				}
-	// 			},
-	// 			error : function(jqXHR, textStatus, errorThrown){
-	// 				firstChannel.clustersFirstChannelPlannedTableAPI.clear().draw();
-	// 				// firstChannel.visibleTableAPI = undefined;
-	// 		  //   	firstChannel.visibleTableJQ = undefined;
-	// 		  //   	firstChannel.clustersFirstChannelPlannedTableAPI = undefined;
- //    	// 			firstChannel.clustersFirstChannelPlannedTableJQ = undefined
-	// 			}
-	//  		},
-	//  		keys : true,
-	//         dataType: "json",
-	//         columns: [
-	//         	{ data : "sno"},
-	//             { render : function(data, type, row){
-	//         	  	return `<div class="tableCheckbox">
-	//         	  				<input type="checkbox">
-	//         	  			</div>`;
-	//     	  		}, sortable : false
-	//     	  	},
-	//             { "data": "clusterName" },
-	//             { "data": "startTime"
-	//           //    ,
-	//         		// render : function(data, type, row){
-	//         		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
-	//         		// }
-	//         	},
-	//             { "data": "resourceName" },
-	//             // { "data": "resourceType" },
-	//             // { "data": "updatedBy" },
-	//             // { "data": "updatedAt" },
-	//             { render : function(data, type, row){
-	//         	  	return `<div class="tableButtons">
-	//         	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
-	//         	  			</div>`;
-	//         	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-	//     	  		},
-	//     	  		sortable : false
-	//     		}
-	//     	]
-	//     });
-	//     firstChannel.clustersFirstChannelPlannedTableJQ = $('#clustersFirstChannelPlannedTable').dataTable();
+						    
+						    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
+						    newData.push(obj);
+						    ctr++
+						}
 
-	//     // firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
- //    	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
-	// }
+						// $.each(data, function(index, value){
+						// 	value.sno = index +1;
+						// })
+						return newData;
+				}
+				},
+				complete : function(jqXHR, textStatus){
+					if(textStatus == "success"){
+						// console.log(jqXHR)
+					}	
+					else if(textStatus == "error"){
+						if(jqXHR.responseText)
+							$.notify(jqXHR.responseText,'error')
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown){
+					firstChannel.clustersFirstChannelPlannedTableAPI.clear().draw();
+					// firstChannel.visibleTableAPI = undefined;
+			  //   	firstChannel.visibleTableJQ = undefined;
+			  //   	firstChannel.clustersFirstChannelPlannedTableAPI = undefined;
+    	// 			firstChannel.clustersFirstChannelPlannedTableJQ = undefined
+				}
+	 		},
+	 		keys : true,
+	        dataType: "json",
+	        columns: [
+	        	{ data : "sno"},
+	            { render : function(data, type, row){
+	        	  	return `<div class="tableCheckbox">
+	        	  				<input type="checkbox">
+	        	  			</div>`;
+	    	  		}, sortable : false
+	    	  	},
+	            { "data": "clusterName" },
+	            { "data": "startTime"
+	          //    ,
+	        		// render : function(data, type, row){
+	        		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
+	        		// }
+	        	},
+	            { "data": "resourceName" },
+	            // { "data": "resourceType" },
+	            // { "data": "updatedBy" },
+	            // { "data": "updatedAt" },
+	      //       { render : function(data, type, row){
+	      //   	  	return `<div class="tableButtons">
+	      //   	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
+	      //   	  			</div>`;
+	      //   	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+	    	 //  		},
+	    	 //  		sortable : false
+	    		// }
+	    	]
+	    });
+	    firstChannel.clustersFirstChannelPlannedTableJQ = $('#clustersFirstChannelPlannedTable').dataTable();
+
+	    // firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
+    	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
+	}
 
     firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
 	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
@@ -570,9 +591,9 @@ window.onload = function(){
     				firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
 			    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
     			}
-		    	$("#clearSelectedslotsButton").hide()
-		    	$("#addNewResourceButton").show()
-				$("#deleteSelectedresourcesButton").show();
+		    	// $("#clearSelectedslotsButton").hide()
+		    	// $("#addNewResourceButton").show()
+				// $("#deleteSelectedresourcesButton").show();
     		}else{
     			// if groups is checked
     			if($("input[name='displayTypeRadio']")[0].checked){
@@ -595,9 +616,9 @@ window.onload = function(){
 			    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
     			}
 
-				$("#deleteSelectedresourcesButton").hide()
-		    	$("#addNewResourceButton").hide()
-				$("#clearSelectedslotsButton").show()
+				// $("#deleteSelectedresourcesButton").hide()
+		    	// $("#addNewResourceButton").hide()
+				// $("#clearSelectedslotsButton").show()
     		}
     	}
     })
@@ -607,6 +628,10 @@ window.onload = function(){
 	});
 
 	$('#groupsFirstChannelPlannedTable tbody').on('click','td:nth-child(4)',function(evt){
+		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
+	});
+
+	$('#groupsFirstChannelPlannedTable tbody').on('click','td:nth-child(5)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
@@ -620,6 +645,10 @@ window.onload = function(){
 	});
 
 	$('#clustersFirstChannelPlannedTable tbody').on('click','td:nth-child(4)',function(evt){
+		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
+	});
+
+	$('#clustersFirstChannelPlannedTable tbody').on('click','td:nth-child(5)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
@@ -661,7 +690,7 @@ window.onload = function(){
 
 		})
 		$.each(clearRowsIndexes, function(index,value){
-			firstChannel.visibleTableAPI.cell(value,3).data("")
+			// firstChannel.visibleTableAPI.cell(value,3).data("")
 			firstChannel.visibleTableAPI.cell(value,4).data("")
 
 			$(firstChannel.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeOut();
@@ -706,32 +735,77 @@ window.onload = function(){
 
 
 	// this will clear the planned tab;le
-	$('table tbody').on('click','td:nth-child(8)',function(evt){
-    	deleteOrEditGroup(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
-	});
+	// $('table tbody').on('click','td:nth-child(6)',function(evt){
+ //    	deleteOrEditGroup(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
+	// });
 	
-	// tabel buttons : only edit is working
-	function deleteOrEditGroup(visibleTableAPI, visibleTableJQ, evt){
-		trgtTd = $(evt.target).closest('td');
-		trgtTr = trgtTd.closest('tr');
-		if(evt.target.nodeName != "TD" && trgtTd.index() == 5){
-				rowNo = parseInt(trgtTr.find('td').first().text()) -1;
-				pageToDraw = visibleTableAPI.page.info().page;
-				visibleTableAPI.cell(rowNo,3).data("")
-				visibleTableAPI.cell(rowNo,4).data("")
-				visibleTableAPI.page( pageToDraw ).draw( 'page' );
+	// // tabel buttons : only edit is working
+	// function deleteOrEditGroup(visibleTableAPI, visibleTableJQ, evt){
+	// 	trgtTd = $(evt.target).closest('td');
+	// 	trgtTr = trgtTd.closest('tr');
+	// 	if(evt.target.nodeName != "TD" && trgtTd.index() == 5){
+	// 			rowNo = parseInt(trgtTr.find('td').first().text()) -1;
+	// 			pageToDraw = visibleTableAPI.page.info().page;
+	// 			// visibleTableAPI.cell(rowNo,3).data("")
+	// 			visibleTableAPI.cell(rowNo,4).data("")
+	// 			visibleTableAPI.page( pageToDraw ).draw( 'page' );
 
-				$(visibleTableAPI.rows().nodes().toJQuery()[rowNo]).fadeOut();
-				$(visibleTableAPI.rows().nodes().toJQuery()[rowNo]).fadeIn();
-		}
-	}
+	// 			$(visibleTableAPI.rows().nodes().toJQuery()[rowNo]).fadeOut();
+	// 			$(visibleTableAPI.rows().nodes().toJQuery()[rowNo]).fadeIn();
+	// 	}
+	// }
 
 	function openFieldEditorDialog(visibleTableAPI, visibleTableJQ, evt){
 		visibleTableAPI.keys.disable();
 		trgtTd = $(evt.target);
 		trgtTdValue = trgtTd.text();
 		if(trgtTd[0].nodeName == "TD"){
-			if(trgtTd.index() == 2 || trgtTd.index() == 3){
+			if((visibleTableJQ[0].id == "groupsFirstChannelPlannedTable" && trgtTd.index() == 3) || (visibleTableJQ[0].id == "clustersFirstChannelPlannedTable" && trgtTd.index() == 3)){
+				firstChannel.trgtTd = trgtTd
+				$("#modifyFieldDialog").dialog({
+		            constrain : true,
+		            top : trgtTd.offset().top,
+		            left : trgtTd.offset().left,
+		            border : false,
+		            closed: false,
+		            padding : "5px",
+		            cache: false,
+		            title : false,
+		            resizable : true,
+		            modal: true,
+		            shadow : false
+				});
+				$("#modifyFieldDialog div.elementHolder").empty();
+				$("#modifyFieldDialog div.elementHolder").append('<div class="input-group date" style="width:' + (parseInt(trgtTd.width()) + 16 -39) + 'px">'+
+																	'<input class="myDateTimePicker form-control" id="startTime" '+
+																	'style="height:' + (parseInt(trgtTd.height()) + 16) + 'px;'+
+																	'width : ' + (parseInt(trgtTd.width()) + 16 -39) + 'px"></input>'+
+																	'<span class="input-group-addon">'+
+		                        										'<span class="glyphicon glyphicon-calendar"></span>'+
+		                    										'</span>'+
+		                    									'</div>')	
+				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY HH:mm',stepping:20,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
+				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY HH:mm"));
+				
+				
+				$("#" + visibleTableJQ[0].id).off('keyup').on('keyup', function(evt){
+					// if(evt.keyCode == 13){
+					// 	updateTableWithResource();
+					// }else 
+					if(evt.keyCode == 27){
+						revertTableUpdate(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ);
+					}
+				});
+
+				$(".window-mask").off('click').on('click',function(){
+					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY HH:mm');
+					text = ''
+					updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, startTime, '', 0);
+				})
+			}else if((visibleTableJQ[0].id == "groupsFirstChannelGeneralTable" && trgtTd.index() == 3) || 
+				(visibleTableJQ[0].id == "clustersFirstChannelGeneralTable" && trgtTd.index() == 3) ||
+				(visibleTableJQ[0].id == "groupsFirstChannelPlannedTable" && trgtTd.index() == 4) || 
+				(visibleTableJQ[0].id == "clustersFirstChannelPlannedTable" && trgtTd.index() == 4)){
 				firstChannel.trgtTd = trgtTd
 				$("#modifyFieldDialog").dialog({
 		            constrain : true,
@@ -778,7 +852,7 @@ window.onload = function(){
 					filter: true,
 					placeholder : 'Select Resource',
 					onClick: function(view) {
-						updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, view.value,0)
+						updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'', view.value,0)
 						// console.log(view.value)
 						// console.log(view.checked)
 		            }
@@ -802,7 +876,7 @@ window.onload = function(){
 
 				$(".window-mask").off('click').on('click',function(){
 					resource = $("select.resourceSelect").multipleSelect('getSelects').length!=0 ? $("select.resourceSelect").multipleSelect('getSelects') : [""] 
-					updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, resource[0],0);
+					updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, '', resource[0], 0);
 					
 				})
 			}else if(trgtTd.index() == 4){
@@ -832,7 +906,7 @@ window.onload = function(){
 					$("#duration").off('keyup').on('keyup', function(evt){
 						if(evt.keyCode == 13){
 							duration = $("#duration").val();
-							updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'',duration);
+							updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'','',duration);
 						}else 
 						if(evt.keyCode == 27){
 							revertTableUpdate(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ);
@@ -841,7 +915,7 @@ window.onload = function(){
 
 					$(".window-mask").off('click').on('click',function(){
 						duration = $("#duration").val();
-						updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'',duration);
+						updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ,'','',duration);
 					})
 
 						$("input#duration").off('input propertychange').on('input propertychange', function (xx,yy,zz) {
@@ -855,7 +929,7 @@ window.onload = function(){
         $("#duration").val($(this).val().replace(/[A-Z 0a-z.~!@#$%^&*()\-_+=-?></.,":';/\|\{\}\[\]\\]/g, ''))
     })
 
-	function updateTableWithResource(visibleTableAPI, visibleTableJQ, resourceName, duration){
+	function updateTableWithResource(visibleTableAPI, visibleTableJQ, startTime, resourceName, duration){
 		rowNo = parseInt(firstChannel.trgtTd.closest('tr').find('td').first().text()) -1
 		// resources.resourcesTableJQ.fnUpdate({resourceName : resourceName, resourceType : 'image'},rowNo);
 		var resourceType = 'image'
@@ -881,8 +955,15 @@ window.onload = function(){
 			if(duration != 0)
 				visibleTableAPI.cell(rowNo,4).data(duration)
 		}else if(visibleTableJQ[0].id == "groupsFirstChannelPlannedTable"){
-			visibleTableAPI.cell(rowNo,3).data(resourceName)
-			visibleTableAPI.cell(rowNo,4).data(resourceType)
+			if(resourceName != ""){
+				visibleTableAPI.cell(rowNo,4).data(resourceName)
+				// visibleTableAPI.cell(rowNo,4).data(duration)
+			}
+			if(startTime != ""){
+				visibleTableAPI.cell(rowNo,3).data(startTime)
+
+			}
+			// visibleTableAPI.cell(rowNo,4).data(resourceType)
 		}else if(visibleTableJQ[0].id == "clustersFirstChannelGeneralTable"){
 			if(resourceName != ""){
 				visibleTableAPI.cell(rowNo,3).data(resourceName)
@@ -891,8 +972,14 @@ window.onload = function(){
 			if(duration != 0)
 				visibleTableAPI.cell(rowNo,4).data(duration)
 		}else if(visibleTableJQ[0].id == "clustersFirstChannelPlannedTable"){
-			visibleTableAPI.cell(rowNo,3).data(resourceName)
-			visibleTableAPI.cell(rowNo,4).data(resourceType)
+			if(resourceName != ""){
+				visibleTableAPI.cell(rowNo,4).data(resourceName)
+				// visibleTableAPI.cell(rowNo,4).data(resourceType)
+			}
+			if(startTime != ""){
+				visibleTableAPI.cell(rowNo,3).data(startTime)
+
+			}
 		}
 
 		updateSerialNo(visibleTableAPI);
@@ -922,28 +1009,36 @@ window.onload = function(){
 			}else if(firstChannel.resources[0].split('.')[1].toUpperCase() == "MP4" || firstChannel.resources[0].split('.')[1].toUpperCase() == "WEBM"){
 				resourceType = 'video'
 			}
-
+			dt = {};
 			if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelGeneralTable'){
 				groupOrClusterKey = "groupName";
 		    	groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+		    	dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  duration : 5};
 			}
 			if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelGeneralTable'){
 				groupOrClusterKey = "clusterName";
 				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+				dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  duration : 5};
 			}
 
 			if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelPlannedTable'){
 				groupOrClusterKey = "groupName";
 				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+				remainder = new moment(new Date()).minutes()%20
+				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY HH:mm')
+				dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  startTime : startTime};
 			}
 			if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelPlannedTable'){
 				groupOrClusterKey = "clusterName";
 				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+				remainder = new moment(new Date()).minutes()%20
+				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY HH:mm')
+				dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  startTime : startTime};
 			}
 
 
 			// dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0], resourceType : resourceType, duration : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
-			dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  duration : 5};
+			
 			dt[groupOrClusterKey] = groupOrCluster;
 
 			firstChannel.visibleTableJQ.fnAddData(dt);

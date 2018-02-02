@@ -1,7 +1,7 @@
 [{
-	"clusterName" : "group1",
+	"groupName" : "PLaa",
 	"data" : [{
 		"resourceName" : "resource1.jpg",
-		"startTime" :  "01-02-2018 08:20"
+		"startTime" :  "02-02-2018 10:40"
 	}]
 }]
