@@ -143,15 +143,16 @@ window.onload = function(){
 						filter: true,
 						single : true,
 						onClick : function(view){
+							tabIndex = $("#secondChannelTabs").tabs('getTabIndex',$("#secondChannelTabs").tabs('getSelected'))
 							groupName = view.value;
 							if(tabIndex == 0){
 								loadGroupsSecondChannelPlannedTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.groupsSecondChannelPlannedTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.groupsSecondChannelPlannedTableJQ;
+								secondChannel.visibleTableAPI = secondChannel.groupsSecondChannelPlannedTableAPI;
+						    	secondChannel.visibleTableJQ = secondChannel.groupsSecondChannelPlannedTableJQ;
 						    }else{
 						    	loadGroupsSecondChannelSharedTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.groupsSecondChannelSharedTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.groupsSecondChannelSharedTableJQ;
+								secondChannel.visibleTableAPI = secondChannel.groupsSecondChannelSharedTableAPI;
+						    	secondChannel.visibleTableJQ = secondChannel.groupsSecondChannelSharedTableJQ;
 						    }
 						}
 					});
@@ -189,15 +190,16 @@ window.onload = function(){
 						filter: true,
 						single : true,
 						onClick : function(view){
+							tabIndex = $("#secondChannelTabs").tabs('getTabIndex',$("#secondChannelTabs").tabs('getSelected'))
 							clusterName = view.value;
 							if(tabIndex == 0){
-								loadClustersSecondChannelPlannedTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.clustersSecondChannelPlannedTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.clustersSecondChannelPlannedTableJQ;
+								loadClustersSecondChannelPlannedTable(clusterName)
+								secondChannel.visibleTableAPI = secondChannel.clustersSecondChannelPlannedTableAPI;
+						    	secondChannel.visibleTableJQ = secondChannel.clustersSecondChannelPlannedTableJQ;
 						    }else{
-						    	loadGroupsSecondChannelSharedTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.clustersSecondChannelSharedTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.clustersSecondChannelPlannedTableJQ;
+						    	loadClustersSecondChannelSharedTable(clusterName)
+								secondChannel.visibleTableAPI = secondChannel.clustersSecondChannelSharedTableAPI;
+						    	secondChannel.visibleTableJQ = secondChannel.clustersSecondChannelSharedTableJQ;
 						    }
 						}
 					});
@@ -286,9 +288,9 @@ window.onload = function(){
 				error : function(jqXHR, textStatus, errorThrown){
 					secondChannel.groupsSecondChannelPlannedTableAPI.clear().draw();
 					// irstChannel.visibleTableAPI = undefined;
-			  //   	firstChannel.visibleTableJQ = undefined;
-			  //   	firstChannel.groupsFirstChannelPlannedTableAPI = undefined;
-    	// 			firstChannel.groupsFirstChannelPlannedTableJQ = undefined
+			  //   	secondChannel.visibleTableJQ = undefined;
+			  //   	secondChannel.groupsSecondChannelPlannedTableAPI = undefined;
+    	// 			secondChannel.groupsSecondChannelPlannedTableJQ = undefined
 				}
 	 		},
 	 		keys : true,
@@ -400,9 +402,9 @@ window.onload = function(){
 				error : function(jqXHR, textStatus, errorThrown){
 					secondChannel.groupsSecondChannelSharedTableAPI.clear().draw();
 					// irstChannel.visibleTableAPI = undefined;
-			  //   	firstChannel.visibleTableJQ = undefined;
-			  //   	firstChannel.groupsFirstChannelSharedTableAPI = undefined;
-    	// 			firstChannel.groupsFirstChannelSharedTableJQ = undefined
+			  //   	secondChannel.visibleTableJQ = undefined;
+			  //   	secondChannel.groupsSecondChannelSharedTableAPI = undefined;
+    	// 			secondChannel.groupsSecondChannelSharedTableJQ = undefined
 				}
 	 		},
 	 		keys : true,
@@ -426,14 +428,14 @@ window.onload = function(){
 	            // { "data": "resourceType" },
 	            // { "data": "updatedBy" },
 	            // { "data": "updatedAt" },
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableButtons">
-	        	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-pencil" style="font-size: 8px;"></i></button>
-	        	  			</div>`;
-	        	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-	    	  		},
-	    	  		sortable : false
-	    		}
+	      //       { render : function(data, type, row){
+	      //   	  	return `<div class="tableButtons">
+	      //   	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-pencil" style="font-size: 8px;"></i></button>
+	      //   	  			</div>`;
+	      //   	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+	    	 //  		},
+	    	 //  		sortable : false
+	    		// }
 	    	]
 	    });
 	    secondChannel.groupsSecondChannelSharedTableJQ = $('#groupsSecondChannelSharedTable').dataTable();
@@ -510,9 +512,9 @@ window.onload = function(){
 				error : function(jqXHR, textStatus, errorThrown){
 					secondChannel.clustersSecondChannelPlannedTableAPI.clear().draw();
 					// irstChannel.visibleTableAPI = undefined;
-			  //   	firstChannel.visibleTableJQ = undefined;
-			  //   	firstChannel.groupsFirstChannelPlannedTableAPI = undefined;
-    	// 			firstChannel.groupsFirstChannelPlannedTableJQ = undefined
+			  //   	secondChannel.visibleTableJQ = undefined;
+			  //   	secondChannel.groupsSecondChannelPlannedTableAPI = undefined;
+    	// 			secondChannel.groupsSecondChannelPlannedTableJQ = undefined
 				}
 	 		},
 	 		keys : true,
@@ -548,6 +550,121 @@ window.onload = function(){
 	    secondChannel.clustersSecondChannelPlannedTableJQ = $('#clustersSecondChannelPlannedTable').dataTable();
 	}
 
+	function loadClustersSecondChannelSharedTable(clusterName){
+		if(secondChannel.clustersSecondChannelSharedTableJQ) {
+			secondChannel.clustersSecondChannelSharedTableJQ.fnClearTable();
+			secondChannel.clustersSecondChannelSharedTableJQ.fnDestroy();
+		}
+
+	    secondChannel.clustersSecondChannelSharedTableAPI = $('#clustersSecondChannelSharedTable').DataTable({
+	        "ajax" : {
+				// url : commonData.apiurl + "ch2_planGrp/" + clientName + "/" + clusterName,
+				url : "data/ch2_sharedCluster.json",
+				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				'async': 'false',
+				dataSrc : function(data){
+					clusterName_temp = data[0].clusterName;
+					$.each(data[0].data, function(index, value){
+						value.sno = index + 1;
+						value.clusterName = clusterName_temp;
+					})
+					return data[0].data;
+					// startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
+					// endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
+					// var ctr = 0;
+					// var newData = [];
+					// while(ctr<=50){
+					//     // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
+					//     obj = {};
+					//     obj.startTime = startTime.format('HH:mm')
+					//     obj.sno = ctr+1;
+
+					//     foundData =_.where(data[0].data,{startTime : obj.startTime})
+					//     if(foundData.length != 0){
+					//     	foundData = foundData[0];
+					// 	    obj.resourceName = foundData.resourceName;
+					// 	    // obj.resourceType = foundData.resourceType;
+					// 	    obj.clusterName = foundData.clusterName;
+					// 	    obj.clientName = foundData.clientName;
+					// 	    // obj.updatedBy = foundData.updatedBy;
+					// 	    // obj.updatedAt = foundData.updatedAt;
+					// 	 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
+					// 		// 	obj.resourceType = "image"
+					// 		// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
+								
+					// 		// 	obj.resourceType = "video"
+					// 		// }
+					// 	}else{
+					// 		obj.resourceName = ""
+					// 		// obj.resourceType = ""
+					// 		obj.clusterName = clusterName;
+					// 	    obj.clientName = clientName;
+					// 	    // obj.updatedBy = "";
+					// 	    // obj.updatedAt = "";
+					// 	}
+
+					    
+					//     startTime.add(20,'minutes').format('HH:mm')
+					//     newData.push(obj);
+					//     ctr++
+					// }
+
+					// // $.each(data, function(index, value){
+					// // 	value.sno = index +1;
+					// // })
+					// return newData;
+				},
+				complete : function(jqXHR, textStatus){
+					if(textStatus == "success"){
+						// console.log(jqXHR)
+					}	
+					else if(textStatus == "error"){
+						if(jqXHR.responseText)
+							$.notify(jqXHR.responseText,'error')
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown){
+					secondChannel.clustersSecondChannelSharedTableAPI.clear().draw();
+					// irstChannel.visibleTableAPI = undefined;
+			  //   	secondChannel.visibleTableJQ = undefined;
+			  //   	secondChannel.clustersSecondChannelSharedTableAPI = undefined;
+    	// 			secondChannel.clustersSecondChannelSharedTableJQ = undefined
+				}
+	 		},
+	 		keys : true,
+	        dataType: "json",
+	        columns: [
+	        	{ data : "sno"},
+	            { render : function(data, type, row){
+	        	  	return `<div class="tableCheckbox">
+	        	  				<input type="checkbox">
+	        	  			</div>`;
+	    	  		}, sortable : false
+	    	  	},
+	         //    { "data": "startTime"
+	         //  //    ,
+	        	// 	// render : function(data, type, row){
+	        	// 	// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
+	        	// 	// }
+	        	// },
+	            { "data": "clusterName" },
+	            { "data": "resourceName" },
+	            // { "data": "resourceType" },
+	            // { "data": "updatedBy" },
+	            // { "data": "updatedAt" },
+	      //       { render : function(data, type, row){
+	      //   	  	return `<div class="tableButtons">
+	      //   	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-pencil" style="font-size: 8px;"></i></button>
+	      //   	  			</div>`;
+	      //   	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+	    	 //  		},
+	    	 //  		sortable : false
+	    		// }
+	    	]
+	    });
+	    secondChannel.clustersSecondChannelSharedTableJQ = $('#clustersSecondChannelSharedTable').dataTable();
+	}
+
     secondChannel.visibleTableAPI = secondChannel.groupsSecondChannelPlannedTableAPI;
 	secondChannel.visibleTableJQ = secondChannel.groupsSecondChannelPlannedTableJQ;
 
@@ -557,49 +674,52 @@ window.onload = function(){
     			// if groups is checked
     			if($("input[name='displayTypeRadio']")[0].checked){
     				groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-    				$(".groupsSecondChannelGeneralTableDiv").show();
-					$(".clustersSecondChannelGeneralTableDiv").hide();
-					loadGroupsSecondChannelGeneralTable(groupName)
-
-			    	firstChannel.visibleTableAPI = firstChannel.groupsSecondChannelGeneralTableAPI;
-			    	firstChannel.visibleTableJQ = firstChannel.groupsSecondChannelGeneralTableJQ;
-    			}else{
-    				clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-    				$(".groupsSecondChannelGeneralTableDiv").hide();
-					$(".clustersSecondChannelGeneralTableDiv").show();
-					loadClustersSecondChannelGeneralTable(clusterName)
-
-    				firstChannel.visibleTableAPI = firstChannel.clustersSecondChannelGeneralTableAPI;
-			    	firstChannel.visibleTableJQ = firstChannel.clustersSecondChannelGeneralTableJQ;
-    			}
-		    	// $("#clearSelectedslotsButton").hide()
-		    	// $("#addNewResourceButton").show()
-				// $("#deleteSelectedresourcesButton").show();
-    		}else{
-    			// if groups is checked
-    			if($("input[name='displayTypeRadio']")[0].checked){
-			    	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-			    	$(".groupsSecondChannelPlannedTableDiv").show();
+    				$(".groupsSecondChannelPlannedTableDiv").show();
 					$(".clustersSecondChannelPlannedTableDiv").hide();
 					loadGroupsSecondChannelPlannedTable(groupName)
 
-			    	firstChannel.visibleTableAPI = firstChannel.groupsSecondChannelPlannedTableAPI;
-			    	firstChannel.visibleTableJQ = firstChannel.groupsSecondChannelPlannedTableJQ;
-
-
+			    	secondChannel.visibleTableAPI = secondChannel.groupsSecondChannelPlannedTableAPI;
+			    	secondChannel.visibleTableJQ = secondChannel.groupsSecondChannelPlannedTableJQ;
     			}else{
     				clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
     				$(".groupsSecondChannelPlannedTableDiv").hide();
 					$(".clustersSecondChannelPlannedTableDiv").show();
 					loadClustersSecondChannelPlannedTable(clusterName)
 
-    				firstChannel.visibleTableAPI = firstChannel.clustersSecondChannelPlannedTableAPI;
-			    	firstChannel.visibleTableJQ = firstChannel.clustersSecondChannelPlannedTableJQ;
+    				secondChannel.visibleTableAPI = secondChannel.clustersSecondChannelPlannedTableAPI;
+			    	secondChannel.visibleTableJQ = secondChannel.clustersSecondChannelPlannedTableJQ;
+    			}
+		    	$("#addNewResourceButton").hide()
+		    	$("#clearSelectedslotsButton").show();
+				// $("#deleteSelectedresourcesButton").hide();
+		    	$("#deleteSelectedslotsButton").hide();
+    		}else{
+    			// if groups is checked
+    			if($("input[name='displayTypeRadio']")[0].checked){
+			    	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+			    	$(".groupsSecondChannelSharedTableDiv").show();
+					$(".clustersSecondChannelSharedTableDiv").hide();
+					loadGroupsSecondChannelSharedTable(groupName)
+
+			    	secondChannel.visibleTableAPI = secondChannel.groupsSecondChannelSharedTableAPI;
+			    	secondChannel.visibleTableJQ = secondChannel.groupsSecondChannelSharedTableJQ;
+
+
+    			}else{
+    				clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+    				$(".groupsSecondChannelSharedTableDiv").hide();
+					$(".clustersSecondChannelSharedTableDiv").show();
+					loadClustersSecondChannelSharedTable(clusterName)
+
+    				secondChannel.visibleTableAPI = secondChannel.clustersSecondChannelSharedTableAPI;
+			    	secondChannel.visibleTableJQ = secondChannel.clustersSecondChannelSharedTableJQ;
     			}
 
-				// $("#deleteSelectedresourcesButton").hide()
-		    	// $("#addNewResourceButton").hide()
-				// $("#clearSelectedslotsButton").show()
+			    	$("#addNewResourceButton").show()
+			    	$("#clearSelectedslotsButton").hide()
+					// $("#deleteSelectedresourcesButton").show();
+			    	$("#deleteSelectedslotsButton").show();
+				
     		}
     	}
     })
@@ -610,6 +730,36 @@ window.onload = function(){
 
 	$('#clustersSecondChannelPlannedTable tbody').on('click','td:nth-child(4)',function(evt){
 		openFieldEditorDialog(secondChannel.visibleTableAPI, secondChannel.visibleTableJQ, evt);
+	});
+
+
+	$('#groupsSecondChannelSharedTable tbody').on('click','td:nth-child(4)',function(evt){
+		openFieldEditorDialog(secondChannel.visibleTableAPI, secondChannel.visibleTableJQ, evt);
+	});
+
+	$('#clustersSecondChannelSharedTable tbody').on('click','td:nth-child(4)',function(evt){
+		openFieldEditorDialog(secondChannel.visibleTableAPI, secondChannel.visibleTableJQ, evt);
+	});
+
+	$("#deleteSelectedresourcesButtonDiv").off('click').on('click','#deleteSelectedslotsButton',function(evt){
+		page = secondChannel.visibleTableAPI.page.info().page;
+		checkboxTD = secondChannel.visibleTableAPI.rows().nodes().toJQuery();
+		deleteRowsIndexes = []
+		$.each(checkboxTD, function(index, value){
+			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+			if(isChecked){
+				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+				deleteRowsIndexes.push(rowNo)
+			}
+
+		})
+		$.each(deleteRowsIndexes, function(index,value){
+			secondChannel.visibleTableJQ.fnDeleteRow(value-index, function(lg){
+				console.log(lg)
+			});
+		})
+		updateSerialNo(secondChannel.visibleTableAPI);
+		secondChannel.visibleTableAPI.page( page ).draw( 'page' );
 	});
 
 	$("#clearSelectedslotsButton").off('click').on('click',function(evt){
@@ -801,6 +951,52 @@ window.onload = function(){
 		visibleTableAPI.keys.enable()
 	}
 
+	$("#addNewResourceButton").off('click').on('click',function(evt){
+		recordsTotal = secondChannel.visibleTableAPI.page.info().recordsTotal;
+
+		if(!secondChannel.resources || secondChannel.resources.length == 0){
+			$.notify('No resource available.','error')
+		}else{
+			
+			dt = {};
+			if(secondChannel.visibleTableJQ.attr('id') == 'groupsSecondChannelPlannedTable'){
+				groupOrClusterKey = "groupName";
+		    	groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+		    	dt = {sno :  recordsTotal + 1,resourceName : secondChannel.resources[0]};
+			}
+			if(secondChannel.visibleTableJQ.attr('id') == 'clustersSecondChannelPlannedTable'){
+				groupOrClusterKey = "clusterName";
+				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+				dt = {sno :  recordsTotal + 1,resourceName : secondChannel.resources[0]};
+			}
+
+			if(secondChannel.visibleTableJQ.attr('id') == 'groupsSecondChannelSharedTable'){
+				groupOrClusterKey = "groupName";
+				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+				remainder = new moment(new Date()).minutes()%20
+				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY HH:mm')
+				dt = {sno :  recordsTotal + 1,resourceName : secondChannel.resources[0], duration : 5};
+			}
+			if(secondChannel.visibleTableJQ.attr('id') == 'clustersSecondChannelSharedTable'){
+				groupOrClusterKey = "clusterName";
+				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+				remainder = new moment(new Date()).minutes()%20
+				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY HH:mm')
+				dt = {sno :  recordsTotal + 1,resourceName : secondChannel.resources[0], duration : 5};
+			}
+
+
+			// dt = {sno :  recordsTotal + 1,resourceName : secondChannel.resources[0], resourceType : resourceType, duration : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
+			
+			dt[groupOrClusterKey] = groupOrCluster;
+
+			secondChannel.visibleTableJQ.fnAddData(dt);
+			secondChannel.visibleTableAPI.page( 'last' ).draw( 'page' );
+
+			$(secondChannel.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeOut();
+			$(secondChannel.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeIn();
+		}
+	})
 
 	$("#saveResourcesButton").off('click').on('click', function(evt){
 		secondChannelDataArray = secondChannel.visibleTableJQ.fnGetData();
@@ -823,6 +1019,14 @@ window.onload = function(){
 		if(secondChannel.visibleTableJQ.attr('id') == 'clustersSecondChannelPlannedTable'){
 			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 			url = commonData.apiurl + 'ch2_planDev' + "/" + clientName + "/" + clusterName
+		}
+		if(secondChannel.visibleTableJQ.attr('id') == 'groupsSecondChannelSharedTable'){
+			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+			url = commonData.apiurl + 'ch2_sharedGrp' + "/" + clientName + "/" + groupName
+		}
+		if(secondChannel.visibleTableJQ.attr('id') == 'clustersSecondChannelSharedTable'){
+			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+			url = commonData.apiurl + 'ch2_sharedCluster' + "/" + clientName + "/" + clusterName
 		}
 
 		

@@ -6,7 +6,7 @@ body{
 
 * {
     box-sizing: border-box;
-    font-stretch: normal;
+	  font-stretch: normal;
     font-weight: 700;
     letter-spacing: normal;
 }
@@ -50,7 +50,7 @@ table th:nth-child(2){
   width: 15px !important;
 }
 
-table th:nth-child(8){
+table th:nth-child(7){
   width: 15px !important;
 }
 

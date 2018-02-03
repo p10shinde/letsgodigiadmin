@@ -2,6 +2,6 @@
 	"groupName" : "PLaa",
 	"data" : [{
 		"resourceName" : "resource1.jpg",
-		"startTime" :  "10:40"
+		"duration" : 5
 	}]
 }]
