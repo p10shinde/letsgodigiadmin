@@ -1,0 +1,7 @@
+[{
+	"clusterName" : "cluster1",
+	"data" : [{
+		"text" : "hello cluster",
+		"startTime" :  "03-02-2018 18:40"
+	}]
+}]

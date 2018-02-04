@@ -1,8 +1,10 @@
-if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.password || !sessionStorage.clientName ){
+if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.clientName || !sessionStorage.usernamefull || !sessionStorage.id_token){
 	window.location.href = 'login.html'
 }else{
 	window.onload = function(){
-		$("#userStatusButton").html(sessionStorage.username + ' <span class="caret"></span>')
+		$("#userImage")[0].src = sessionStorage.image
+
+		$("#userStatusButton").html(sessionStorage.usernamefull + ' <span class="caret"></span>')
 		$("#clientName").text(sessionStorage.clientName);
 		$("#channelMenu li").first().click()
 		$("#channelMenu li").off('click').on('click',function(evt){
@@ -17,6 +19,7 @@ if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.passwor
 			if(this.innerText.toLowerCase() == "second channel") layoutName = "secondChannel"
 			if(this.innerText.toLowerCase() == "third channel") layoutName = "thirdChannel"
 			if(this.innerText.toLowerCase() == "scheduled video") layoutName = "videos"
+			if(this.innerText.toLowerCase() == "full screen") layoutName = "fullScreen"
 			$("#layoutContainerIframe").attr('src',layoutName + '.html');
 
 		})
@@ -30,6 +33,9 @@ if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.passwor
 		})
 
 		$("#logoutButton").off('click').on('click', function(evt){
+			sessionStorage.removeItem('googleId');
+			sessionStorage.removeItem('image');
+			sessionStorage.removeItem('id_token');
 			sessionStorage.removeItem('username');
 			sessionStorage.removeItem('usernamefull');
 			sessionStorage.removeItem('useremail');

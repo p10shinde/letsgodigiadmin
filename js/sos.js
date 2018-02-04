@@ -31,21 +31,21 @@ window.onload = function(){
 			loadGroupsSosTable(groupName)
 			sos.visibleTableAPI = sos.groupsSosTableAPI;
 	    	sos.visibleTableJQ = sos.groupsSosTableJQ;
-			$("#deviceSelectFilterDiv").parent().hide();
+			$("#clusterSelectFilterDiv").parent().hide();
 			$("#groupSelectFilterDiv").parent().show();
-			$("#devicesSosTableDiv").hide();
+			$("#clustersSosTableDiv").hide();
 			$("#groupsSosTableDiv").show();
 
-		}else if(this.value == "Devices"){
-			deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0]
-			loadDevicesSosTable(deviceName)
-			sos.visibleTableAPI = sos.devicesSosTableAPI;
-	    	sos.visibleTableJQ = sos.devicesCSosTableJQ;
+		}else if(this.value == "Clusters"){
+			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0]
+			loadClustersSosTable(clusterName)
+			sos.visibleTableAPI = sos.clustersSosTableAPI;
+	    	sos.visibleTableJQ = sos.clustersSosTableJQ;
 
 			$("#groupSelectFilterDiv").parent().hide();
-			$("#deviceSelectFilterDiv").parent().show();
+			$("#clusterSelectFilterDiv").parent().show();
 			$("#groupsSosTableDiv").hide();
-			$("#devicesSosTableDiv").show();
+			$("#clustersSosTableDiv").show();
 
 		}
 	});
@@ -90,33 +90,34 @@ window.onload = function(){
 		})
 	}
 
-	function getAllDevices(){
+	function getAllClusters(){
 		$.ajax({
-			url : commonData.apiurl + "devices/" + clientName,
+			// url : commonData.apiurl + "clusters/" + clientName,
+			url : "data/clusters.json",
 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
 				if(textstatus == "success"){
-					devices = _.unique(jqXHR.responseJSON,'deviceName')
-					devices = _.pluck(devices,'deviceName')
+					clusters = _.unique(jqXHR.responseJSON,'clusterName')
+					clusters = _.pluck(clusters,'clusterName')
 					var options = ""
-					$.each(devices, function(index,value){
+					$.each(clusters, function(index,value){
 						options += `<option value="`+value+`">`+value+`</option>`
 					});
-					$("#deviceSelectFilter").empty();
-					$("#deviceSelectFilter").append(options);
+					$("#clusterSelectFilter").empty();
+					$("#clusterSelectFilter").append(options);
 					
-					$("#deviceSelectFilter").multipleSelect({
-						placeholder: "Select Device",
+					$("#clusterSelectFilter").multipleSelect({
+						placeholder: "Select Cluster",
 						filter: true,
 						single : true,
 						onClick : function(view){
 							
-							deviceName = view.value;
-							loadDevicesSosTable(deviceName)
-							sos.visibleTableAPI = sos.devicesSosTableAPI;
-					    	sos.visibleTableJQ = sos.devicesSosTableJQ;
+							clusterName = view.value;
+							loadClustersSosTable(clusterName)
+							sos.visibleTableAPI = sos.clustersSosTableAPI;
+					    	sos.visibleTableJQ = sos.clustersSosTableJQ;
 						}
 					});
 
@@ -130,7 +131,7 @@ window.onload = function(){
 	}
 
 	getAllGroups();
-	getAllDevices();
+	getAllClusters();
 	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 	loadGroupsSosTable(groupName)
 
@@ -142,15 +143,18 @@ window.onload = function(){
 
 		sos.groupsSosTableAPI = $('#groupsSosTable').DataTable({
 	        "ajax" : {
-				url : commonData.apiurl + "sosGrp/" + clientName + "/" + groupName,
+				// url : commonData.apiurl + "sosGrp/" + clientName + "/" + groupName,
+				url : "data/sosGrp.json",
 				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 				'async': 'false',
 				dataSrc : function(data){
 					// sno = 1;
-					$.each(data, function(index, value){
+					groupName_temp = data[0].groupName;
+					$.each(data[0].data, function(index, value){
 						value.sno = index +1;
+						value.groupName = groupName_temp;
 					})
-					return data;
+					return data[0].data;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -175,37 +179,41 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
+	            { "data": "groupName" },
 	            { "data": "startTime" ,
 	        		// render : function(data, type, row){
 	        		// 	return new moment(data).format('DD-MM-YYYY HH:mm')
 	        		// }
 	        	},
 	            { "data": "text" },
-	            { "data": "updatedBy" },
-	            { "data": "updatedAt" }
+	            // { "data": "updatedBy" },
+	            // { "data": "updatedAt" }
 	    	]
 	    });
 
 	    sos.groupsSosTableJQ = $('#groupsSosTable').dataTable()
 	}
 
-	function loadDevicesSosTable(deviceName){
-		if(sos.devicesSosTableJQ) {
-			sos.devicesSosTableJQ.fnClearTable();
-			sos.devicesSosTableJQ.fnDestroy();
+	function loadClustersSosTable(clusterName){
+		if(sos.clustersSosTableJQ) {
+			sos.clustersSosTableJQ.fnClearTable();
+			sos.clustersSosTableJQ.fnDestroy();
 		}
 
-	    sos.devicesSosTableAPI = $('#devicesSosTable').DataTable({
+	    sos.clustersSosTableAPI = $('#clustersSosTable').DataTable({
 	        "ajax" : {
-				url : commonData.apiurl + "sosDev/" + clientName + "/" + deviceName,
+				// url : commonData.apiurl + "sosDev/" + clientName + "/" + clusterName,
+				url : "data/sosCluster.json",
 				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 				'async': 'false',
 				dataSrc : function(data){
 					// sno = 1;
-					$.each(data, function(index, value){
+					clusterName_temp = data[0].clusterName;
+					$.each(data[0].data, function(index, value){
 						value.sno = index +1;
+						value.clusterName = clusterName_temp;
 					})
-					return data;
+					return data[0].data;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -217,7 +225,7 @@ window.onload = function(){
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown){
-					sos.devicesSosTableAPI.clear().draw();
+					sos.clustersSosTableAPI.clear().draw();
 				}
 	 		},
 	 		keys : true,
@@ -230,18 +238,19 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
+	            { "data": "clusterName" },
 	            { "data": "startTime" ,
 	        		// render : function(data, type, row){
 	        		// 	return new moment(data).format('DD-MM-YYYY HH:mm')
 	        		// }
 	        	},
 	            { "data": "text" },
-	            { "data": "updatedBy" },
-	            { "data": "updatedAt" }
+	            // { "data": "updatedBy" },
+	            // { "data": "updatedAt" }
 	    	]
 	    });
 
-	    sos.devicesSosTableJQ = $('#devicesSosTable').dataTable()
+	    sos.clustersSosTableJQ = $('#clustersSosTable').dataTable()
 	}
 
 	// // keep the dialog box in center when user changes orientation or resizes the window
@@ -258,23 +267,23 @@ window.onload = function(){
 	    	sos.visibleTableJQ = sos.groupsSosTableJQ;
 	    	visibleTableAPI = sos.groupsSosTableAPI;
 	    	visibleTableJQ = sos.groupsSosTableJQ;
-	    	groupOrDeviceKey = "groupName";
-	    	groupOrDevice = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+	    	groupOrClusterKey = "groupName";
+	    	groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 
-    	}else if($("#devicesSosTableDiv").is(':visible')){
-    		sos.visibleTableAPI = sos.devicesSosTableAPI;
-	    	sos.visibleTableJQ = sos.devicesSosTableJQ;
-    		visibleTableAPI = sos.devicesSosTableAPI;
-	    	visibleTableJQ = sos.devicesSosTableJQ;
-	    	groupOrDeviceKey = "deviceName";
-	    	groupOrDevice = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
+    	}else if($("#clustersSosTableDiv").is(':visible')){
+    		sos.visibleTableAPI = sos.clustersSosTableAPI;
+	    	sos.visibleTableJQ = sos.clustersSosTableJQ;
+    		visibleTableAPI = sos.clustersSosTableAPI;
+	    	visibleTableJQ = sos.clustersSosTableJQ;
+	    	groupOrClusterKey = "clusterName";
+	    	groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 
     	} 
 
     	recordsTotal = visibleTableAPI.page.info().recordsTotal;
 
-    	dt = {text : "",startTime : new moment(new Date()).format("DD-MM-YYYY HH:mm"), clientName : clientName};
-    	dt[groupOrDeviceKey] = groupOrDevice;
+    	dt = {text : "",startTime : new moment().add(5,'minutes').format("DD-MM-YYYY HH:mm")};
+    	dt[groupOrClusterKey] = groupOrCluster;
     	dt["sno"] = recordsTotal + 1;
 
 		visibleTableJQ.fnAddData(dt);
@@ -288,21 +297,21 @@ window.onload = function(){
 
     sos.visibleTableAPI = sos.groupsSosTableAPI;
 	sos.visibleTableJQ = sos.groupsSosTableJQ;
-	$('#groupsSosTable tbody').on('click','td:nth-child(3)',function(evt){
-		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
-	});
-
 	$('#groupsSosTable tbody').on('click','td:nth-child(4)',function(evt){
 		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
 	});
 
-
-
-	$('#devicesSosTable tbody').on('click','td:nth-child(3)',function(evt){
+	$('#groupsSosTable tbody').on('click','td:nth-child(5)',function(evt){
 		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
 	});
 
-	$('#devicesSosTable tbody').on('click','td:nth-child(4)',function(evt){
+
+
+	$('#clustersSosTable tbody').on('click','td:nth-child(4)',function(evt){
+		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
+	});
+
+	$('#clustersSosTable tbody').on('click','td:nth-child(5)',function(evt){
 		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
 	});
 
@@ -311,7 +320,7 @@ window.onload = function(){
 		trgtTd = $(evt.target);
 		trgtTdValue = trgtTd.text();
 		if(trgtTd[0].nodeName == "TD"){
-			if(trgtTd.index() == 2){
+			if(trgtTd.index() == 3){
 				sos.trgtTd = trgtTd
 				$("#modifyFieldDialog").dialog({
 		            constrain : true,
@@ -335,7 +344,7 @@ window.onload = function(){
 		                        										'<span class="glyphicon glyphicon-calendar"></span>'+
 		                    										'</span>'+
 		                    									'</div>')	
-				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY HH:mm'});
+				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY HH:mm',minDate : new moment(),maxDate : new moment().add(1,'days').endOf('day')});
 				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY HH:mm"));
 				
 
@@ -344,7 +353,7 @@ window.onload = function(){
 					text = ''
 					updateTableWithNewRecord(sos.visibleTableAPI, sos.visibleTableJQ, startTime, text);
 				})
-			}else if(trgtTd.index() == 3){
+			}else if(trgtTd.index() == 4){
 				sos.trgtTd = trgtTd;
 				sosText = trgtTd.text();
 				$("#modifyFieldDialog").dialog({
@@ -393,10 +402,10 @@ window.onload = function(){
 	    	visibleTableJQ = sos.groupsSosTableJQ;
 	    	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 
-    	}else if($("#devicesSosTableDiv").is(':visible')){
-    		visibleTableAPI = sos.devicesSosTableAPI;
-	    	visibleTableJQ = sos.devicesSosTableJQ;
-	    	deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
+    	}else if($("#clustersSosTableDiv").is(':visible')){
+    		visibleTableAPI = sos.clustersSosTableAPI;
+	    	visibleTableJQ = sos.clustersSosTableJQ;
+	    	clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
     	}
 		page = visibleTableAPI.page.info().page;
 		checkboxTD = visibleTableAPI.rows().nodes().toJQuery();
@@ -437,10 +446,10 @@ window.onload = function(){
 		// 		});
 		// 		sos.visibleTableAPI.ajax.reload();
 		// 	})
-  //   	}else if($("#devicesSosTableDiv").is(':visible')){
+  //   	}else if($("#clustersSosTableDiv").is(':visible')){
 		// 	$.each(deleteRowsIndexes, function(index,startTime){
 		// 		$.ajax({
-		// 		    url: commonData.apiurl + "sosDev/" + clientName + "/" + deviceName + "/" + startTime,
+		// 		    url: commonData.apiurl + "sosDev/" + clientName + "/" + clusterName + "/" + startTime,
 		// 		    type: 'DELETE',
 		// 		    "async" : false,
 		// 		    headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
@@ -475,9 +484,9 @@ window.onload = function(){
 		}
 	});
 
-	$("#devicesSosTable").off('keyup').on('keyup', function(event){
+	$("#clustersSosTable").off('keyup').on('keyup', function(event){
 		if(event.keyCode == 32){
-			trgt = $("#devicesSosTable tbody td.focus").closest('tr').find('.tableCheckbox input')
+			trgt = $("#clustersSosTable tbody td.focus").closest('tr').find('.tableCheckbox input')
 			trgt.click();
 		}
 	});
@@ -486,9 +495,9 @@ window.onload = function(){
     	rowNo = parseInt(sos.trgtTd.closest('tr').find('td').first().text()) -1
     	page = visibleTableAPI.page.info().page;
 		if(startTime != "")
-			visibleTableAPI.cell(rowNo,2).data(startTime);
+			visibleTableAPI.cell(rowNo,3).data(startTime);
 		if(sosText != "")
-			visibleTableAPI.cell(rowNo,3).data(sosText);
+			visibleTableAPI.cell(rowNo,4).data(sosText);
 
 		updateSerialNo(visibleTableAPI);
 
@@ -506,19 +515,32 @@ window.onload = function(){
 	}
 
 	$("#saveSosButton").off('click').on('click', function(evt){
+		// groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+		sosDataArray = sos.visibleTableJQ.fnGetData(); 
+    	postData = {}
+		groupOrClusterNameFromTable = sosDataArray[0].groupName;
+		if(typeof(groupOrClusterNameFromTable) == 'undefined'){
+			groupOrClusterNameFromTable = sosDataArray[0].clusterName;
+			postData.clusterName = groupOrClusterNameFromTable;
+		}else{
+			postData.groupName = groupOrClusterNameFromTable;
+		}
+		
+
+		sosDataArray = _.map(sosDataArray, function(model){
+			return _.omit(model,'sno','groupName','clusterName','clientName');
+    	})
+
+		postData.data = sosDataArray;
+
 		if(sos.visibleTableJQ.attr('id') == "groupsSosTable"){
-			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-			sosDataArray = sos.groupsSosTableJQ.fnGetData(); 
-			sosDataArray = _.map(sosDataArray, function(model){
-				return _.omit(model, 'updatedBy','updatedAt','sno');
-	    	})
 
 			$.ajax({
 			  type: "POST",
 			  async : false,
 			  url: commonData.apiurl + 'sosGrp' + "/" + clientName + "/" + groupName,
 			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  data: JSON.stringify(sosDataArray),
+			  data: JSON.stringify([postData]),
 			  success: function(data){
 			  	$.notify('Success','success')
 			  	sos.groupsSosTableAPI.ajax.reload(function(){
@@ -549,22 +571,22 @@ window.onload = function(){
 			  contentType: "application/json",
 			});
 		}else{
-			// devices post
-			deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
-			sosDataArray = sos.devicesSosTableJQ.fnGetData(); 
-			sosDataArray = _.map(sosDataArray, function(model){
-	    		return _.omit(model, 'updatedBy','updatedAt','sno');
-	    	})
+			// clusters post
+			// clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+			// sosDataArray = sos.clustersSosTableJQ.fnGetData(); 
+			// sosDataArray = _.map(sosDataArray, function(model){
+	  //   		return _.omit(model, 'updatedBy','updatedAt','sno','clusterName','groupName',);
+	  //   	})
 
 			$.ajax({
 			  type: "POST",
 			  async : false,
-			  url: commonData.apiurl + 'sosDev' + "/" + clientName + "/" + deviceName,
+			  url: commonData.apiurl + 'sosDev' + "/" + clientName + "/" + clusterName,
 			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  data: JSON.stringify(sosDataArray),
+			  data: JSON.stringify([postData]),
 			  success: function(data){
 			  	$.notify('Success','success')
-			  	sos.devicesSosTableAPI.ajax.reload(function(){
+			  	sos.clustersSosTableAPI.ajax.reload(function(){
 					// $('#addNewResourceDialog').dialog('close');
 				  	// recordsTotal = resources.resourcesTableAPI.page.info().recordsTotal;
 				  	// resources.resourcesTableAPI.page( 'first' ).draw( 'page' );

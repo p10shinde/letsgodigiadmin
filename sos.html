@@ -93,7 +93,7 @@
                                         <div class="col-md-3" style="padding-left: 0;height: inherit;">
                                             <div id="displayFilterRadio" style="width: 100%;position: absolute;padding: 5px">
                                                 <input type="radio" name="displayTypeRadio" id="groupRadio" checked value="Groups"><label for="groupRadio" style="padding-left: 10px;">Groups</label>
-                                                <input type="radio" name="displayTypeRadio" id="deviceRadio" style="margin-left: 40px" value="Devices"><label for="deviceRadio" style="padding-left: 10px;">Devices</label>
+                                                <input type="radio" name="displayTypeRadio" id="clusterRadio" style="margin-left: 40px" value="Clusters"><label for="clusterRadio" style="padding-left: 10px;">Clusters</label>
                                             </div>
                                         </div>
                                     </div>
@@ -107,8 +107,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2" style="height: inherit;padding-left: 0;display: none">
-                                            <div id="deviceSelectFilterDiv" style="width: 100%;position: absolute;">
-                                                <select id="deviceSelectFilter" style="width: 100%;;height: inherit">
+                                            <div id="clusterSelectFilterDiv" style="width: 100%;position: absolute;">
+                                                <select id="clusterSelectFilter" style="width: 100%;;height: inherit">
                                                     
                                                 </select>
                                             </div>
@@ -138,10 +138,11 @@
                                     <tr>
                                         <th>#</th>
                                         <th></th>
+                                        <th>Group Name</th>
                                         <th>Start Time</th>
                                         <th>Text</th>
-                                        <th>updatedBy</th>
-                                        <th>updatedAt</th>
+                                        <!-- <th>updatedBy</th> -->
+                                        <!-- <th>updatedAt</th> -->
                                         <!-- <th></th> -->
                                     </tr>
                                 </thead>
@@ -149,16 +150,17 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="devicesSosTableDiv" style="margin-top: 10px;width: 100%;display: none;">
-                            <table id="devicesSosTable" class="table table-striped table-bordered" style="width: 100%;height: 100%" tabindex="0">
+                        <div id="clustersSosTableDiv" style="margin-top: 10px;width: 100%;display: none;">
+                            <table id="clustersSosTable" class="table table-striped table-bordered" style="width: 100%;height: 100%" tabindex="0">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th></th>
+                                        <th>Cluster Name</th>
                                         <th>Start Time</th>
                                         <th>Text</th>
-                                        <th>updatedBy</th>
-                                        <th>updatedAt</th>
+                                        <!-- <th>updatedBy</th> -->
+                                        <!-- <th>updatedAt</th> -->
                                         <!-- <th></th> -->
                                     </tr>
                                 </thead>

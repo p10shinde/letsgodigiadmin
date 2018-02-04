@@ -62,6 +62,9 @@
         
         <!-- notification js -->
         <script src="js/notify/notify.js" type="text/javascript"></script> 
+
+        <!-- Google Sign in -->
+        <script src="https://apis.google.com/js/api:client.js"></script>
 </head>
 <body>
 
@@ -95,7 +98,7 @@
             <p class="faa-flash animated" id="updateFirebaseError" style="position: absolute;right: 200px;top: 6px;color: white;display: none;">Error</p>
             <div id="topBarButtons" style="height: 100%">
                 <div class="btn-group show-on-hover" style="z-index: 6">
-                  <img src="images/user.png" alt="" class="img-responsive img-circle">
+                  <img id="userImage" src="images/user.png" alt="" class="img-responsive img-circle">
                   <button type="button" class="btn btn-default dropdown-toggle" id="userStatusButton" data-toggle="dropdown"> User <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu" id="userStatusUl">
@@ -129,6 +132,7 @@
                                 <li>Second Channel</li>
                                 <li>Third Channel</li>
                                 <li>SOS</li>
+                                <li>Full Screen</li>
                                 <!-- <li>Campaigns</li> -->
                                 <!-- <li>Scheduled Video</li> -->
                             </ul>

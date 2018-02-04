@@ -47,18 +47,17 @@ table th:nth-child(1){
 }
 
 table th:nth-child(2){
-  width: 50% !important;
+  width: 15px !important;
+}
+
+table th:nth-child(8){
+  width: 15px !important;
 }
 
 
 .resourceSelect{
   position: absolute;
 }
-
-.ms-choice {
-  height: 38px;
-}
-
 
 .rowModifiedHighlight{
   background: #fdfda7 !important;
@@ -73,17 +72,31 @@ table th:nth-child(2){
 
 
 /*arrange select in dialog*/
-#groupSelectFilterDiv > div > button, #clusterSelectFilterDiv > div > button{
-  height: 34px;
+#modifyFieldDialog > div > div > div > button{
+  height: 37px;
 }
 
-#groupSelectFilterDiv > div > button > span, #clusterSelectFilterDiv > div > button > span{
+#modifyFieldDialog > div > div > div > button > span{
   top: 3px;
 }
 
-#groupSelectFilterDiv > div > button > div, #clusterSelectFilterDiv > div > button > div{
+#modifyFieldDialog > div > div > div > button > div{
   top: 5px;
 }
+
+/*#firstChannelGeneralTable tbody td:nth-child(1)::before{
+    content : "\f047";
+    display: inline-block;
+    position: absolute;
+    left: 5px;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 14px;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    color: grey;
+}*/
+
+
 
 /*common*/
 .tabs-header .tabs-pill li.tabs-selected a.tabs-inner {

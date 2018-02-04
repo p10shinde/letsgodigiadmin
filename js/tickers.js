@@ -51,15 +51,15 @@ window.onload = function(){
 	$("input[name='displayTypeRadio']").on('change',function(){
 		console.log(this.value)
 		if(this.value == "Groups"){
-			$("#deviceSelectFilterDiv").parent().hide();
+			$("#clusterSelectFilterDiv").parent().hide();
 			$("#groupSelectFilterDiv").parent().show();
 			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 			getTickerForGroup(groupName)
-		}else if(this.value == "Devices"){
+		}else if(this.value == "Clusters"){
 			$("#groupSelectFilterDiv").parent().hide();
-			$("#deviceSelectFilterDiv").parent().show();
-			deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
-			getTickerForDevice(deviceName);
+			$("#clusterSelectFilterDiv").parent().show();
+			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+			getTickerForCluster(clusterName);
 		}
 	});
 
@@ -91,8 +91,8 @@ window.onload = function(){
 								groupName = view.value;
 								getTickerForGroup(groupName)
 							}else{
-								deviceName = view.value;
-								getTickerForDevice(deviceName);
+								clusterName = view.value;
+								getTickerForCluster(clusterName);
 							}
 						}
 					});
@@ -106,26 +106,27 @@ window.onload = function(){
 		})
 	}
 
-	function getAllDevices(){
+	function getAllClusters(){
 		$.ajax({
-			url : commonData.apiurl + "devices/" + clientName,
+			// url : commonData.apiurl + "clusters/" + clientName,
+			url : "data/clusters.json",
 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
 				if(textstatus == "success"){
 
-					devices = _.unique(jqXHR.responseJSON,'deviceName')
-					devices = _.pluck(devices,'deviceName')
+					clusters = _.unique(jqXHR.responseJSON,'clusterName')
+					clusters = _.pluck(clusters,'clusterName')
 					var options = ""
-					$.each(devices, function(index,value){
+					$.each(clusters, function(index,value){
 						options += `<option value="`+value+`">`+value+`</option>`
 					});
-					$("#deviceSelectFilter").empty();
-					$("#deviceSelectFilter").append(options);
+					$("#clusterSelectFilter").empty();
+					$("#clusterSelectFilter").append(options);
 					
-					$("#deviceSelectFilter").multipleSelect({
-						placeholder: "Select Device",
+					$("#clusterSelectFilter").multipleSelect({
+						placeholder: "Select Cluster",
 						filter: true,
 						single : true,
 						onClick : function(view){
@@ -133,8 +134,8 @@ window.onload = function(){
 								groupName = view.value;
 								getTickerForGroup(groupName)
 							}else{
-								deviceName = view.value;
-								getTickerForDevice(deviceName);
+								clusterName = view.value;
+								getTickerForCluster(clusterName);
 							}
 						}
 					});
@@ -149,7 +150,7 @@ window.onload = function(){
 	}
 
 	getAllGroups();
-	getAllDevices();
+	getAllClusters();
 
 	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 	getTickerForGroup(groupName);
@@ -157,7 +158,8 @@ window.onload = function(){
 
 	function getTickerForGroup(groupName){
 		$.ajax({
-			url : commonData.apiurl + "tickerGrp/" + clientName + "/" + groupName,
+			// url : commonData.apiurl + "tickerGrp/" + clientName + "/" + groupName,
+			url : "data/tickerGrp.json",
 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			async : false,
 			datatype : 'json',
@@ -166,8 +168,8 @@ window.onload = function(){
 					tickerText =jqXHR.responseJSON[0].text;
 					$("#tickerText").val(tickerText);
 					$("#tickerText").focus();
-					$(".extraFields span.updatedBy").text(jqXHR.responseJSON[0].updatedBy)
-					$(".extraFields span.updatedAt").text(jqXHR.responseJSON[0].updatedAt)
+					// $(".extraFields span.updatedBy").text(jqXHR.responseJSON[0].updatedBy)
+					// $(".extraFields span.updatedAt").text(jqXHR.responseJSON[0].updatedAt)
 
 				}else if(textstatus == "error"){
 					if(jqXHR.responseText)
@@ -175,15 +177,16 @@ window.onload = function(){
 					$("#tickerText").val('');
 					$("#tickerText").focus();
 					// console.log(jqXHR);
-					$(".extraFields span.updatedBy").text("")
-					$(".extraFields span.updatedAt").text("")
+					// $(".extraFields span.updatedBy").text("")
+					// $(".extraFields span.updatedAt").text("")
 				}
 			}
 		})
 	}
-	function getTickerForDevice(deviceName){
+	function getTickerForCluster(clusterName){
 		$.ajax({
-			url : commonData.apiurl + "tickerDev/" + clientName + "/" + deviceName,
+			// url : commonData.apiurl + "tickerDev/" + clientName + "/" + clusterName,
+			url : "data/tickerCluster.json",
 			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			async : false,
 			datatype : 'json',
@@ -192,8 +195,8 @@ window.onload = function(){
 					tickerText =jqXHR.responseJSON[0].text;
 					$("#tickerText").val(tickerText);
 					$("#tickerText").focus();
-					$(".extraFields span.updatedBy").text(jqXHR.responseJSON[0].updatedBy)
-					$(".extraFields span.updatedAt").text(jqXHR.responseJSON[0].updatedAt)
+					// $(".extraFields span.updatedBy").text(jqXHR.responseJSON[0].updatedBy)
+					// $(".extraFields span.updatedAt").text(jqXHR.responseJSON[0].updatedAt)
 
 				}else if(textstatus == "error"){
 					if(jqXHR.responseText)
@@ -202,42 +205,45 @@ window.onload = function(){
 					$("#tickerText").focus();
 					// console.log(jqXHR);
 
-					$(".extraFields span.updatedBy").text("")
-					$(".extraFields span.updatedAt").text("")
+					// $(".extraFields span.updatedBy").text("")
+					// $(".extraFields span.updatedAt").text("")
 				}
 			}
 		})
 	}
 
 	$("#saveTickersButton").off('click').on('click',function(evt){
-		tickersDataArray = [];
-		groupName = "";
-		deviceName = "";
-		dt = {text : $("#tickerText").val() , clientName : clientName}
+		groupOrClusterName = "";
+		postData = {}
 		if($("input[name='displayTypeRadio']")[0].checked){
-			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+			groupOrClusterName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 			url = commonData.apiurl + 'tickerGrp' + "/" + clientName + "/" + groupName;
-			dt.groupName = groupName;
+			
+			groupOrCluster = "groupName";
+			
 		}else{
-			deviceName = $("#deviceSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'tickerDev' + "/" + clientName + "/" + deviceName
-			dt.deviceName = deviceName;
+			groupOrClusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+			url = commonData.apiurl + 'tickerDev' + "/" + clientName + "/" + clusterName
+			
+			groupOrCluster = "clusterName";
 		}
-		tickersDataArray.push(dt)
+		postData = {text : $("#tickerText").val()}
+		postData[groupOrCluster] = groupOrClusterName;
+		
 
 		$.ajax({
 		  type: "POST",
 		  async : false,
 		  url: url,
 		  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-		  data: JSON.stringify(tickersDataArray),
+		  data: JSON.stringify([postData]),
 		  success: function(data){
 		  	$.notify('Success','success')
-		  	if(groupName != "") getTickerForGroup(groupName)
-		  	else if(deviceName != "") getTickerForDevice(deviceName);
+		  	if(groupOrCluster == "groupName") getTickerForGroup(groupOrClusterName)
+		  	else if(groupOrCluster == "clusterName") getTickerForCluster(groupOrClusterName);
 
-			$(".extraFields span.updatedBy").text(data.updatedBy)
-			$(".extraFields span.updatedAt").text(data.updatedAt)
+			// $(".extraFields span.updatedBy").text(data.updatedBy)
+			// $(".extraFields span.updatedAt").text(data.updatedAt)
 
 		  	checkIfAnyUpdate(function(result){
 		  		if(result == true){

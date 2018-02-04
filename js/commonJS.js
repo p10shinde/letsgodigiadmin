@@ -1,10 +1,23 @@
+$.ajaxSetup({
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader('id_token', sessionStorage.id_token);
+    }
+});
+
+if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.clientName || !sessionStorage.usernamefull || !sessionStorage.id_token){
+	window.location.href = 'login.html'
+}else{
 commonData = {};
 commonData.username = sessionStorage.username;
 commonData.usernamefull = sessionStorage.usernamefull;
 commonData.useremail = sessionStorage.useremail;
-commonData.usertype = sessionStorage.usertype;
+// commonData.usertype = sessionStorage.usertype;
 commonData.password = sessionStorage.password;
 commonData.apiurl = sessionStorage.apiurl;
+commonData.googleId = sessionStorage.googleId;
+commonData.image = sessionStorage.image;
+commonData.id_token = sessionStorage.id_token;
+
 var clientName = sessionStorage.clientName;
 	
 	function checkIfAnyUpdate(callback){
@@ -126,3 +139,4 @@ XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
 	    }, false);
 	    this.realSend(value);
 	};
+}

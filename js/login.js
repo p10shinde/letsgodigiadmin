@@ -1,90 +1,79 @@
+sessionStorage.apiurl = 'http://192.168.1.11:49161/api/';
+  var startApp = function() {
+    gapi.load('auth2', function(){
+      // Retrieve the singleton for the GoogleAuth library and set up the client.
+      auth2 = gapi.auth2.init({
+        client_id: '848626933775-6dl5jjefk50dvdvsn0j34csoisnjlp77.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+      });
 
-window.onload = function(){
-	$("#username").focus();
-	$(".registerButtonFlip").off('click').on('click',function(){
-		$('.flipper').css('transform','rotateY(180deg)')
-	})
+      //after user signs in change button text
+      auth2.then(function(GoogleAuth){
+      	if(gapi.auth2.getAuthInstance().isSignedIn.get())
+	    	$("#customBtn span.buttonText").text('Google ('+ gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName() + ")")
+	    }, function(err){
+	    	console.log(err)
+	    })
 
-	$(".loginButtonFlip").off('click').on('click',function(){
-		$('.flipper').css('transform','rotateY(0deg)')
-	})
+      auth2.isSignedIn.listen(function(state){
+      	gapi.auth2.getAuthInstance().signOut();
+      	gapi.auth2.getAuthInstance().disconnect();
 
-	$("#password").off('keypress').on('keypress', function(evt){
-		if(evt.keyCode == 13){
-			$("#loginButton").trigger('click')
-		}
-	});
+      	if(gapi.auth2.getAuthInstance().isSignedIn.get())
+	    	$("#customBtn span.buttonText").text('Google ('+ gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName() + ")")
+	    else
+	    	$("#customBtn span.buttonText").text('Google')
+      })
 
-	$("#username").off('keypress').on('keypress', function(evt){
-		if(evt.keyCode == 13){
-			$("#password").focus();
-		}
-	});
-	$("#loginButton").off('click').on('click', function(){
-		username = $("#username").val();
-		password = $("#password").val();
-		isInvalid = false;
-		// if(username ==)
-		var inValid = /^$|\s+/;
-		// var usernameInvalid = /^user2$/
-		// var passwordInvalid = /^Hello$/
-		if(inValid.test(username)){
-			isInvalid = true;
-			$("#username").fadeOut()
-			$("#username").addClass('mandatoryField')
-			setTimeout(function(){
-				$("#username").fadeIn()
-				setTimeout(function(){
-					$("#username").removeClass('mandatoryField')
-				},1000)
-			},100)
-		}
-		if(inValid.test(password)){
-			isInvalid = true;
-			$("#password").fadeOut()
-			$("#password").addClass('mandatoryField')
-			setTimeout(function(){
-				$("#password").fadeIn()
-				setTimeout(function(){
-					$("#password").removeClass('mandatoryField')
-				},1000)
-			},100)
-		}
-		if(!isInvalid){
-			$.ajax({
-				// url : "http://68.66.200.220:49161/api/AUTH",
-				// url : "http://10.13.67.174:49161/api/AUTH",
-				url : "http://192.168.1.11:49161/api/AUTH",
-				headers: {"Authorization": "Basic " + btoa(username + ":" + password)},
-				async : false,
-				datatype : 'json',
-				complete : function(jqXHR, textstatus){
-					if(textstatus == "success"){
-						// jqXHR = {};
-						// jqXHR.responseJSON = {clientName : 'client1',username:'user2',password : 'Hello',apiurl : "http://68.66.200.220:49161/api/"};
-						sessionStorage.username = jqXHR.responseJSON.userID;
-						sessionStorage.usernamefull = jqXHR.responseJSON.userName;
-						sessionStorage.useremail = jqXHR.responseJSON.userEmail;
-						sessionStorage.usertype = jqXHR.responseJSON.userType;
-						sessionStorage.clientName = jqXHR.responseJSON.clientName;
-						sessionStorage.password = password;
-						// sessionStorage.apiurl = "http://68.66.200.220:49161/api/";
-						// sessionStorage.apiurl = "http://10.13.67.174:49161/api/";
-						sessionStorage.apiurl = "http://192.168.1.11:49161/api/";
-						window.location.href = window.location.pathname.split('login.html')[0]
+      attachSignin(document.getElementById('customBtn'));
+    });
+  };
 
-					}else if(textstatus == "error"){
-						if(jqXHR.status == 401){
-							$.notify('You are not authorized', 'error');
-						}else if(jqXHR.responseText){
-							$.notify(jqXHR.responseText, 'error');
-						}else{
-							$.notify('Server not responding', 'error');
-						}
-					}
-				}
-			})
+  function attachSignin(element) {
+    auth2.attachClickHandler(element, {},
+        function(googleUser) {
+	    	$("#customBtn span.buttonText").text('Google ('+ gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName() + ")")
+        	onSignIn(googleUser)
+        }, function(error) {
+          alert(JSON.stringify(error, undefined, 2));
+        });
+  }
 
-		}
-	})
+function onSignIn(googleUser) {
+  id_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+  sendToken(id_token,googleUser)
 }
+function sendToken(id_token,googleUser){
+	$.ajax({
+	  type: "POST",
+	  async : false,
+	  url:  sessionStorage.apiurl +'gAuth',
+	  headers : {"Authorization": "Basic " + btoa('sAdmin' + ":" + 'prj@dm!n'),"id_token":id_token},
+	  data: JSON.stringify({id_token : id_token}),
+	  success: function(data){
+	  	console.log(data);
+	  	var profile = googleUser.getBasicProfile();
+	  		sessionStorage.googleId = profile.getId();
+		    sessionStorage.usernamefull = profile.getName();
+		    sessionStorage.image = profile.getImageUrl();
+     	  	sessionStorage.useremail = profile.getEmail()
+     	  	sessionStorage.id_token = id_token;
+
+			sessionStorage.username = 'sAdmin';
+			sessionStorage.usertype = 'Super Admin';
+			sessionStorage.clientName = 'PL';
+			sessionStorage.password = 'prj@dm!n';
+			// sessionStorage.apiurl = "http://68.66.200.220:49161/api/";
+			// sessionStorage.apiurl = "http://10.13.67.174:49161/api/";
+			// sessionStorage.apiurl = sessionStorage.apiurl;
+			window.location = window.location.pathname.split('login.html')[0]
+	  },
+	  error : function(jqXHR, textStatus){
+ 		if(jqXHR.responseText)
+ 			$.notify(jqXHR.responseText,'error')
+	  },
+	  dataType: 'json',
+	  contentType: "application/json",
+	});
+}
+startApp();
