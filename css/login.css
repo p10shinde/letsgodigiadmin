@@ -27,6 +27,8 @@ body{
   border: thin solid #888;
   box-shadow: 1px 1px 1px grey;
   white-space: nowrap;
+  top: calc(100% - -25px);
+  position: absolute;
 }
 #customBtn:hover {
   cursor: pointer;
