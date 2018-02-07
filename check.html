@@ -1,0 +1,28 @@
+
+<!DOCTYPE html >
+<html>
+<head>
+    <title>Google Drive example</title>
+    <script src="test2.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    google.load('picker', '1');
+            </script>
+    <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=OnLoad"></script>
+</head>
+<body>
+
+<h1>Google Drive JavaScript example</h1>
+This example shows how the Google Drive API can be used completely embedded in JavaScript running on the client side.
+
+<textarea id="mytext" cols="80" rows="20"></textarea>
+
+<p>
+<button onclick="createPicker();">Open text file from Google Drive</button>
+<button id="saveButton" onclick="saveDocument();">Save</button>
+<button id="authorize-button" style="visibility: hidden">Authorize</button>
+</p>
+<img id="img1" src="">
+
+</body>
+</html>
