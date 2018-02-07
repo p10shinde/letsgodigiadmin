@@ -1,9 +1,9 @@
-sessionStorage.apiurl = 'http://192.168.1.11:49161/api/';
+sessionStorage.apiurl = 'http://10.13.67.174:49161/api/';
   var startApp = function() {
     gapi.load('auth2', function(){
       // Retrieve the singleton for the GoogleAuth library and set up the client.
       auth2 = gapi.auth2.init({
-        client_id: '848626933775-6dl5jjefk50dvdvsn0j34csoisnjlp77.apps.googleusercontent.com',
+        client_id: '848626933775-pdos9q0cf057932ik9h56ggbe4mkmv8k.apps.googleusercontent.com',
         cookiepolicy: 'single_host_origin',
       });
 
@@ -44,14 +44,14 @@ function onSignIn(googleUser) {
   sendToken(id_token,googleUser)
 }
 function sendToken(id_token,googleUser){
-	$.ajax({
-	  type: "POST",
-	  async : false,
-	  url:  sessionStorage.apiurl +'gAuth',
-	  headers : {"Authorization": "Basic " + btoa('sAdmin' + ":" + 'prj@dm!n'),"id_token":id_token},
-	  data: JSON.stringify({id_token : id_token}),
-	  success: function(data){
-	  	console.log(data);
+	// $.ajax({
+	//   type: "POST",
+	//   async : false,
+	//   url:  sessionStorage.apiurl +'gAuth',
+	//   headers : {"Authorization": "Basic " + btoa('sAdmin' + ":" + 'prj@dm!n'),"id_token":id_token},
+	//   data: JSON.stringify({id_token : id_token}),
+	//   success: function(data){
+	//   	console.log(data);
 	  	var profile = googleUser.getBasicProfile();
 	  		sessionStorage.googleId = profile.getId();
 		    sessionStorage.usernamefull = profile.getName();
@@ -67,13 +67,13 @@ function sendToken(id_token,googleUser){
 			// sessionStorage.apiurl = "http://10.13.67.174:49161/api/";
 			// sessionStorage.apiurl = sessionStorage.apiurl;
 			window.location = window.location.pathname.split('login.html')[0]
-	  },
-	  error : function(jqXHR, textStatus){
- 		if(jqXHR.responseText)
- 			$.notify(jqXHR.responseText,'error')
-	  },
-	  dataType: 'json',
-	  contentType: "application/json",
-	});
+	//   },
+	//   error : function(jqXHR, textStatus){
+ // 		if(jqXHR.responseText)
+ // 			$.notify(jqXHR.responseText,'error')
+	//   },
+	//   dataType: 'json',
+	//   contentType: "application/json",
+	// });
 }
 startApp();

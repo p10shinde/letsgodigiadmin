@@ -70,8 +70,8 @@ var clientName = sessionStorage.clientName;
 		  	contentType: "application/json",
 		});
 	})
-
-window.onload = function(){
+$("body").append('<div id="blockedDiv"></div>')
+// window.onload = function(){	
 	// XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
 	// XMLHttpRequest.prototype.send = function(value) {
 	// 	this.addEventListener('error', function(xx,yy){
@@ -108,7 +108,7 @@ window.onload = function(){
 
 	
 
-}
+// }
 
 XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
 	XMLHttpRequest.prototype.send = function(value) {

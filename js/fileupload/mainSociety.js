@@ -22,14 +22,14 @@ $(function () {
     });
 
     // Enable iframe cross-domain access via redirect option:
-    $('#fileuploadSociety').fileupload(
-        'option',
-        'redirect',
-        window.location.href.replace(
-            /\/[^\/]*$/,
-            '/cors/result.html?%s'
-        )
-    );
+    // $('#fileuploadSociety').fileupload(
+    //     'option',
+    //     'redirect',
+    //     window.location.href.replace(
+    //         /\/[^\/]*$/,
+    //         '/cors/result.html?%s'
+    //     )
+    // );
 
     if (window.location.hostname === 'localhosts') {
         // Demo settings:

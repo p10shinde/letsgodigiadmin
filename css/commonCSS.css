@@ -12,6 +12,21 @@ body{
     letter-spacing: normal !important;
 }
 
+#blockedDiv{
+    background: #ccc;
+    opacity: .5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
+#authorizeButton{
+   position: absolute;
+    top: 25px;
+    z-index: 2;
+    left: calc(50% - 42px);;
+
+}
 
 #loadingDiv{
   z-index: 9999999;
