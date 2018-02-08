@@ -1,7 +1,7 @@
 $(function () {
     'use strict';
     // Change this to the location of your server-side upload handler:
-    var url = "http://localhost:8888",
+    var url = "http://localhost:49163",
     //window.location.hostname === 'blueimp.github.io' ?
                 //'//jquery-file-upload.appspot.com/' : 'server/php/',
         uploadButton = $('<button/>')

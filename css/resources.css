@@ -48,8 +48,34 @@ img, canvas{
 table td{
   width: 20%;
   text-align: center;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 
+table td:nth-child(6){
+      width: 15%;
+      
+}
+table td:nth-child(5){
+  width: 5%;
+  
+}
+
+table td:nth-child(5) button{
+  position: absolute;
+  margin-left: -20px;
+}
+
+table td:nth-child(6) button{
+  position: absolute;
+  margin-left: -20px;
+}
+
+table td:nth-child(6) input[type='checkbox']{
+  position: absolute;
+  margin-left: -50px;
+}
 
 
 .resourceSelect{

@@ -1,4 +1,4 @@
-var clientId = '848626933775-6dl5jjefk50dvdvsn0j34csoisnjlp77.apps.googleusercontent.com';
+var clientId = '848626933775-pdos9q0cf057932ik9h56ggbe4mkmv8k.apps.googleusercontent.com';
         var scopes = 'https://www.googleapis.com/auth/drive';
         var oauthToken;
         var useProxy = false;

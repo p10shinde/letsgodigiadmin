@@ -1,122 +1,163 @@
 resources = {}
 resources.itemsArray = [];//["img1.jpg","img2.jpg","vid1.mp4","vid2.mp4","vid3.mp4","vid4.mp4","img3.jpg","img4.jpg"];
+var alws = function(thisButton){
+	tabIndex = $("#resourcesTabs").tabs('getSelected').panel('options').index
+	postData = {};
+	thisButton = thisButton;
+	postData.resName = $(thisButton).closest('tr').find('td:nth-child(2)').text().trim();
+	if(tabIndex == 0){
+		postData.resDir = 'society'
+	}else{
+		postData.resDir = 'advt'
+	}
+
+	$.ajax({
+		type: "POST",
+	  	async : false,
+	  	url: commonData.apiurl + 'uploadToDrive',
+	  	headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	  	data: JSON.stringify(postData),
+	  	complete : function(jqXHR, textstatus){
+			if(textstatus == "success"){
+				refreshTable(thisButton);
+			}else if(textstatus == "error"){
+				if(jqXHR.responseText)
+					$.notify(jqXHR.responseText,'error')
+			}
+			console.log(jqXHR);
+		},
+	  	dataType: 'json',
+	  	contentType: "application/json",
+	})
+}
+function refreshTable(thisButton){
+	$(thisButton).closest('tr').find('td:nth-child(4)').html('<span class="text-success">Uploaded</span>');
+	setTimeout(function(){
+		$(thisButton).closest('tr').find('td:nth-child(6) button').click();
+	},1000)
+}
 window.onload = function(){
 	
 
 	$('[data-toggle="tooltip"]').tooltip();
 
-	function getTableDataAdvt(callback){
-		tableData = [];
-		$.each($("#resourcesAdvtTable tbody tr"), function(index, row){
-			if($(row).find('td:nth-child(4) span').text() == 'Pending' && $(row).find('td:nth-child(5) input[type="checkbox"]').is(':checked')){
-				rowData = {};
-				rowData.clientName = clientName;
-				rowData.resourceOwner = 'advt';
-				rowData.resourceName = $(row).find('td:nth-child(2) a').text();
-				tableData.push(rowData);
-			}
-		})
-		callback(tableData);
-	}
+	// function getTableDataAdvt(callback){
+	// 	tableData = [];
+	// 	$.each($("#resourcesAdvtTable tbody tr"), function(index, row){
+	// 		if($(row).find('td:nth-child(4) span').text() == 'Pending' && $(row).find('td:nth-child(5) input[type="checkbox"]').is(':checked')){
+	// 			rowData = {};
+	// 			rowData.clientName = clientName;
+	// 			rowData.resourceOwner = 'advt';
+	// 			rowData.resourceName = $(row).find('td:nth-child(2) a').text();
+	// 			tableData.push(rowData);
+	// 		}
+	// 	})
+	// 	callback(tableData);
+	// }
 
-	function getTableDataSociety(callback){
-		tableData = [];
-		$.each($("#resourcesSocietyTable tbody tr"), function(index, row){
-			if($(row).find('td:nth-child(4) span').text() == 'Pending' && $(row).find('td:nth-child(5) input[type="checkbox"]').is(':checked')){
-				rowData = {};
-				rowData.clientName = clientName;
-				rowData.resourceOwner = 'society';
-				rowData.resourceName = $(row).find('td:nth-child(2) p a').text();
-				tableData.push(rowData);
-			}
-		})
+	// function getTableDataSociety(callback){
+	// 	tableData = [];
+	// 	$.each($("#resourcesSocietyTable tbody tr"), function(index, row){
+	// 		if($(row).find('td:nth-child(4) span').text() == 'Pending' && $(row).find('td:nth-child(5) input[type="checkbox"]').is(':checked')){
+	// 			rowData = {};
+	// 			rowData.clientName = clientName;
+	// 			rowData.resourceOwner = 'society';
+	// 			rowData.resourceName = $(row).find('td:nth-child(2) p a').text();
+	// 			tableData.push(rowData);
+	// 		}
+	// 	})
 
-		callback(tableData);
-	}
+	// 	callback(tableData);
+	// }
 
-	function updateTableSociety(){
-		$.each($("#resourcesSocietyTable tbody tr"), function(index, row){
-			if($(row).find('td:nth-child(4) span').text() == 'Pending' && $(row).find('td:nth-child(5) input[type="checkbox"]').is(':checked')){
-				$(row).find('td:nth-child(4)').html('<span class="text-success">Uploaded</span>');
-				$(row).find('td:nth-child(5) input[type="checkbox"]').attr('checked',false);
-			}
-		})
-	}
-	function updateTableAdvt(){
-		$.each($("#resourcesAdvtTable tbody tr"), function(index, row){
-			if($(row).find('td:nth-child(4) span').text() == 'Pending' && $(row).find('td:nth-child(5) input[type="checkbox"]').is(':checked')){
-				$(row).find('td:nth-child(4)').html('<span class="text-success">Uploaded</span>');
-				$(row).find('td:nth-child(5) input[type="checkbox"]').attr('checked',false);
-			}
-		})
-	}
+	// function updateTableSociety(){
+	// 	$.each($("#resourcesSocietyTable tbody tr"), function(index, row){
+	// 		if($(row).find('td:nth-child(4) span').text() == 'Pending' && $(row).find('td:nth-child(5) input[type="checkbox"]').is(':checked')){
+	// 			$(row).find('td:nth-child(4)').html('<span class="text-success">Uploaded</span>');
+	// 			$(row).find('td:nth-child(5) input[type="checkbox"]').attr('checked',false);
+	// 		}
+	// 	})
+	// }
+	// function updateTableAdvt(){
+	// 	$.each($("#resourcesAdvtTable tbody tr"), function(index, row){
+	// 		if($(row).find('td:nth-child(4) span').text() == 'Pending' && $(row).find('td:nth-child(5) input[type="checkbox"]').is(':checked')){
+	// 			$(row).find('td:nth-child(4)').html('<span class="text-success">Uploaded</span>');
+	// 			$(row).find('td:nth-child(5) input[type="checkbox"]').attr('checked',false);
+	// 		}
+	// 	})
+	// }
 
-	$(".updateDriveSociety").off('click').on('click', function(evt){
-		getTableDataSociety(function(tableData){
-			// console.log(tableData);
-			$.ajax({
-				type: "POST",
-			  	async : false,
-			  	url: commonData.apiurl + 'uploadToCloud',
-			  	headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  	data: JSON.stringify(tableData),
-			  	complete : function(jqXHR, textstatus){
-					if(textstatus == "success"){
-						updateTableSociety();
-					}else if(textstatus == "error"){
-						if(jqXHR.responseText)
-							$.notify(jqXHR.responseText,'error')
-					}
-					console.log(jqXHR);
-				},
-			  	dataType: 'json',
-			  	contentType: "application/json",
-			});
+	
+
+
+	// })
+
+	// $(".updateDriveSociety").off('click').on('click', function(evt){
+	// 	getTableDataSociety(function(tableData){
+	// 		// console.log(tableData);
+	// 		$.ajax({
+	// 			type: "POST",
+	// 		  	async : false,
+	// 		  	url: commonData.apiurl + 'uploadToCloud',
+	// 		  	headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	// 		  	data: JSON.stringify(tableData),
+	// 		  	complete : function(jqXHR, textstatus){
+	// 				if(textstatus == "success"){
+	// 					updateTableSociety();
+	// 				}else if(textstatus == "error"){
+	// 					if(jqXHR.responseText)
+	// 						$.notify(jqXHR.responseText,'error')
+	// 				}
+	// 				console.log(jqXHR);
+	// 			},
+	// 		  	dataType: 'json',
+	// 		  	contentType: "application/json",
+	// 		});
 
 
 			
-		})
+	// 	})
 
-	})
+	// })
 
-	$(".updateDriveAdvt").off('click').on('click', function(evt){
-		getTableDataAdvt(function(tableData){
-			console.log(tableData);
-			$.ajax({
-				type: "POST",
-			  	async : false,
-			  	url: commonData.apiurl + 'uploadToCloud',
-			  	headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  	data: JSON.stringify(tableData),
-			  	complete : function(jqXHR, textstatus){
-					if(textstatus == "success"){
-						updateTableAdvt();
-					}else if(textstatus == "error"){
-						if(jqXHR.responseText)
-							$.notify(jqXHR.responseText,'error')
-					}
-					console.log(jqXHR);
-				},
-			  	dataType: 'json',
-			  	contentType: "application/json",
-			});
-		})
-		// $.ajax({
-		// 	url : commonData.apiurl + "uploadToCloud" ,
-		// 	headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-		// 	async : false,
-		// 	datatype : 'json',
-		// 	complete : function(jqXHR, textstatus){
-		// 		if(textstatus == "success"){
-		// 			updateTableView();
+	// $(".updateDriveAdvt").off('click').on('click', function(evt){
+	// 	getTableDataAdvt(function(tableData){
+	// 		console.log(tableData);
+	// 		$.ajax({
+	// 			type: "POST",
+	// 		  	async : false,
+	// 		  	url: commonData.apiurl + 'uploadToCloud',
+	// 		  	headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	// 		  	data: JSON.stringify(tableData),
+	// 		  	complete : function(jqXHR, textstatus){
+	// 				if(textstatus == "success"){
+	// 					updateTableAdvt();
+	// 				}else if(textstatus == "error"){
+	// 					if(jqXHR.responseText)
+	// 						$.notify(jqXHR.responseText,'error')
+	// 				}
+	// 				console.log(jqXHR);
+	// 			},
+	// 		  	dataType: 'json',
+	// 		  	contentType: "application/json",
+	// 		});
+	// 	})
+	// 	// $.ajax({
+	// 	// 	url : commonData.apiurl + "uploadToCloud" ,
+	// 	// 	headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	// 	// 	async : false,
+	// 	// 	datatype : 'json',
+	// 	// 	complete : function(jqXHR, textstatus){
+	// 	// 		if(textstatus == "success"){
+	// 	// 			updateTableView();
 
-		// 		}else if(textstatus == "error"){
+	// 	// 		}else if(textstatus == "error"){
 
-		// 		}
-		// 		console.log(jqXHR);
-		// 	}
-		// })
-	})
+	// 	// 		}
+	// 	// 		console.log(jqXHR);
+	// 	// 	}
+	// 	// })
+	// })
 
 	// $('.deleteSociety').off('click').on('click',function(evt){
 	// 	listOfFilesToDel = [];

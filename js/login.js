@@ -1,4 +1,4 @@
-sessionStorage.apiurl = 'http://10.13.67.174:49161/api/';
+sessionStorage.apiurl = 'http://localhost:49161/api/';
   var startApp = function() {
     gapi.load('auth2', function(){
       // Retrieve the singleton for the GoogleAuth library and set up the client.
