@@ -10,6 +10,9 @@ body{
     font-weight: 700;
     letter-spacing: normal;
 }
+.blueimp-gallery>.slides>.slide>.video-content>video{
+  display: block !important;
+}
 
 table tbody td{
   font-weight: normal !important;

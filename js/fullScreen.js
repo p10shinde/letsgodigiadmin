@@ -346,7 +346,7 @@ window.onload = function(){
 				console.log(lg)
 			});
 		})
-		updateSerialNo(fullScreen.visibleTableAPI);
+		commonData.updateSerialNo(fullScreen.visibleTableAPI);
 		fullScreen.visibleTableAPI.page( page ).draw( 'page' );
 	});
 
@@ -369,7 +369,7 @@ window.onload = function(){
 			$(fullScreen.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeOut();
 			$(fullScreen.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeIn();
 		})
-		// updateSerialNo(fullScreen.visibleTableAPI);
+		// commonData.updateSerialNo(fullScreen.visibleTableAPI);
 		fullScreen.visibleTableAPI.page( page ).draw( 'page' );
 
 		$.each(checkboxTD, function(index, value){
@@ -450,7 +450,7 @@ window.onload = function(){
 				
 				$("#" + visibleTableJQ[0].id).off('keyup').on('keyup', function(evt){
 					// if(evt.keyCode == 13){
-					// 	updateTableWithResource();
+					// 	commonData.updateTableWithResource();
 					// }else 
 					if(evt.keyCode == 27){
 						revertTableUpdate(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ);
@@ -460,89 +460,90 @@ window.onload = function(){
 				$(".window-mask").off('click').on('click',function(){
 					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY HH:mm');
 					text = ''
-					updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, startTime, '');
+					commonData.updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, startTime, '');
 				})
 			}else if((visibleTableJQ[0].id == "groupsFullScreenGeneralTable" && trgtTd.index() == 4) || 
 				(visibleTableJQ[0].id == "clustersFullScreenGeneralTable" && trgtTd.index() == 4)){
 				fullScreen.trgtTd = trgtTd
-				$("#modifyFieldDialog").dialog({
-		            constrain : true,
-		            top : trgtTd.offset().top,
-		            left : trgtTd.offset().left,
-		            border : false,
-		            closed: false,
-		            padding : "5px",
-		            cache: false,
-		            title : false,
-		            resizable : true,
-		            modal: true,
-		            shadow : false
-				});
-				$("#modifyFieldDialog div.elementHolder").empty();
+				createPicker();
+				// $("#modifyFieldDialog").dialog({
+		  //           constrain : true,
+		  //           top : trgtTd.offset().top,
+		  //           left : trgtTd.offset().left,
+		  //           border : false,
+		  //           closed: false,
+		  //           padding : "5px",
+		  //           cache: false,
+		  //           title : false,
+		  //           resizable : true,
+		  //           modal: true,
+		  //           shadow : false
+				// });
+				// $("#modifyFieldDialog div.elementHolder").empty();
 
 				
-				imagesArray = [];
-				videosArray = [];
-				imagesOptGroup = "<optgroup label='Images'>"
-				videosOptGroup = "<optgroup label='Videos'>"
-				$.each(fullScreen.resources,function(index,value){
-					if(value.split('.')[1].toUpperCase() == "JPG" || value.split('.')[1].toUpperCase() == "JPEG"){
-						// imagesArray.push(value);
-						imagesOptGroup += '<option value="' + value + '">' + value +'</option>'
-					}else if(value.split('.')[1].toUpperCase() == "MP4" || value.split('.')[1].toUpperCase() == "WEBM"){
-						// videosArray.push(value)
-						videosOptGroup += '<option value="' + value + '">' + value +'</option>'
-					}
-				})
+				// imagesArray = [];
+				// videosArray = [];
+				// imagesOptGroup = "<optgroup label='Images'>"
+				// videosOptGroup = "<optgroup label='Videos'>"
+				// $.each(fullScreen.resources,function(index,value){
+				// 	if(value.split('.')[1].toUpperCase() == "JPG" || value.split('.')[1].toUpperCase() == "JPEG"){
+				// 		// imagesArray.push(value);
+				// 		imagesOptGroup += '<option value="' + value + '">' + value +'</option>'
+				// 	}else if(value.split('.')[1].toUpperCase() == "MP4" || value.split('.')[1].toUpperCase() == "WEBM"){
+				// 		// videosArray.push(value)
+				// 		videosOptGroup += '<option value="' + value + '">' + value +'</option>'
+				// 	}
+				// })
 
-				imagesOptGroup += '</optgroup>';
-				videosOptGroup += '</optgroup>';
+				// imagesOptGroup += '</optgroup>';
+				// videosOptGroup += '</optgroup>';
 
-				resourcesSelect = `<select class='resourceSelect' 
-								 	style="height:` + (parseInt(trgtTd.height()) + 30) + `px;
-								 	width:` + (parseInt(trgtTd.width()) + 16) + `px">` + 
-								 	imagesOptGroup + videosOptGroup + `</select>`
+				// resourcesSelect = `<select class='resourceSelect' 
+				// 				 	style="height:` + (parseInt(trgtTd.height()) + 30) + `px;
+				// 				 	width:` + (parseInt(trgtTd.width()) + 16) + `px">` + 
+				// 				 	imagesOptGroup + videosOptGroup + `</select>`
 
-				$("#modifyFieldDialog div.elementHolder").append(resourcesSelect)
+				// $("#modifyFieldDialog div.elementHolder").append(resourcesSelect)
 				
-				$("select.resourceSelect").multipleSelect({
-					single: true,
-					filter: true,
-					placeholder : 'Select Resource',
-					onClick: function(view) {
-						updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ,'', view.value)
-						// console.log(view.value)
-						// console.log(view.checked)
-		            }
-				})
+				// $("select.resourceSelect").multipleSelect({
+				// 	single: true,
+				// 	filter: true,
+				// 	placeholder : 'Select Resource',
+				// 	onClick: function(view) {
+				// 		commonData.updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ,'', view.value)
+				// 		// console.log(view.value)
+				// 		// console.log(view.checked)
+		  //           }
+				// })
 
-				$("select.resourceSelect").multipleSelect("setSelects", [trgtTdValue]);
+				// $("select.resourceSelect").multipleSelect("setSelects", [trgtTdValue]);
 
-				$(".ms-choice").focus();
+				// $(".ms-choice").focus();
 				
 
-				$(".ms-choice").off('keyup').on('keyup', function(evt){
-					// if(evt.keyCode == 13){
-					// 	updateTableWithResource();
-					// }else 
-					if(evt.keyCode == 27){
-						revertTableUpdate(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ);
-					}
-				});
+				// $(".ms-choice").off('keyup').on('keyup', function(evt){
+				// 	// if(evt.keyCode == 13){
+				// 	// 	commonData.updateTableWithResource();
+				// 	// }else 
+				// 	if(evt.keyCode == 27){
+				// 		revertTableUpdate(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ);
+				// 	}
+				// });
 
 
 
-				$(".window-mask").off('click').on('click',function(){
-					resource = $("select.resourceSelect").multipleSelect('getSelects').length!=0 ? $("select.resourceSelect").multipleSelect('getSelects') : [""] 
-					updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, '', resource[0]);
+				// $(".window-mask").off('click').on('click',function(){
+				// 	resource = $("select.resourceSelect").multipleSelect('getSelects').length!=0 ? $("select.resourceSelect").multipleSelect('getSelects') : [""] 
+				// 	commonData.updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, '', resource[0]);
 					
-				})
+				// })
 			}
 		}
 	}
 
 
-	function updateTableWithResource(visibleTableAPI, visibleTableJQ, startTime, resourceName){
+	commonData.updateTableWithResource = function(visibleTableAPI, visibleTableJQ, startTime, resourceName){
 		rowNo = parseInt(fullScreen.trgtTd.closest('tr').find('td').first().text()) -1
 		// resources.resourcesTableJQ.fnUpdate({resourceName : resourceName, resourceType : 'image'},rowNo);
 		var resourceType = 'image'
@@ -581,11 +582,12 @@ window.onload = function(){
 			
 		}
 
-		updateSerialNo(visibleTableAPI);
+		commonData.updateSerialNo(visibleTableAPI);
 
 		visibleTableAPI.page( page ).draw( 'page' );
 		
-		$("#modifyFieldDialog").dialog('close')
+		if($("#modifyFieldDialog").is(":visible"))
+			$("#modifyFieldDialog").dialog('close')
 		$(visibleTableAPI.rows().nodes().toJQuery()[rowNo]).fadeOut();
 		$(visibleTableAPI.rows().nodes().toJQuery()[rowNo]).fadeIn();
 		visibleTableAPI.keys.enable();
@@ -709,7 +711,7 @@ window.onload = function(){
 	
 
 
-    function updateSerialNo(apiInstance){
+    commonData.updateSerialNo = function(apiInstance){
 		// data = apiInstance.rows().data();
 		data = apiInstance.data();
 		$.each(data, function(index, value){

@@ -123,6 +123,15 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 </head>
     <body>
+    <div id="blueimp-gallery-common" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
     <div id="loadingDiv" style="display: none;">
         <div id="loadingWashout"></div>
         <div id="loadingIcon">
@@ -219,7 +228,7 @@
                                                             <table role="presentation" id="resourcesSocietyTable"class="table table-striped"><tbody class="files"></tbody></table>
                                                         </form>
                                                         <!-- The blueimp Gallery widget -->
-                                                        <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+                                                        <div id="blueimp-gallery-society" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
                                                             <div class="slides"></div>
                                                             <h3 class="title"></h3>
                                                             <a class="prev">‹</a>
@@ -287,9 +296,9 @@
                                                                         </p>
                                                                     </td> -->
                                                                     <td>
-                                                                        <span class="preview">
+                                                                        <span class="preview" id="societyGallery">
                                                                             {% if (file.thumbnailUrl) { %}
-                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}"  class="galleryLink"><img src="{%=file.thumbnailUrl%}"></a>
                                                                             {% }else if(file.url) { %}
                                                                                 <!-- <video src="{%=file.url%}"></video> -->
                                                                             {% } %}
@@ -298,7 +307,7 @@
                                                                     <td>
                                                                         <p class="name">
                                                                             {% if (file.url) { %}
-                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}">{%=file.name%}</a>
                                                                             {% } else { %}
                                                                                 <span>{%=file.name%}</span>
                                                                             {% } %}
@@ -417,7 +426,7 @@
                                                             <table role="presentation" id="resourcesAdvtTable" class="table table-striped"><tbody class="files"></tbody></table>
                                                         </form>
                                                         <!-- The blueimp Gallery widget -->
-                                                        <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+                                                        <div id="blueimp-gallery-advt" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
                                                             <div class="slides"></div>
                                                             <h3 class="title"></h3>
                                                             <a class="prev">‹</a>
@@ -487,14 +496,14 @@
                                                                     <td>
                                                                         <span class="preview">
                                                                             {% if (file.thumbnailUrl) { %}
-                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" class="galleryLink"><img src="{%=file.thumbnailUrl%}"></a>
                                                                             {% } %}
                                                                         </span>
                                                                     </td>
                                                                     <td>
                                                                         <p class="name">
                                                                             {% if (file.url) { %}
-                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" >{%=file.name%}</a>
                                                                             {% } else { %}
                                                                                 <span>{%=file.name%}</span>
                                                                             {% } %}

@@ -52,29 +52,46 @@ var clientId = '848626933775-pdos9q0cf057932ik9h56ggbe4mkmv8k.apps.googleusercon
             picker.setVisible(true);
         }
 
+       
         // A simple callback implementation.
         function pickerCallback(data) {
         	if(data.action == 'picked'){
-     			picker.setVisible(true);
-	            if (data.action == google.picker.Action.PICKED) {
-	                // document.getElementById('mytext').value = 'Please wait while retrieving document...';
-	                var fileId = data.docs[0].id;
-	                var url = 'https://www.googleapis.com/drive/v2/files/' + fileId;
-	                getData(url, function(responseText) {
-	                    metaData = JSON.parse(responseText);
-                        console.log(metaData.webContentLink);
-                        console.log(metaData.parents[0].id);
-	                    // document.getElementById('img1').src= metaData.webContentLink;
-	                    // getData(metaData.downloadUrl, function(text) {
-	                        //if (navigator.appName == 'Microsoft Internet Explorer') {
-	                        //    text = text.replace(/\n\r?/g, '<br />');
-	                        //}
-	                        // document.getElementById('mytext').value = text;
-	                        // document.getElementById('saveButton').disabled = false;
-	                    // });
-	                });
-	            }
-        	}
+                if($(window.parent.document.body).find("ul#channelMenu li.active").text() != "Resources"){
+                    if (data.action == google.picker.Action.PICKED) {
+                        
+                        if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "First Channel")
+                            commonData.updateTableWithResource(firstChannel.visibleTableAPI,firstChannel.visibleTableJQ,'',data.docs[0].name,0)
+                        if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Second Channel")
+                            commonData.updateTableWithResource(secondChannel.visibleTableAPI,secondChannel.visibleTableJQ,data.docs[0].name)
+                        if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Third Channel")
+                            commonData.updateTableWithResource(thirdChannel.visibleTableAPI,thirdChannel.visibleTableJQ,data.docs[0].name)
+                        if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Full Screen")
+                            commonData.updateTableWithResource(fullScreen.visibleTableAPI,fullScreen.visibleTableJQ,'',data.docs[0].name)
+                    }
+                }else{
+
+                    picker.setVisible(true);
+                    if (data.action == google.picker.Action.PICKED) {
+                        var fileId = data.docs[0].id;
+                        var url = 'https://www.googleapis.com/drive/v2/files/' + fileId;
+                        getData(url, function(responseText) {
+                            metaData = JSON.parse(responseText);
+                            
+                            //check parent folder id here
+                            // if()
+                                blueimp.Gallery([
+                                {
+                                    title: metaData.title,
+                                    href: metaData.webContentLink,
+                                    type: metaData.mimeType,
+                                    thumbnail: metaData.webContentLink
+                                }
+                            ],{
+                            container : '#blueimp-gallery-common'});
+                        });
+                    }
+                }
+            }
         }
         
         // function saveDocument() {

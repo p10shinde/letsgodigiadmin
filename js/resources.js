@@ -30,6 +30,8 @@ var alws = function(thisButton){
 	  	contentType: "application/json",
 	})
 }
+
+
 function refreshTable(thisButton){
 	$(thisButton).closest('tr').find('td:nth-child(4)').html('<span class="text-success">Uploaded</span>');
 	setTimeout(function(){
@@ -38,7 +40,25 @@ function refreshTable(thisButton){
 }
 window.onload = function(){
 	
+$(".resourcesSocietyTableDiv").off('click').on('click','a.galleryLink',function(evt){
+	blueimp.Gallery(
+	    $("#resourcesSocietyTable a.galleryLink"),
+	    {
+	        container: '#blueimp-gallery-society'
+	    }
+	);
+	return false;
+})
 
+$(".resourcesAdvtTableDiv").off('click').on('click','a.galleryLink',function(evt){
+	blueimp.Gallery(
+	    $("#resourcesAdvtTable a.galleryLink"),
+	    {
+	        container: '#blueimp-gallery-advt'
+	    }
+	);
+	return false;
+})
 	$('[data-toggle="tooltip"]').tooltip();
 
 	// function getTableDataAdvt(callback){
