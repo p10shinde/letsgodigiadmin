@@ -41,22 +41,62 @@ function refreshTable(thisButton){
 window.onload = function(){
 	
 $(".resourcesSocietyTableDiv").off('click').on('click','a.galleryLink',function(evt){
-	blueimp.Gallery(
-	    $("#resourcesSocietyTable a.galleryLink"),
-	    {
-	        container: '#blueimp-gallery-society'
-	    }
-	);
+	dataArray = [];
+	$.each($("#resourcesSocietyTable a.galleryLink"), function(index, key){
+		if(/\.(mp4)$/i.test(key.title)){
+			type = 'video/mp4'
+		}else{
+			type = 'image'
+		}
+		dataArray.push({title : key.title, href : key.href, type : type, thumbnail : key.href})
+	})
+
+	tbody = $(evt.target).closest('tbody');
+	tr = $(evt.target).closest('tr');
+	rowIndex = tbody.children().index(tr[0])
+	dataArray = _.union(_.rest(dataArray,rowIndex),_.difference(dataArray,_.rest(dataArray,rowIndex)))
+
+	blueimp.Gallery(dataArray,{
+    container : '#blueimp-gallery-society'});
+
+
+	// blueimp.Gallery(
+	//     $("#resourcesSocietyTable a.galleryLink"),
+	//     {
+	//         container: '#blueimp-gallery-society'
+	//     }
+	// );
 	return false;
 })
 
 $(".resourcesAdvtTableDiv").off('click').on('click','a.galleryLink',function(evt){
-	blueimp.Gallery(
-	    $("#resourcesAdvtTable a.galleryLink"),
-	    {
-	        container: '#blueimp-gallery-advt'
-	    }
-	);
+	dataArray = [];
+	
+
+	$.each($("#resourcesAdvtTable a.galleryLink"), function(index,key){
+		if(/\.(mp4)$/i.test(key.title)){
+			type = 'video/mp4'
+		}else{
+			type = 'image'
+		}
+		dataArray.push({title : key.title, href : key.href, type : type, thumbnail : key.href})
+	})
+
+	tbody = $(evt.target).closest('tbody');
+	tr = $(evt.target).closest('tr');
+	rowIndex = tbody.children().index(tr[0])
+	dataArray = _.union(_.rest(dataArray,rowIndex),_.difference(dataArray,_.rest(dataArray,rowIndex)))
+
+	blueimp.Gallery(dataArray,{
+    container : '#blueimp-gallery-advt'});
+
+
+	// blueimp.Gallery(
+	//     $("#resourcesAdvtTable a.galleryLink"),
+	//     {
+	//         container: '#blueimp-gallery-advt'
+	//     }
+	// );
 	return false;
 })
 	$('[data-toggle="tooltip"]').tooltip();

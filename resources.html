@@ -296,18 +296,18 @@
                                                                         </p>
                                                                     </td> -->
                                                                     <td>
-                                                                        <span class="preview" id="societyGallery">
-                                                                            {% if (file.thumbnailUrl) { %}
-                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}"  class="galleryLink"><img src="{%=file.thumbnailUrl%}"></a>
-                                                                            {% }else if(file.url) { %}
-                                                                                <!-- <video src="{%=file.url%}"></video> -->
+                                                                        <span class="preview">
+                                                                            {% if (file.type == 'image') { %}
+                                                                                <a href="{%=file.customUrl%}" title="{%=file.name%}" download="{%=file.name%}"  class="galleryLink"><img src="{%=file.customUrl%}"></a>
+                                                                            {% }else if(file.type == 'video') { %}
+                                                                                <a href="{%=file.customUrl%}" title="{%=file.name%}" download="{%=file.name%}"  class="galleryLink"><video src="{%=file.customUrl%}" muted preload="metadata" autplay="false"></video></a>
                                                                             {% } %}
                                                                         </span>
                                                                     </td>
                                                                     <td>
                                                                         <p class="name">
                                                                             {% if (file.url) { %}
-                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}">{%=file.name%}</a>
+                                                                                <a href="{%=file.customUrl%}" title="{%=file.name%}" download="{%=file.name%}">{%=file.name%}</a>
                                                                             {% } else { %}
                                                                                 <span>{%=file.name%}</span>
                                                                             {% } %}
@@ -495,15 +495,17 @@
                                                                     </td> -->
                                                                     <td>
                                                                         <span class="preview">
-                                                                            {% if (file.thumbnailUrl) { %}
-                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" class="galleryLink"><img src="{%=file.thumbnailUrl%}"></a>
+                                                                            {% if (file.customUrl) { %}
+                                                                                <a href="{%=file.customUrl%}" title="{%=file.name%}" download="{%=file.name%}" class="galleryLink"><img src="{%=file.customUrl%}"></a>
+                                                                            {% }else if(file.type == 'video') { %}
+                                                                                <a href="{%=file.customUrl%}" title="{%=file.name%}" download="{%=file.name%}"  class="galleryLink"><video src="{%=file.customUrl%}" muted preload="metadata" autplay="false"></video></a>
                                                                             {% } %}
                                                                         </span>
                                                                     </td>
                                                                     <td>
                                                                         <p class="name">
-                                                                            {% if (file.url) { %}
-                                                                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" >{%=file.name%}</a>
+                                                                            {% if (file.customUrl) { %}
+                                                                                <a href="{%=file.customUrl%}" title="{%=file.name%}" download="{%=file.name%}" >{%=file.name%}</a>
                                                                             {% } else { %}
                                                                                 <span>{%=file.name%}</span>
                                                                             {% } %}
