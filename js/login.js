@@ -1,9 +1,9 @@
-sessionStorage.apiurl = 'http://63.142.250.105:49161/api/';
+sessionStorage.apiurl = 'http://63.142.250.105:3050/api/';
   var startApp = function() {
     gapi.load('auth2', function(){
       // Retrieve the singleton for the GoogleAuth library and set up the client.
       auth2 = gapi.auth2.init({
-        client_id: '848626933775-pdos9q0cf057932ik9h56ggbe4mkmv8k.apps.googleusercontent.com',
+        client_id: '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercontent.com',
         cookiepolicy: 'single_host_origin',
       });
 

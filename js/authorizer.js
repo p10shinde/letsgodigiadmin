@@ -22,7 +22,7 @@ function removeAuthorizationBlocker(whichone){
 }
 
 var auth2;
-var clientId = '848626933775-pdos9q0cf057932ik9h56ggbe4mkmv8k.apps.googleusercontent.com'
+var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercontent.com'
 var scopes = 'https://www.googleapis.com/auth/drive';
 var oauthToken;
  	function handleAuthResult(authResult) {
