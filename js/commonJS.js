@@ -1,10 +1,10 @@
 $.ajaxSetup({
     beforeSend: function(xhr) {
-        xhr.setRequestHeader('id_token', sessionStorage.id_token);
+        xhr.setRequestHeader('token', sessionStorage.id_token);
     }
 });
 
-if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.clientName || !sessionStorage.usernamefull || !sessionStorage.id_token){
+if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientName || !sessionStorage.userName || !sessionStorage.id_token){
 	window.location.href = 'login.html'
 }else{
 commonData = {};
@@ -20,35 +20,35 @@ commonData.id_token = sessionStorage.id_token;
 
 var clientName = sessionStorage.clientName;
 	
-	function checkIfAnyUpdate(callback){
-		$.ajax({
-			url : commonData.apiurl + "anyUpdate/" + clientName,
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			async : false,
-			datatype : 'json',
-			complete : function(jqXHR, textstatus){
-				if(textstatus == "success"){
-					callback(jqXHR.responseJSON.Results)
-				}else if(textstatus == "error"){
-					callback('failed')
-				}
-				console.log(jqXHR);
-			}
-		})
-	}
+	// function checkIfAnyUpdate(callback){
+	// 	$.ajax({
+	// 		url : commonData.apiurl + "anyUpdate/" + clientName,
+	// 		headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	// 		async : false,
+	// 		datatype : 'json',
+	// 		complete : function(jqXHR, textstatus){
+	// 			if(textstatus == "success"){
+	// 				callback(jqXHR.responseJSON.Results)
+	// 			}else if(textstatus == "error"){
+	// 				callback('failed')
+	// 			}
+	// 			console.log(jqXHR);
+	// 		}
+	// 	})
+	// }
 
-	checkIfAnyUpdate(function(result){
-  		if(result == true){
-  			$(parent.document.body).find('#updateFirebaseButton').show();
-  			$(parent.document.body).find('#updateFirebaseError').hide();
-  		}else if(result == false){
-  			$(parent.document.body).find('#updateFirebaseButton').hide();
-  			$(parent.document.body).find('#updateFirebaseError').hide();
-  		}else{
-  			$(parent.document.body).find('#updateFirebaseButton').hide();
-  			$(parent.document.body).find('#updateFirebaseError').show();
-  		}
-  	})
+	// checkIfAnyUpdate(function(result){
+ //  		if(result == true){
+ //  			$(parent.document.body).find('#updateFirebaseButton').show();
+ //  			$(parent.document.body).find('#updateFirebaseError').hide();
+ //  		}else if(result == false){
+ //  			$(parent.document.body).find('#updateFirebaseButton').hide();
+ //  			$(parent.document.body).find('#updateFirebaseError').hide();
+ //  		}else{
+ //  			$(parent.document.body).find('#updateFirebaseButton').hide();
+ //  			$(parent.document.body).find('#updateFirebaseError').show();
+ //  		}
+ //  	})
 
 	$(parent.document.body).find('#updateFirebaseButton').off('click').on('click', function(evt){
 		$.ajax({

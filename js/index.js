@@ -1,10 +1,10 @@
-if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.clientName || !sessionStorage.usernamefull || !sessionStorage.id_token){
+if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientName || !sessionStorage.userName || !sessionStorage.id_token){
 	window.location.href = 'login.html'
 }else{
 	window.onload = function(){
 		$("#userImage")[0].src = sessionStorage.image
 
-		$("#userStatusButton").html(sessionStorage.usernamefull + ' <span class="caret"></span>')
+		$("#userStatusButton").html(sessionStorage.userName + ' <span class="caret"></span>')
 		$("#clientName").text(sessionStorage.clientName);
 		$("#channelMenu li").first().click()
 		$("#channelMenu li").off('click').on('click',function(evt){
@@ -24,6 +24,8 @@ if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.clientN
 
 		})
 
+
+
 		$("#updateFirebaseButton").off('mouseenter').on('mouseenter', function(evt){
 			$(this).removeClass('animated');
 		})
@@ -36,12 +38,11 @@ if(!sessionStorage.apiurl || !sessionStorage.username || !sessionStorage.clientN
 			sessionStorage.removeItem('googleId');
 			sessionStorage.removeItem('image');
 			sessionStorage.removeItem('id_token');
-			sessionStorage.removeItem('username');
-			sessionStorage.removeItem('usernamefull');
-			sessionStorage.removeItem('useremail');
-			sessionStorage.removeItem('usertype');
+			sessionStorage.removeItem('userName');
+			sessionStorage.removeItem('userId');
+			sessionStorage.removeItem('userType');
 			sessionStorage.removeItem('clientName');
-			sessionStorage.removeItem('password');
+			
 			sessionStorage.removeItem('apiurl');
 			window.location.reload();
 		})

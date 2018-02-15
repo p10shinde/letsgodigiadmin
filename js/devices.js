@@ -27,7 +27,6 @@ window.onload = function(){
 	devices.devicesTableAPI = $('#devicesTable').DataTable({
         "ajax" : {
 			url : commonData.apiurl + "devices/" + clientName,
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			'async': 'false',
 			dataSrc : function(data){
 				// sno = 1;
@@ -116,7 +115,6 @@ window.onload = function(){
 			    url: commonData.apiurl + "devices/" + clientName + "/" + deviceName,
 			    type: 'DELETE',
 			    "async" : false,
-			    headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			    success: function(result) {
 			        
 			    },
@@ -240,7 +238,6 @@ window.onload = function(){
 			  type: "POST",
 			  async : false,
 			  url: commonData.apiurl + 'devices',
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			  data: JSON.stringify([deviceDataObj]),
 			  success: function(data){
 			  	$.notify('Success','success')
@@ -266,7 +263,6 @@ window.onload = function(){
 			  type: "PUT",
 			  async : false,
 			  url: commonData.apiurl + 'devices/' + clientName + "/" + devices.deviceName,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username+ ":" + commonData.password)},
 			  data: JSON.stringify(deviceDataObj),
 			  success: function(){
 			  	$.notify('Success','success')
@@ -330,7 +326,6 @@ window.onload = function(){
 	// 		  type: "POST",
 	// 		  async : false,
 	// 		  url: commonData.apiurl + 'devices',
-	// 		  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 	// 		  data: JSON.stringify(devicesDataArray),
 	// 		  success: function(data){
 	// 		  	console.log(data);

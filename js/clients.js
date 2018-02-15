@@ -35,7 +35,6 @@ window.onload = function(){
 	clients.clientsTableAPI = $('#clientsTable').DataTable({
         "ajax" : {
 			url : commonData.apiurl + "clients",
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			'async': 'false',
 			dataSrc : function(data){
 				// sno = 1;
@@ -120,7 +119,6 @@ window.onload = function(){
 			    url: commonData.apiurl + "clients/" + clientName,
 			    type: 'DELETE',
 			    "async" : false,
-			    headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			    success: function(result) {
 			        
 			    },
@@ -250,7 +248,6 @@ window.onload = function(){
 			  type: "POST",
 			  async : false,
 			  url: commonData.apiurl + 'clients',
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			  data: JSON.stringify([clientDataObj]),
 			  success: function(data){
 			  	// console.log(data);
@@ -277,7 +274,6 @@ window.onload = function(){
 			  type: "PUT",
 			  async : false,
 			  url: commonData.apiurl + "clients/" + clients.clientName,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username+ ":" + commonData.password)},
 			  data: JSON.stringify(clientDataObj),
 			  success: function(){
 			  	$.notify('Success','success')

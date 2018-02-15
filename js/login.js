@@ -44,36 +44,41 @@ function onSignIn(googleUser) {
   sendToken(id_token,googleUser)
 }
 function sendToken(id_token,googleUser){
-	// $.ajax({
-	//   type: "POST",
-	//   async : false,
-	//   url:  sessionStorage.apiurl +'gAuth',
-	//   headers : {"Authorization": "Basic " + btoa('sAdmin' + ":" + 'prj@dm!n'),"id_token":id_token},
-	//   data: JSON.stringify({id_token : id_token}),
-	//   success: function(data){
-	//   	console.log(data);
-	  	var profile = googleUser.getBasicProfile();
-	  		sessionStorage.googleId = profile.getId();
-		    sessionStorage.usernamefull = profile.getName();
-		    sessionStorage.image = profile.getImageUrl();
-     	  	sessionStorage.useremail = profile.getEmail()
-     	  	sessionStorage.id_token = id_token;
+	$.ajax({
+      	url:  sessionStorage.apiurl +'AUTH',	
+	    "async" : false,
+	    headers : {"token":id_token},
+	    success: function(result) {
+	        var profile = googleUser.getBasicProfile();
+		    // sessionStorage.usernamefull = profile.getName();
+     	  	// sessionStorage.useremail = profile.getEmail()
 
-			sessionStorage.username = 'sAdmin';
-			sessionStorage.usertype = 'Super Admin';
-			sessionStorage.clientName = 'PL';
-			sessionStorage.password = 'prj@dm!n';
+	  		sessionStorage.googleId = profile.getId();
+		    sessionStorage.image = profile.getImageUrl();
+     	  	sessionStorage.id_token = id_token;
+     	  	sessionStorage.userId = result.userID; //email
+     	  	sessionStorage.userName = result.userName;
+     	  	sessionStorage.userType = result.userType;
+     	  	sessionStorage.clientName = result.clientName;
+
+			// sessionStorage.username = 'sAdmin';
+			// sessionStorage.usertype = 'Super Admin';
+			// sessionStorage.clientName = 'PL';
+			// sessionStorage.password = 'prj@dm!n';
 			// sessionStorage.apiurl = "http://68.66.200.220:49161/api/";
 			// sessionStorage.apiurl = "http://10.13.67.174:49161/api/";
 			// sessionStorage.apiurl = sessionStorage.apiurl;
 			window.location = window.location.pathname.split('login.html')[0]
-	//   },
-	//   error : function(jqXHR, textStatus){
- // 		if(jqXHR.responseText)
- // 			$.notify(jqXHR.responseText,'error')
-	//   },
-	//   dataType: 'json',
-	//   contentType: "application/json",
-	// });
+	    },
+	    error : function(jqXHR, textStatus){
+			if(jqXHR.responseText){
+	 			$.notify(jqXHR.responseText,'error')
+	 		}
+		},
+		dataType: 'json',
+	});
+
+	  	
+
 }
 startApp();

@@ -89,7 +89,7 @@ function verifyUser(email,id_token,callback){
 	  type: "POST",
 	  async : false,
 	  url:  sessionStorage.apiurl +'gVerify',
-	  headers : {"Authorization": "Basic " + btoa('sAdmin' + ":" + 'prj@dm!n'),"id_token":id_token},
+	  headers : {"Authorization": "Basic " + btoa('sAdmin' + ":" + 'prj@dm!n'),"token":id_token},
 	  data: JSON.stringify({email : email}),
 	  success: function(data){
 	  	callback(data.status)
