@@ -48,7 +48,7 @@ window.onload = function(){
 
 	users.usersTableAPI = $('#usersTable').DataTable({
         "ajax" : {
-			url : commonData.apiurl + "users/" + clientName,
+			url : commonData.apiurl + "users",
 			'async': 'false',
 			dataSrc : function(data){
 				// sno = 1;
@@ -128,20 +128,24 @@ window.onload = function(){
 
 		page = users.usersTableAPI.page.info().page;
 		checkboxTD = users.usersTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
+		deleteRowsIndexes = [];
+		deleteRowClientNames = [];
 		$.each(checkboxTD, function(index, value){
 			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
 			if(isChecked){
 				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
 				userID = $(value).find('td:nth-child(3)').text();
+				clName = $(value).find('td:nth-child(6)').text();
+				deleteRowClientNames.push(clName)
 				deleteRowsIndexes.push(userID)
 			}
 
 		})
 
+
 		$.each(deleteRowsIndexes, function(index,userID){
 			$.ajax({
-			    url: commonData.apiurl + "users/" + clientName + "/" + userID,
+			    url: commonData.apiurl + "users/" + deleteRowClientNames[index] + "/" + userID,
 			    type: 'DELETE',
 			    "async" : false,
 			    success: function(result) {
@@ -339,7 +343,7 @@ window.onload = function(){
 	    	$.ajax({
 			  type: "PUT",
 			  async : false,
-			  url: commonData.apiurl + "users/" + clientName + "/" + users.userID,
+			  url: commonData.apiurl + "users/" + userDataObj.clientName + "/" + users.userID,
 			  data: JSON.stringify(userDataObj),
 			  success: function(data){
 			  	$.notify('Success','success')

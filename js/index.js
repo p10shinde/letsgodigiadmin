@@ -46,6 +46,6 @@ if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientN
 			sessionStorage.removeItem('apiurl');
 			window.location.reload();
 		})
-		$("#channelMenu li").first().click();
+		$("#channelMenu li").first().click()
 	}
 }

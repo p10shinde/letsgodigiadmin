@@ -34,8 +34,7 @@ window.onload = function(){
 
 	groups.groupsTableAPI = $('#groupsTable').DataTable({
         "ajax" : {
-			url : commonData.apiurl + "groups/" + clientName,
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			url : commonData.apiurl + "groups",
 			'async': 'false',
 			dataSrc : function(data){
 				// sno = 1;
@@ -122,7 +121,6 @@ window.onload = function(){
 			    url: commonData.apiurl + "groups/" +clientName + "/" + groupName,
 			    type: 'DELETE',
 			    "async" : false,
-			    headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			    success: function(result) {
 			        
 			    },
@@ -221,7 +219,6 @@ getAllClients();
 		function getAllClients(){
 		$.ajax({
 			url : commonData.apiurl + "clients",
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
@@ -237,8 +234,9 @@ getAllClients();
 					
 					$("#clientSelectFilter").multipleSelect({
 						placeholder: "Select Client",
-						filter: true,
 						single : true,
+						filter: true,
+						
 						onClick : function(view){
 							// tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
 							// groupName = view.value;
@@ -307,7 +305,6 @@ getAllClients();
 			  type: "POST",
 			  async : false,
 			  url: commonData.apiurl + 'groups',
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			  data: JSON.stringify([groupDataObj]),
 			  success: function(data){
 			  	// console.log(data);
@@ -334,7 +331,6 @@ getAllClients();
 			  type: "PUT",
 			  async : false,
 			  url: commonData.apiurl + "groups/" + clientNameOld +"/" + groups.groupName,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username+ ":" + commonData.password)},
 			  data: JSON.stringify(groupDataObj),
 			  success: function(){
 			  	$.notify('Success','success')
