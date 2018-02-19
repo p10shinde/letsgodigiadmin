@@ -89,9 +89,9 @@ table td:nth-child(6) input[type='checkbox']{
   position: absolute;
 }
 
-.ms-choice {
+/*.ms-choice {
   height: 38px;
-}
+}*/
 
 
 .rowModifiedHighlight{

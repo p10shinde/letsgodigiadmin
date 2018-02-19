@@ -35,7 +35,6 @@ window.onload = function(){
 	advertisers.advertisersTableAPI = $('#advertisersTable').DataTable({
         "ajax" : {
 			url : commonData.apiurl + "advertisers",
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			'async': 'false',
 			dataSrc : function(data){
 				// sno = 1;
@@ -67,8 +66,8 @@ window.onload = function(){
         	  			</div>`;
     	  		}, sortable : false
     	  	},
-            { "data": "advertiserName" },
-            { "data": "advertiserLocation" },
+            { "data": "advtsrName" },
+            { "data": "advtsrLocation" },
             { "data": "updatedBy" },
             { "data": "updatedAt" },
         	{ render : function(data, type, row){
@@ -120,7 +119,6 @@ window.onload = function(){
 			    url: commonData.apiurl + "advertisers/" + advertiserName,
 			    type: 'DELETE',
 			    "async" : false,
-			    headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			    success: function(result) {
 			        
 			    },
@@ -237,8 +235,8 @@ window.onload = function(){
     	advertiserLocation = $("#advertiserLocation").val();;
     	// advertiserData = [];
     	advertiserDataObj = {}
-    	advertiserDataObj.advertiserName = advertiserName;
-    	advertiserDataObj.advertiserLocation = advertiserLocation;
+    	advertiserDataObj.advtsrName = advertiserName;
+    	advertiserDataObj.advtsrLocation = advertiserLocation;
     	// advertiserDataObj.masterAccount = "";
     	// advertiserDataObj.slaveAccount = "";
     	
@@ -250,7 +248,6 @@ window.onload = function(){
 			  type: "POST",
 			  async : false,
 			  url: commonData.apiurl + 'advertisers',
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			  data: JSON.stringify([advertiserDataObj]),
 			  success: function(data){
 			  	// console.log(data);
@@ -277,7 +274,6 @@ window.onload = function(){
 			  type: "PUT",
 			  async : false,
 			  url: commonData.apiurl + "advertisers/" + advertisers.advertiserName,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username+ ":" + commonData.password)},
 			  data: JSON.stringify(advertiserDataObj),
 			  success: function(){
 			  	$.notify('Success','success')

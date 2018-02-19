@@ -11,14 +11,18 @@
 
 /* global $, window */
 
-$(function () {
+// $(function () {
+
+function loadSocietyContent(groupName) {
     'use strict';
+    
 
     // Initialize the jQuery File Upload widget:
     $('#fileuploadSociety').fileupload({
         // Uncomment the following to send cross-domain cookies:
-        //xhrFields: {withCredentials: true},
-        url: "http:" + sessionStorage.apiurl.split(":")[1] + ":49163/society"
+        // xhrFields: {withCredentials: true},
+        url: "http:" + sessionStorage.apiurl.split(":")[1] + ":3052/society/" + groupName
+        // url: "http:" + '//localhost' + ":3052/society/" + groupName
     });
 
     // Enable iframe cross-domain access via redirect option:
@@ -35,7 +39,8 @@ $(function () {
         // Demo settings:
         $('#fileuploadSociety').fileupload('option', {
             // url: '//jquery-file-upload.appspot.com/',
-            url: "http://" + sessionStorage.apiurl.split(":")[1] + ":49163",
+            url: "http://" + sessionStorage.apiurl.split(":")[1] + ":3052",
+            // url: "http://" + 'localhost' + ":3052",
             // Enable image resizing, except for Android and Opera,
             // which actually support image resizing, but fail to
             // send Blob objects via XHR requests:
@@ -48,7 +53,8 @@ $(function () {
         if ($.support.cors) {
             $.ajax({
                 // url: '//jquery-file-upload.appspot.com/',
-                url: "http://" + sessionStorage.apiurl.split(":")[1] + ":49163",
+                url: "http://" + sessionStorage.apiurl.split(":")[1] + ":3052",
+                // url: "http://" + 'localhost' + ":3052",
                 type: 'HEAD'
             }).fail(function () {
                 $('<div class="alert alert-danger"/>')
@@ -69,9 +75,11 @@ $(function () {
         }).always(function () {
             $(this).removeClass('fileupload-processing');
         }).done(function (result) {
+            $("#resourcesSocietyTable tbody").empty();
             $(this).fileupload('option', 'done')
                 .call(this, $.Event('done'), {result: result});
         });
     }
 
-});
+// });
+};

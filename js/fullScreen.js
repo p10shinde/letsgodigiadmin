@@ -1,4 +1,5 @@
 fullScreen = {}
+fullScreen.resources = [];
 // fullScreen.resources = ["img1.jpg","img2.jpg","vid1.mp4","vid2.mp4","vid3.mp4","vid4.mp4","img3.jpg","img4.jpg"];
 window.onload = function(){
 	// XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
@@ -26,28 +27,27 @@ window.onload = function(){
 	// initialize tooltips
 	$('[data-toggle="tooltip"]').tooltip();
 
-	function getAllResources(){
-		$.ajax({
-			// url : commonData.apiurl + "resources/" + clientName,
-			url : "data/resources.json",
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			async : false,
-			datatype : 'json',
-			complete : function(jqXHR, textstatus){
-				if(textstatus == "success"){
-					// groups = _.unique(jqXHR.responseJSON,'groupName')
-					// groups = _.pluck(groups,'groupName')
-					fullScreen.resources = _.pluck(jqXHR.responseJSON,'resourceName');
+	// function getAllResources(){
+	// 	$.ajax({
+	// 		// url : commonData.apiurl + "resources/" + clientName,
+	// 		url : "data/resources.json",
+	// 		async : false,
+	// 		datatype : 'json',
+	// 		complete : function(jqXHR, textstatus){
+	// 			if(textstatus == "success"){
+	// 				// groups = _.unique(jqXHR.responseJSON,'groupName')
+	// 				// groups = _.pluck(groups,'groupName')
+	// 				fullScreen.resources = jqXHR.responseJSON;
 
-				}else if(textstatus == "error"){
-					if(jqXHR.responseText)
-						$.notify(jqXHR.responseText,'error')
-				}
-				console.log(jqXHR);
-			}
-		})
-	}
-	getAllResources();
+	// 			}else if(textstatus == "error"){
+	// 				if(jqXHR.responseText)
+	// 					$.notify(jqXHR.responseText,'error')
+	// 			}
+	// 			console.log(jqXHR);
+	// 		}
+	// 	})
+	// }
+	
 
 	$("input[name='displayTypeRadio']").on('change',function(){
 		console.log(this.value)
@@ -83,8 +83,7 @@ window.onload = function(){
 
 	function getAllGroups(){
 		$.ajax({
-			url : commonData.apiurl + "groups/" + clientName,
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			url : commonData.apiurl + "groups",
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
@@ -108,7 +107,7 @@ window.onload = function(){
 								loadGroupsFullScreenGeneralTable(groupName)
 								fullScreen.visibleTableAPI = fullScreen.groupsFullScreenGeneralTableAPI;
 						    	fullScreen.visibleTableJQ = fullScreen.groupsFullScreenGeneralTableJQ;
-						   
+						   	// getAllResources(groupName)
 						}
 					});
 
@@ -123,9 +122,8 @@ window.onload = function(){
 
 	function getAllClusters(){
 		$.ajax({
-			// url : commonData.apiurl + "clusters/" + clientName,
-			url : "data/clusters.json",
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			url : commonData.apiurl + "clusters",
+			// url : "data/clusters.json",
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
@@ -149,7 +147,7 @@ window.onload = function(){
 								loadClustersFullScreenGeneralTable(groupName)
 								fullScreen.visibleTableAPI = fullScreen.clustersFullScreenGeneralTableAPI;
 						    	fullScreen.visibleTableJQ = fullScreen.clustersFullScreenGeneralTableJQ;
-						   
+						   // getAllResources(groupName)
 						}
 					});
 
@@ -176,17 +174,16 @@ window.onload = function(){
 
 		fullScreen.groupsFullScreenGeneralTableAPI = $('#groupsFullScreenGeneralTable').DataTable({
 	        "ajax" : {
-				// url : commonData.apiurl + "ch1_genGrp/" + clientName + "/" + groupName,
-				url : "data/fullscreenGrp.json",
-				// headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				url : commonData.apiurl + "planned/fs/" + "NO" + "/" + groupName,
+				// url : "data/fullscreenGrp.json",
 				'async': 'false',
 				dataSrc : function(data){
-					groupName_temp = data[0].groupName;
-					$.each(data[0].data, function(index, value){
+					// groupName_temp = data[0].groupName;
+					$.each(data, function(index, value){
 						value.sno = index + 1;
-						value.groupName = groupName_temp;
+						value.groupName = groupName;
 					})
-					return data[0].data;
+					return data;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -221,8 +218,8 @@ window.onload = function(){
 	    	  		}, sortable : false
 	    	  	},
 	            { "data": "groupName" },
-	            { "data": "startTime" },
-	            { "data": "resourceName" },
+	            { "data": "time" },
+	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            // { "data": "duration" },
 	            // { "data": "updatedBy" },
@@ -246,17 +243,16 @@ window.onload = function(){
 
 		fullScreen.clustersFullScreenGeneralTableAPI = $('#clustersFullScreenGeneralTable').DataTable({
 	        "ajax" : {
-				// url : commonData.apiurl + "ch1_genDev/" + clientName + "/" + clusterName,
-				url : "data/fullscreenCluster.json",
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				url : commonData.apiurl + "planned/fs/" + clusterName + "/" + "NO",
+				// url : "data/fullscreenCluster.json",
 				'async': 'false',
 				dataSrc : function(data){
-					clusterName_temp = data[0].clusterName;
-					$.each(data[0].data, function(index, value){
+					// clusterName_temp = data[0].clusterName;
+					$.each(data, function(index, value){
 						value.sno = index +1;
-						value.clusterName = clusterName_temp;
+						value.clusterName = clusterName;
 					})
-					return data[0].data;
+					return data;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -287,8 +283,8 @@ window.onload = function(){
 	    	  		}, sortable : false
 	    	  	},
 	            { "data": "clusterName" },
-	            { "data": "startTime" },
-	            { "data": "resourceName" },
+	            { "data": "time" },
+	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            // { "data": "duration" },
 	            // { "data": "updatedBy" },
@@ -444,8 +440,8 @@ window.onload = function(){
 		                        										'<span class="glyphicon glyphicon-calendar"></span>'+
 		                    										'</span>'+
 		                    									'</div>')	
-				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY HH:mm',stepping:60,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
-				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY HH:mm"));
+				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'HH:mm',stepping:60,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
+				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"HH:mm"));
 				
 				
 				$("#" + visibleTableJQ[0].id).off('keyup').on('keyup', function(evt){
@@ -458,7 +454,7 @@ window.onload = function(){
 				});
 
 				$(".window-mask").off('click').on('click',function(){
-					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY HH:mm');
+					startTime = $("#startTime").data("DateTimePicker").date().format('HH:mm');
 					text = ''
 					commonData.updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, startTime, '');
 				})
@@ -546,16 +542,16 @@ window.onload = function(){
 	commonData.updateTableWithResource = function(visibleTableAPI, visibleTableJQ, startTime, resourceName){
 		rowNo = parseInt(fullScreen.trgtTd.closest('tr').find('td').first().text()) -1
 		// resources.resourcesTableJQ.fnUpdate({resourceName : resourceName, resourceType : 'image'},rowNo);
-		var resourceType = 'image'
-		if(resourceName != ""){
-			if(resourceName.split('.')[1].toUpperCase() == "JPG" || resourceName.split('.')[1].toUpperCase() == "JPEG"){
-				resourceType = 'image'
-			}else if(resourceName.split('.')[1].toUpperCase() == "MP4" || resourceName.split('.')[1].toUpperCase() == "WEBM"){
-				resourceType = 'video'
-			}
-		}else{
-			resourceType = "";
-		}
+		// var resourceType = 'image'
+		// if(resourceName != ""){
+		// 	if(resourceName.split('.')[1].toUpperCase() == "JPG" || resourceName.split('.')[1].toUpperCase() == "JPEG"){
+		// 		resourceType = 'image'
+		// 	}else if(resourceName.split('.')[1].toUpperCase() == "MP4" || resourceName.split('.')[1].toUpperCase() == "WEBM"){
+		// 		resourceType = 'video'
+		// 	}
+		// }else{
+		// 	resourceType = "";
+		// }
 
 		
 
@@ -601,27 +597,27 @@ window.onload = function(){
 	$("#addNewResourceButton").off('click').on('click',function(evt){
 		recordsTotal = fullScreen.visibleTableAPI.page.info().recordsTotal;
 
-		if(!fullScreen.resources || fullScreen.resources.length == 0){
-			$.notify('No resource available.','error')
-		}else{
-			var resourceType = 'image'
-			if(fullScreen.resources[0].split('.')[1].toUpperCase() == "JPG" || fullScreen.resources[0].split('.')[1].toUpperCase() == "JPEG"){
-				resourceType = 'image'
-			}else if(fullScreen.resources[0].split('.')[1].toUpperCase() == "MP4" || fullScreen.resources[0].split('.')[1].toUpperCase() == "WEBM"){
-				resourceType = 'video'
-			}
+		// if(!fullScreen.resources || fullScreen.resources.length == 0){
+		// 	$.notify('No resource available.','error')
+		// }else{
+			// var resourceType = 'image'
+			// if(fullScreen.resources[0].split('.')[1].toUpperCase() == "JPG" || fullScreen.resources[0].split('.')[1].toUpperCase() == "JPEG"){
+			// 	resourceType = 'image'
+			// }else if(fullScreen.resources[0].split('.')[1].toUpperCase() == "MP4" || fullScreen.resources[0].split('.')[1].toUpperCase() == "WEBM"){
+			// 	resourceType = 'video'
+			// }
 			dt = {};
 			if(fullScreen.visibleTableJQ.attr('id') == 'groupsFullScreenGeneralTable'){
 				groupOrClusterKey = "groupName";
 		    	groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-		    	startTime = new moment().add(1,'hours').startOf('hour').format('DD-MM-YYYY HH:mm')
-		    	dt = {sno :  recordsTotal + 1,resourceName : fullScreen.resources[0], startTime : startTime};
+		    	startTime = new moment().add(1,'hours').startOf('hour').format('HH:mm')
+		    	dt = {sno :  recordsTotal + 1,resName : "", time : startTime};
 			}
 			if(fullScreen.visibleTableJQ.attr('id') == 'clustersFullScreenGeneralTable'){
 				groupOrClusterKey = "clusterName";
 				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-				startTime = new moment().add(1,'hours').startOf('hour').format('DD-MM-YYYY HH:mm')
-				dt = {sno :  recordsTotal + 1,resourceName : fullScreen.resources[0], startTime : startTime};
+				startTime = new moment().add(1,'hours').startOf('hour').format('HH:mm')
+				dt = {sno :  recordsTotal + 1,resName : "", time : startTime};
 			}
 
 			
@@ -636,31 +632,31 @@ window.onload = function(){
 
 			$(fullScreen.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeOut();
 			$(fullScreen.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeIn();
-		}
+		// }
 	})
 
 
 	$("#saveResourcesButton").off('click').on('click',function(evt){
 		fullScreenDataArray = fullScreen.visibleTableJQ.fnGetData();
-		postData = {}
-		groupOrClusterNameFromTable = fullScreenDataArray[0].groupName;
-		if(typeof(groupOrClusterNameFromTable) == 'undefined'){
-			groupOrClusterNameFromTable = fullScreenDataArray[0].clusterName;
-			postData.clusterName = groupOrClusterNameFromTable;
-		}else{
-			postData.groupName = groupOrClusterNameFromTable;
-		}
+		// postData = {}
+		// groupOrClusterNameFromTable = fullScreenDataArray[0].groupName;
+		// if(typeof(groupOrClusterNameFromTable) == 'undefined'){
+		// 	groupOrClusterNameFromTable = fullScreenDataArray[0].clusterName;
+		// 	postData.clusterName = groupOrClusterNameFromTable;
+		// }else{
+		// 	postData.groupName = groupOrClusterNameFromTable;
+		// }
 		
 		fullScreenDataArray = _.filter(fullScreenDataArray,function(value){
 			return value.resourceName != ""
 		})
 		if(fullScreen.visibleTableJQ.attr('id') == 'groupsFullScreenGeneralTable'){
 			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'ch1_genGrp' + "/" + clientName + "/" + groupName
+			url = commonData.apiurl + 'planned/fs' + "/" + "NO" + "/" + groupName
 		}
 		if(fullScreen.visibleTableJQ.attr('id') == 'clustersFullScreenGeneralTable'){
 			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'ch1_genDev' + "/" + clientName + "/" + clusterName
+			url = commonData.apiurl + 'planned/fs' + "/" + clusterName + "/" + "NO"
 		}
 
 		
@@ -669,29 +665,28 @@ window.onload = function(){
     	fullScreenDataArray = _.map(fullScreenDataArray, function(model) {
 			return _.omit(model, 'sno','groupName','clusterName');
 		});
-		postData.data = fullScreenDataArray;
+		// postData.data = fullScreenDataArray;
 
 		$.ajax({
 			  type: "POST",
 			  async : false,
 			  url: url,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  data: JSON.stringify([postData]),
+			  data: JSON.stringify(fullScreenDataArray),
 			  success: function(data){
 			  	$.notify('Success','success')
 			  	fullScreen.visibleTableAPI.ajax.reload();
-			  	checkIfAnyUpdate(function(result){
-			  		if(result == true){
-			  			$(parent.document.body).find('#updateFirebaseButton').show();
-			  			$(parent.document.body).find('#updateFirebaseError').hide();
-			  		}else if(result == false){
-			  			$(parent.document.body).find('#updateFirebaseButton').hide();
-			  			$(parent.document.body).find('#updateFirebaseError').hide();
-			  		}else{
-			  			$(parent.document.body).find('#updateFirebaseButton').hide();
-			  			$(parent.document.body).find('#updateFirebaseError').show();
-			  		}
-			  	})
+			  	// checkIfAnyUpdate(function(result){
+			  	// 	if(result == true){
+			  	// 		$(parent.document.body).find('#updateFirebaseButton').show();
+			  	// 		$(parent.document.body).find('#updateFirebaseError').hide();
+			  	// 	}else if(result == false){
+			  	// 		$(parent.document.body).find('#updateFirebaseButton').hide();
+			  	// 		$(parent.document.body).find('#updateFirebaseError').hide();
+			  	// 	}else{
+			  	// 		$(parent.document.body).find('#updateFirebaseButton').hide();
+			  	// 		$(parent.document.body).find('#updateFirebaseError').show();
+			  	// 	}
+			  	// })
 			  	// campaigns.groupsCampaignsTableAPI.ajax.reload(function(){
 					// $('#addNewResourceDialog').dialog('close');
 				  	// recordsTotal = resources.resourcesTableAPI.page.info().recordsTotal;

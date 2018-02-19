@@ -1,21 +1,67 @@
 resources = {}
 resources.itemsArray = [];//["img1.jpg","img2.jpg","vid1.mp4","vid2.mp4","vid3.mp4","vid4.mp4","img3.jpg","img4.jpg"];
+
+function getAllGroups(){
+	$.ajax({
+		url : commonData.apiurl + "groups",
+		async : false,
+		datatype : 'json',
+		complete : function(jqXHR, textstatus){
+			if(textstatus == "success"){
+				groups = _.unique(jqXHR.responseJSON,'groupName')
+				groups = _.pluck(groups,'groupName')
+				var options = ""
+				$.each(groups, function(index,value){
+					options += `<option value="`+value+`">`+value+`</option>`
+				});
+				$("#groupSelectFilter").empty();
+				$("#groupSelectFilter").append(options);
+				
+				$("#groupSelectFilter").multipleSelect({
+					placeholder: "Select Group",
+					filter: true,
+					single : true,
+					onClick : function(view){
+						tabIndex = $("#resourcesTabs").tabs('getTabIndex',$("#resourcesTabs").tabs('getSelected'))
+						groupName = view.value;
+						if(tabIndex == 0){
+							loadSocietyContent(groupName);
+					    }
+					}
+				});
+				loadSocietyContent($("#groupSelectFilter").multipleSelect('getSelects')[0]);
+
+			}else if(textstatus == "error"){
+				if(jqXHR.responseText)
+					$.notify(jqXHR.responseText,'error')
+			}
+			console.log(jqXHR);
+		}
+	})
+}
+
+
+
+//upload to google drive
 var alws = function(thisButton){
 	tabIndex = $("#resourcesTabs").tabs('getSelected').panel('options').index
 	postData = {};
 	thisButton = thisButton;
 	postData.resName = $(thisButton).closest('tr').find('td:nth-child(2)').text().trim();
+	groupName = ""
 	if(tabIndex == 0){
-		postData.resDir = 'society'
+		// postData.resDir = 'society'
+		groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 	}else{
-		postData.resDir = 'advt'
+		// postData.resDir = 'advt'
+		groupName = 'advt';
 	}
+
 
 	$.ajax({
 		type: "POST",
 	  	async : false,
-	  	url: commonData.apiurl + 'uploadToDrive',
-	  	headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	  	url: commonData.apiurl + 'updateGD/' + groupName,
 	  	data: JSON.stringify(postData),
 	  	complete : function(jqXHR, textstatus){
 			if(textstatus == "success"){
@@ -39,6 +85,10 @@ function refreshTable(thisButton){
 	},1000)
 }
 window.onload = function(){
+	
+	configureView(sessionStorage.userType);
+	getAllGroups();
+
 	
 $(".resourcesSocietyTableDiv").off('click').on('click','a.galleryLink',function(evt){
 	dataArray = [];

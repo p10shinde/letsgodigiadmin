@@ -2,12 +2,15 @@ if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientN
 	window.location.href = 'login.html'
 }else{
 	window.onload = function(){
+		configureView(sessionStorage.userType);
 		$("#userImage")[0].src = sessionStorage.image
 
 		$("#userStatusButton").html(sessionStorage.userName + ' <span class="caret"></span>')
 		$("#clientName").text(sessionStorage.clientName);
 		$("#channelMenu li").first().click()
 		$("#channelMenu li").off('click').on('click',function(evt){
+			if($(this).hasClass('disabled'))
+				return;
 			$(this).parent().find('li').removeClass('active')
 			$(this).toggleClass('active')
 
@@ -46,6 +49,6 @@ if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientN
 			sessionStorage.removeItem('apiurl');
 			window.location.reload();
 		})
-		$("#channelMenu li").first().click()
+		$("#channelMenu li:contains('First Channel')").click()
 	}
 }

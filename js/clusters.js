@@ -34,8 +34,7 @@ window.onload = function(){
 
 	clusters.clustersTableAPI = $('#clustersTable').DataTable({
         "ajax" : {
-			url : commonData.apiurl + "clusters/" + clientName,
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			url : commonData.apiurl + "clusters",
 			'async': 'false',
 			dataSrc : function(data){
 				// sno = 1;
@@ -71,14 +70,14 @@ window.onload = function(){
             { "data": "groupName" },
             { "data": "updatedBy" },
             { "data": "updatedAt" },
-        	{ render : function(data, type, row){
-        	  	return `<div class="tableButtons">
-        	  				<button class="btn btn-info btn-xs editCluster"><i class="fa fa-pencil" style="font-size: 8px;"></i></button>
-        	  			</div>`;
-        	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-    	  		},
-    	  		sortable : false
-    		}
+      //   	{ render : function(data, type, row){
+      //   	  	return `<div class="tableButtons">
+      //   	  				<button class="btn btn-info btn-xs editCluster"><i class="fa fa-pencil" style="font-size: 8px;"></i></button>
+      //   	  			</div>`;
+      //   	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+    	 //  		},
+    	 //  		sortable : false
+    		// }
     	]
     });
 
@@ -99,30 +98,33 @@ window.onload = function(){
     	initializeClusterDialog("","",123456789);
     });
 
-    $('table tbody').on('click','td:nth-child(7)',function(evt){
-		deleteOrEditCluster(evt);
+ //    $('table tbody').on('click','td:nth-child(7)',function(evt){
+	// 	deleteOrEditCluster(evt);
 
-	});
+	// });
 
 	$("#deleteSelectedClusterButton").off('click').on('click',function(evt){
 		page = clusters.clustersTableAPI.page.info().page;
 		checkboxTD = clusters.clustersTableAPI.rows().nodes().toJQuery();
 		deleteRowsIndexes = []
+		deleteRowGroupNames = [];
+		
 		$.each(checkboxTD, function(index, value){
 			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
 			if(isChecked){
 				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
 				clusterName = $(value).find('td:nth-child(3)').text();
+				grpName = $(value).find('td:nth-child(4)').text();
+				deleteRowGroupNames.push(grpName)
 				deleteRowsIndexes.push(clusterName);
 			}
 
 		})
 		$.each(deleteRowsIndexes, function(index,clusterName){
 			$.ajax({
-			    url: commonData.apiurl + "clusters/" +clientName + "/" + clusterName,
+			    url: commonData.apiurl + "clusters/" +deleteRowsIndexes[index] + "/" + deleteRowGroupNames[index],
 			    type: 'DELETE',
 			    "async" : false,
-			    headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 			    success: function(result) {
 			        
 			    },
@@ -220,8 +222,7 @@ window.onload = function(){
 getAllGroups();
 		function getAllGroups(){
 		$.ajax({
-			url : commonData.apiurl + "groups/" + clientName,
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			url : commonData.apiurl + "groups",
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
@@ -238,7 +239,7 @@ getAllGroups();
 					$("#groupSelectFilter").multipleSelect({
 						placeholder: "Select Group",
 						filter: true,
-						// single : true,
+						single : true,
 						onClick : function(view){
 							// tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
 							// clusterName = view.value;
@@ -291,11 +292,11 @@ getAllGroups();
     	clusterName = $("#clusterName").val();
 
     	// groupNameOld = groupName;
-    	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0]
+    	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
     	// clusterData = [];
     	clusterDataObj = {}
     	clusterDataObj.clusterName = clusterName;
-    	clusterDataObj.groupName = groupName;
+    	clusterDataObj.groupName = groupName
     	// clusterDataObj.masterAccount = "";
     	// clusterDataObj.slaveAccount = "";
     	
@@ -306,8 +307,7 @@ getAllGroups();
 	    	$.ajax({
 			  type: "POST",
 			  async : false,
-			  url: commonData.apiurl + 'clusters/' + clusterName,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			  url: commonData.apiurl + 'clusters' ,
 			  data: JSON.stringify([clusterDataObj]),
 			  success: function(data){
 			  	// console.log(data);
@@ -334,7 +334,6 @@ getAllGroups();
 			  type: "PUT",
 			  async : false,
 			  url: commonData.apiurl + "clusters/" + groupNameOld +"/" + clusters.clusterName,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username+ ":" + commonData.password)},
 			  data: JSON.stringify(clusterDataObj),
 			  success: function(){
 			  	$.notify('Success','success')

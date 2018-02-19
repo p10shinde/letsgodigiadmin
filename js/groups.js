@@ -70,14 +70,14 @@ window.onload = function(){
             { "data": "clientName" },
             { "data": "updatedBy" },
             { "data": "updatedAt" },
-        	{ render : function(data, type, row){
-        	  	return `<div class="tableButtons">
-        	  				<button class="btn btn-info btn-xs editGroup"><i class="fa fa-pencil" style="font-size: 8px;"></i></button>
-        	  			</div>`;
-        	  				// <button class="btn btn-danger btn-xs deleteGroup"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-    	  		},
-    	  		sortable : false
-    		}
+      //   	{ render : function(data, type, row){
+      //   	  	return `<div class="tableButtons">
+      //   	  				<button class="btn btn-info btn-xs editGroup"><i class="fa fa-pencil" style="font-size: 8px;"></i></button>
+      //   	  			</div>`;
+      //   	  				// <button class="btn btn-danger btn-xs deleteGroup"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+    	 //  		},
+    	 //  		sortable : false
+    		// }
     	]
     });
 
@@ -98,27 +98,30 @@ window.onload = function(){
     	initializeGroupDialog("","",123456789);
     });
 
-    $('table tbody').on('click','td:nth-child(7)',function(evt){
-		deleteOrEditGroup(evt);
+ //    $('table tbody').on('click','td:nth-child(7)',function(evt){
+	// 	deleteOrEditGroup(evt);
 
-	});
+	// });
 
 	$("#deleteSelectedGroupButton").off('click').on('click',function(evt){
 		page = groups.groupsTableAPI.page.info().page;
 		checkboxTD = groups.groupsTableAPI.rows().nodes().toJQuery();
 		deleteRowsIndexes = []
+		deleteRowClientNames = [];
 		$.each(checkboxTD, function(index, value){
 			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
 			if(isChecked){
 				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
 				groupName = $(value).find('td:nth-child(3)').text();
+				clName = $(value).find('td:nth-child(4)').text();
+				deleteRowClientNames.push(clName)
 				deleteRowsIndexes.push(groupName);
 			}
 
 		})
 		$.each(deleteRowsIndexes, function(index,groupName){
 			$.ajax({
-			    url: commonData.apiurl + "groups/" +clientName + "/" + groupName,
+			    url: commonData.apiurl + "groups/" + deleteRowClientNames[index] + "/" + groupName,
 			    type: 'DELETE',
 			    "async" : false,
 			    success: function(result) {

@@ -1,4 +1,5 @@
 firstChannel = {}
+firstChannel.resources = []
 // firstChannel.resources = ["img1.jpg","img2.jpg","vid1.mp4","vid2.mp4","vid3.mp4","vid4.mp4","img3.jpg","img4.jpg"];
 window.onload = function(){
 	// XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
@@ -26,28 +27,27 @@ window.onload = function(){
 	// initialize tooltips
 	$('[data-toggle="tooltip"]').tooltip();
 
-	function getAllResources(){
-		$.ajax({
-			// url : commonData.apiurl + "resources/" + clientName,
-			url : "data/resources.json",
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			async : false,
-			datatype : 'json',
-			complete : function(jqXHR, textstatus){
-				if(textstatus == "success"){
-					// groups = _.unique(jqXHR.responseJSON,'groupName')
-					// groups = _.pluck(groups,'groupName')
-					firstChannel.resources = _.pluck(jqXHR.responseJSON,'resourceName');
+	// function getAllResources(groupName){
+	// 	$.ajax({
+	// 		url : commonData.apiurl + "files/" + groupName,
+	// 		// url : "data/resources.json",
+	// 		async : false,
+	// 		datatype : 'json',
+	// 		complete : function(jqXHR, textstatus){
+	// 			if(textstatus == "success"){
+	// 				// groups = _.unique(jqXHR.responseJSON,'groupName')
+	// 				// groups = _.pluck(groups,'groupName')
+	// 				firstChannel.resources = jqXHR.responseJSON;
 
-				}else if(textstatus == "error"){
-					if(jqXHR.responseText)
-						$.notify(jqXHR.responseText,'error')
-				}
-				console.log(jqXHR);
-			}
-		})
-	}
-	getAllResources();
+	// 			}else if(textstatus == "error"){
+	// 				if(jqXHR.responseText)
+	// 					$.notify(jqXHR.responseText,'error')
+	// 			}
+	// 			console.log(jqXHR);
+	// 		}
+	// 	})
+	// }
+	
 
 	$("input[name='displayTypeRadio']").on('change',function(){
 		console.log(this.value)
@@ -71,34 +71,34 @@ window.onload = function(){
 			$("#clusterSelectFilterDiv").parent().hide();
 			$("#groupSelectFilterDiv").parent().show();
 			
-		}else if(this.value == "Clusters"){
-			tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
-			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0]
-			if(tabIndex == 0){
-				loadClustersFirstChannelGeneralTable(clusterName)
-				firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
-		    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
-		    	$(".groupsFirstChannelGeneralTableDiv").hide();
-				$(".clustersFirstChannelGeneralTableDiv").show();
-		    }else{
-		    	loadClustersFirstChannelPlannedTable(clusterName)
-				firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
-		    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
-		    	$(".groupsFirstChannelPlannedTableDiv").hide();
-				$(".clustersFirstChannelPlannedTableDiv").show();
-		    }
-
-
-			$("#groupSelectFilterDiv").parent().hide();
-			$("#clusterSelectFilterDiv").parent().show();
 		}
+		// else if(this.value == "Clusters"){
+		// 	tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
+		// 	clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0]
+		// 	if(tabIndex == 0){
+		// 		loadClustersFirstChannelGeneralTable(clusterName)
+		// 		firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
+		//     	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
+		//     	$(".groupsFirstChannelGeneralTableDiv").hide();
+		// 		$(".clustersFirstChannelGeneralTableDiv").show();
+		//     }else{
+		//     	loadClustersFirstChannelPlannedTable(clusterName)
+		// 		firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
+		//     	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
+		//     	$(".groupsFirstChannelPlannedTableDiv").hide();
+		// 		$(".clustersFirstChannelPlannedTableDiv").show();
+		//     }
+
+
+		// 	$("#groupSelectFilterDiv").parent().hide();
+		// 	$("#clusterSelectFilterDiv").parent().show();
+		// }
 	});
 
 
 	function getAllGroups(){
 		$.ajax({
-			url : commonData.apiurl + "groups/" + clientName,
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			url : commonData.apiurl + "groups",
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
@@ -128,6 +128,7 @@ window.onload = function(){
 								firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelPlannedTableAPI;
 						    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelPlannedTableJQ;
 						    }
+						    // getAllResources(groupName);
 						}
 					});
 
@@ -140,54 +141,54 @@ window.onload = function(){
 		})
 	}
 
-	function getAllClusters(){
-		$.ajax({
-			// url : commonData.apiurl + "clusters/" + clientName,
-			url : "data/clusters.json",
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			async : false,
-			datatype : 'json',
-			complete : function(jqXHR, textstatus){
-				if(textstatus == "success"){
-					clusters = _.unique(jqXHR.responseJSON,'clusterName')
-					clusters = _.pluck(clusters,'clusterName')
-					var options = ""
-					$.each(clusters, function(index,value){
-						options += `<option value="`+value+`">`+value+`</option>`
-					});
-					$("#clusterSelectFilter").empty();
-					$("#clusterSelectFilter").append(options);
+	// function getAllClusters(){
+	// 	$.ajax({
+	// 		url : commonData.apiurl + "clusters",
+	// 		// url : "data/clusters.json",
+	// 		async : false,
+	// 		datatype : 'json',
+	// 		complete : function(jqXHR, textstatus){
+	// 			if(textstatus == "success"){
+	// 				clusters = _.unique(jqXHR.responseJSON,'clusterName')
+	// 				clusters = _.pluck(clusters,'clusterName')
+	// 				var options = ""
+	// 				$.each(clusters, function(index,value){
+	// 					options += `<option value="`+value+`">`+value+`</option>`
+	// 				});
+	// 				$("#clusterSelectFilter").empty();
+	// 				$("#clusterSelectFilter").append(options);
 					
-					$("#clusterSelectFilter").multipleSelect({
-						placeholder: "Select Cluster",
-						filter: true,
-						single : true,
-						onClick : function(view){
-							tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
-							groupName = view.value;
-							if(tabIndex == 0){
-								loadClustersFirstChannelGeneralTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
-						    }else{
-						    	loadClustersFirstChannelPlannedTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
-						    }
-						}
-					});
+	// 				$("#clusterSelectFilter").multipleSelect({
+	// 					placeholder: "Select Cluster",
+	// 					filter: true,
+	// 					single : true,
+	// 					onClick : function(view){
+	// 						tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
+	// 						groupName = view.value;
+	// 						if(tabIndex == 0){
+	// 							loadClustersFirstChannelGeneralTable(groupName)
+	// 							firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
+	// 					    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
+	// 					    }else{
+	// 					    	loadClustersFirstChannelPlannedTable(groupName)
+	// 							firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
+	// 					    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
+	// 					    }
+	// 					    getAllResources(grou);
+	// 					}
+	// 				});
 
-				}else if(textstatus == "error"){
-					if(jqXHR.responseText)
-						$.notify(jqXHR.responseText,'error')
-				}
-				console.log(jqXHR);
-			}
-		})
-	}
+	// 			}else if(textstatus == "error"){
+	// 				if(jqXHR.responseText)
+	// 					$.notify(jqXHR.responseText,'error')
+	// 			}
+	// 			console.log(jqXHR);
+	// 		}
+	// 	})
+	// }
 
 	getAllGroups();
-	getAllClusters();
+	// getAllClusters();
 	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 	loadGroupsFirstChannelGeneralTable(groupName)
 
@@ -200,17 +201,16 @@ window.onload = function(){
 
 		firstChannel.groupsFirstChannelGeneralTableAPI = $('#groupsFirstChannelGeneralTable').DataTable({
 	        "ajax" : {
-				// url : commonData.apiurl + "ch1_genGrp/" + clientName + "/" + groupName,
-				url : "data/ch1_genGrp.json",
-				// headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				url : commonData.apiurl + "shared/ch1_g/" + "NO" + "/" + groupName,
+				// url : "data/ch1_genGrp.json",
 				'async': 'false',
 				dataSrc : function(data){
-					groupName_temp = data[0].groupName;
-					$.each(data[0].data, function(index, value){
+					// groupName_temp = data[0].groupName;
+					$.each(data, function(index, value){
 						value.sno = index + 1;
-						value.groupName = groupName_temp;
+						value.groupName = groupName;
 					})
-					return data[0].data;
+					return data;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -245,7 +245,7 @@ window.onload = function(){
 	    	  		}, sortable : false
 	    	  	},
 	            { "data": "groupName" },
-	            { "data": "resourceName" },
+	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            { "data": "duration" },
 	            // { "data": "updatedBy" },
@@ -261,70 +261,69 @@ window.onload = function(){
     	// firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
 	}
 
-	function loadClustersFirstChannelGeneralTable(clusterName){
-		if(firstChannel.clustersFirstChannelGeneralTableJQ) {
-			firstChannel.clustersFirstChannelGeneralTableJQ.fnClearTable();
-			firstChannel.clustersFirstChannelGeneralTableJQ.fnDestroy();
-		}
+	// function loadClustersFirstChannelGeneralTable(clusterName){
+	// 	if(firstChannel.clustersFirstChannelGeneralTableJQ) {
+	// 		firstChannel.clustersFirstChannelGeneralTableJQ.fnClearTable();
+	// 		firstChannel.clustersFirstChannelGeneralTableJQ.fnDestroy();
+	// 	}
 
-		firstChannel.clustersFirstChannelGeneralTableAPI = $('#clustersFirstChannelGeneralTable').DataTable({
-	        "ajax" : {
-				// url : commonData.apiurl + "ch1_genDev/" + clientName + "/" + clusterName,
-				url : "data/ch1_genCluster.json",
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-				'async': 'false',
-				dataSrc : function(data){
-					clusterName_temp = data[0].clusterName;
-					$.each(data[0].data, function(index, value){
-						value.sno = index +1;
-						value.clusterName = clusterName_temp;
-					})
-					return data[0].data;
-				},
-				complete : function(jqXHR, textStatus){
-					if(textStatus == "success"){
-						// console.log(jqXHR)
-					}	
-					else if(textStatus == "error"){
-						if(jqXHR.responseText)
-							$.notify(jqXHR.responseText,'error')
-					}
-				},
-				error : function(jqXHR, textStatus, errorThrown){
-					firstChannel.clustersFirstChannelGeneralTableAPI.clear().draw();
-				}
-	 		},
-	 		keys : true,
-	        dataType: "json",
-	        // rowReorder: {
-	        //     dataSrc: 'sno'
-	        // },
-	        columns: [
-	        	{ data : "sno",
-	        		// className: 'reorder'
-	        	},
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableCheckbox">
-	        	  				<input type="checkbox">
-	        	  			</div>`;
-	    	  		}, sortable : false
-	    	  	},
-	            { "data": "clusterName" },
-	            { "data": "resourceName" },
-	            // { "data": "resourceType" },
-	            { "data": "duration" },
-	            // { "data": "updatedBy" },
-	            // { "data": "updatedAt" }
-	    	],
-	    	drawCallback : function(settings){
-	    		// $("#firstChannelGeneralTable tbody td:nth-child(1)").prepend('<div class="reorderHandler">::</div>')
-	    	}
-	    });
-	    firstChannel.clustersFirstChannelGeneralTableJQ = $('#clustersFirstChannelGeneralTable').dataTable();
+	// 	firstChannel.clustersFirstChannelGeneralTableAPI = $('#clustersFirstChannelGeneralTable').DataTable({
+	//         "ajax" : {
+	// 			url : commonData.apiurl + "ch1_genDev/" + clientName + "/" + clusterName,
+	// 			// url : "data/ch1_genCluster.json",
+	// 			'async': 'false',
+	// 			dataSrc : function(data){
+	// 				clusterName_temp = data[0].clusterName;
+	// 				$.each(data[0].data, function(index, value){
+	// 					value.sno = index +1;
+	// 					value.clusterName = clusterName_temp;
+	// 				})
+	// 				return data[0].data;
+	// 			},
+	// 			complete : function(jqXHR, textStatus){
+	// 				if(textStatus == "success"){
+	// 					// console.log(jqXHR)
+	// 				}	
+	// 				else if(textStatus == "error"){
+	// 					if(jqXHR.responseText)
+	// 						$.notify(jqXHR.responseText,'error')
+	// 				}
+	// 			},
+	// 			error : function(jqXHR, textStatus, errorThrown){
+	// 				firstChannel.clustersFirstChannelGeneralTableAPI.clear().draw();
+	// 			}
+	//  		},
+	//  		keys : true,
+	//         dataType: "json",
+	//         // rowReorder: {
+	//         //     dataSrc: 'sno'
+	//         // },
+	//         columns: [
+	//         	{ data : "sno",
+	//         		// className: 'reorder'
+	//         	},
+	//             { render : function(data, type, row){
+	//         	  	return `<div class="tableCheckbox">
+	//         	  				<input type="checkbox">
+	//         	  			</div>`;
+	//     	  		}, sortable : false
+	//     	  	},
+	//             { "data": "clusterName" },
+	//             { "data": "resourceName" },
+	//             // { "data": "resourceType" },
+	//             { "data": "duration" },
+	//             // { "data": "updatedBy" },
+	//             // { "data": "updatedAt" }
+	//     	],
+	//     	drawCallback : function(settings){
+	//     		// $("#firstChannelGeneralTable tbody td:nth-child(1)").prepend('<div class="reorderHandler">::</div>')
+	//     	}
+	//     });
+	//     firstChannel.clustersFirstChannelGeneralTableJQ = $('#clustersFirstChannelGeneralTable').dataTable();
 
-	    // firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
-    	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
-	}
+	//     // firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
+ //    	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
+	// }
 
 	function loadGroupsFirstChannelPlannedTable(groupName){
 		if(firstChannel.groupsFirstChannelPlannedTableJQ) {
@@ -334,17 +333,16 @@ window.onload = function(){
 
 	    firstChannel.groupsFirstChannelPlannedTableAPI = $('#groupsFirstChannelPlannedTable').DataTable({
 	        "ajax" : {
-				// url : commonData.apiurl + "ch1_planGrp/" + clientName + "/" + groupName,
-				url : "data/ch1_planGrp.json",
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				url : commonData.apiurl + "planned/ch1_p/" + "NO" + "/" + groupName,
+				// url : "data/ch1_planGrp.json",
 				'async': 'false',
 				dataSrc : function(data){
-					groupName_temp = data[0].groupName;
-					$.each(data[0].data, function(index, value){
+					// groupName_temp = data[0].groupName;
+					$.each(data, function(index, value){
 						value.sno = index +1;
-						value.groupName = groupName_temp;
+						value.groupName = groupName;
 					})
-					return data[0].data;
+					return data;
 
 					function old(){
 						startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
@@ -354,17 +352,17 @@ window.onload = function(){
 						while(ctr<=60){
 						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 						    obj = {};
-						    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
+						    obj.time = startTime.format('DD-MM-YYY_HH:mm')
 						    obj.sno = ctr+1;
 
-						    foundData =_.where(data[0].data,{startTime : obj.startTime})
-						    groupName_temp1 = data[0].groupName;
+						    foundData =_.where(data,{time : obj.time})
+						    // groupName_temp1 = data[0].groupName;
 						    if(foundData.length != 0){
 						    	foundData = foundData[0];
-							    obj.resourceName = foundData.resourceName;
+							    obj.resName = foundData.resName;
 							    // obj.resourceType = foundData.resourceType;
-							    obj.groupName = groupName_temp1;
-							    obj.clientName = clientName;
+							    obj.groupName = groupName;
+							    // obj.clientName = clientName;
 							    // obj.updatedBy = foundData.updatedBy;
 							    // obj.updatedAt = foundData.updatedAt;
 							 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
@@ -374,16 +372,16 @@ window.onload = function(){
 								// 	obj.resourceType = "video"
 								// }
 							}else{
-								obj.resourceName = ""
+								obj.resName = ""
 								// obj.resourceType = ""
-								obj.groupName = groupName_temp1;
-							    obj.clientName = clientName;
+								obj.groupName = groupName;
+							    // obj.clientName = clientName;
 							    // obj.updatedBy = "";
 							    // obj.updatedAt = "";
 							}
 
 						    
-						    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
+						    startTime.add(20,'minutes').format('DD-MM-YYYY_HH:mm')
 						    newData.push(obj);
 						    ctr++
 						}
@@ -422,13 +420,13 @@ window.onload = function(){
 	    	  		}, sortable : false
 	    	  	},
 	            { "data": "groupName" },
-	            { "data": "startTime"
+	            { "data": "time"
 	          //    ,
 	        		// render : function(data, type, row){
 	        		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
 	        		// }
 	        	},
-	            { "data": "resourceName" },
+	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            // { "data": "updatedBy" },
 	            // { "data": "updatedAt" },
@@ -446,127 +444,126 @@ window.onload = function(){
 
 	}
 
-	function loadClustersFirstChannelPlannedTable(clusterName){
-		if(firstChannel.clustersFirstChannelPlannedTableJQ) {
-			firstChannel.clustersFirstChannelPlannedTableJQ.fnClearTable();
-			firstChannel.clustersFirstChannelPlannedTableJQ.fnDestroy();
-		}
+	// function loadClustersFirstChannelPlannedTable(clusterName){
+	// 	if(firstChannel.clustersFirstChannelPlannedTableJQ) {
+	// 		firstChannel.clustersFirstChannelPlannedTableJQ.fnClearTable();
+	// 		firstChannel.clustersFirstChannelPlannedTableJQ.fnDestroy();
+	// 	}
 
-	    firstChannel.clustersFirstChannelPlannedTableAPI = $('#clustersFirstChannelPlannedTable').DataTable({
-	        "ajax" : {
-				// url : commonData.apiurl + "ch1_planDev/" + clientName + "/" + clusterName,
-				url : "data/ch1_planDev.json",
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-				'async': 'false',
-				dataSrc : function(data){
-					clusterName_temp = data[0].clusterName;
-					$.each(data[0].data, function(index, value){
-						value.sno = index +1;
-						value.clusterName = clusterName_temp;
-					})
-					return data[0].data;
+	//     firstChannel.clustersFirstChannelPlannedTableAPI = $('#clustersFirstChannelPlannedTable').DataTable({
+	//         "ajax" : {
+	// 			// url : commonData.apiurl + "ch1_planDev/" + clientName + "/" + clusterName,
+	// 			url : "data/ch1_planDev.json",
+	// 			'async': 'false',
+	// 			dataSrc : function(data){
+	// 				clusterName_temp = data[0].clusterName;
+	// 				$.each(data[0].data, function(index, value){
+	// 					value.sno = index +1;
+	// 					value.clusterName = clusterName_temp;
+	// 				})
+	// 				return data[0].data;
 
-					function old(){
-						startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
-						endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
-						var ctr = 0;
-						var newData = [];
-						while(ctr<=60){
-						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
-						    obj = {};
-						    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
-						    obj.sno = ctr+1;
+	// 				function old(){
+	// 					startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
+	// 					endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
+	// 					var ctr = 0;
+	// 					var newData = [];
+	// 					while(ctr<=60){
+	// 					    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
+	// 					    obj = {};
+	// 					    obj.startTime = startTime.format('DD-MM-YYYY HH:mm')
+	// 					    obj.sno = ctr+1;
 
-						    foundData =_.where(data[0].data,{startTime : obj.startTime})
-						    clusterName_temp1 = data[0].clusterName;
-						    if(foundData.length != 0){
-						    	foundData = foundData[0];
-							    obj.resourceName = foundData.resourceName;
-							    // obj.resourceType = foundData.resourceType;
-							    obj.clusterName = clusterName_temp1;
-							    obj.clientName = clientName;
-							    // obj.updatedBy = foundData.updatedBy;
-							    // obj.updatedAt = foundData.updatedAt;
-							 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
-								// 	obj.resourceType = "image"
-								// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
+	// 					    foundData =_.where(data[0].data,{startTime : obj.startTime})
+	// 					    clusterName_temp1 = data[0].clusterName;
+	// 					    if(foundData.length != 0){
+	// 					    	foundData = foundData[0];
+	// 						    obj.resourceName = foundData.resourceName;
+	// 						    // obj.resourceType = foundData.resourceType;
+	// 						    obj.clusterName = clusterName_temp1;
+	// 						    obj.clientName = clientName;
+	// 						    // obj.updatedBy = foundData.updatedBy;
+	// 						    // obj.updatedAt = foundData.updatedAt;
+	// 						 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
+	// 							// 	obj.resourceType = "image"
+	// 							// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
 									
-								// 	obj.resourceType = "video"
-								// }
-							}else{
-								obj.resourceName = ""
-								// obj.resourceType = ""
-								obj.clusterName = clusterName_temp1;
-							    obj.clientName = clientName;
-							    // obj.updatedBy = "";
-							    // obj.updatedAt = "";
-							}
+	// 							// 	obj.resourceType = "video"
+	// 							// }
+	// 						}else{
+	// 							obj.resourceName = ""
+	// 							// obj.resourceType = ""
+	// 							obj.clusterName = clusterName_temp1;
+	// 						    obj.clientName = clientName;
+	// 						    // obj.updatedBy = "";
+	// 						    // obj.updatedAt = "";
+	// 						}
 
 						    
-						    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
-						    newData.push(obj);
-						    ctr++
-						}
+	// 					    startTime.add(20,'minutes').format('DD-MM-YYYY HH:mm')
+	// 					    newData.push(obj);
+	// 					    ctr++
+	// 					}
 
-						// $.each(data, function(index, value){
-						// 	value.sno = index +1;
-						// })
-						return newData;
-				}
-				},
-				complete : function(jqXHR, textStatus){
-					if(textStatus == "success"){
-						// console.log(jqXHR)
-					}	
-					else if(textStatus == "error"){
-						if(jqXHR.responseText)
-							$.notify(jqXHR.responseText,'error')
-					}
-				},
-				error : function(jqXHR, textStatus, errorThrown){
-					firstChannel.clustersFirstChannelPlannedTableAPI.clear().draw();
-					// firstChannel.visibleTableAPI = undefined;
-			  //   	firstChannel.visibleTableJQ = undefined;
-			  //   	firstChannel.clustersFirstChannelPlannedTableAPI = undefined;
-    	// 			firstChannel.clustersFirstChannelPlannedTableJQ = undefined
-				}
-	 		},
-	 		keys : true,
-	        dataType: "json",
-	        columns: [
-	        	{ data : "sno"},
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableCheckbox">
-	        	  				<input type="checkbox">
-	        	  			</div>`;
-	    	  		}, sortable : false
-	    	  	},
-	            { "data": "clusterName" },
-	            { "data": "startTime"
-	          //    ,
-	        		// render : function(data, type, row){
-	        		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
-	        		// }
-	        	},
-	            { "data": "resourceName" },
-	            // { "data": "resourceType" },
-	            // { "data": "updatedBy" },
-	            // { "data": "updatedAt" },
-	      //       { render : function(data, type, row){
-	      //   	  	return `<div class="tableButtons">
-	      //   	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
-	      //   	  			</div>`;
-	      //   	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
-	    	 //  		},
-	    	 //  		sortable : false
-	    		// }
-	    	]
-	    });
-	    firstChannel.clustersFirstChannelPlannedTableJQ = $('#clustersFirstChannelPlannedTable').dataTable();
+	// 					// $.each(data, function(index, value){
+	// 					// 	value.sno = index +1;
+	// 					// })
+	// 					return newData;
+	// 			}
+	// 			},
+	// 			complete : function(jqXHR, textStatus){
+	// 				if(textStatus == "success"){
+	// 					// console.log(jqXHR)
+	// 				}	
+	// 				else if(textStatus == "error"){
+	// 					if(jqXHR.responseText)
+	// 						$.notify(jqXHR.responseText,'error')
+	// 				}
+	// 			},
+	// 			error : function(jqXHR, textStatus, errorThrown){
+	// 				firstChannel.clustersFirstChannelPlannedTableAPI.clear().draw();
+	// 				// firstChannel.visibleTableAPI = undefined;
+	// 		  //   	firstChannel.visibleTableJQ = undefined;
+	// 		  //   	firstChannel.clustersFirstChannelPlannedTableAPI = undefined;
+ //    	// 			firstChannel.clustersFirstChannelPlannedTableJQ = undefined
+	// 			}
+	//  		},
+	//  		keys : true,
+	//         dataType: "json",
+	//         columns: [
+	//         	{ data : "sno"},
+	//             { render : function(data, type, row){
+	//         	  	return `<div class="tableCheckbox">
+	//         	  				<input type="checkbox">
+	//         	  			</div>`;
+	//     	  		}, sortable : false
+	//     	  	},
+	//             { "data": "clusterName" },
+	//             { "data": "startTime"
+	//           //    ,
+	//         		// render : function(data, type, row){
+	//         		// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
+	//         		// }
+	//         	},
+	//             { "data": "resourceName" },
+	//             // { "data": "resourceType" },
+	//             // { "data": "updatedBy" },
+	//             // { "data": "updatedAt" },
+	//       //       { render : function(data, type, row){
+	//       //   	  	return `<div class="tableButtons">
+	//       //   	  				<button class="btn btn-info btn-xs editResource"><i class="fa fa-eraser" style="font-size: 8px;"></i></button>
+	//       //   	  			</div>`;
+	//       //   	  				// <button class="btn btn-danger btn-xs deleteCluster"><i class="fa fa-minus" style="font-size: 8px;"></i></button>
+	//     	 //  		},
+	//     	 //  		sortable : false
+	//     		// }
+	//     	]
+	//     });
+	//     firstChannel.clustersFirstChannelPlannedTableJQ = $('#clustersFirstChannelPlannedTable').dataTable();
 
-	    // firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
-    	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
-	}
+	//     // firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelPlannedTableAPI;
+ //    	// firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelPlannedTableJQ;
+	// }
 
     firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
 	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
@@ -583,13 +580,13 @@ window.onload = function(){
 			    	firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
 			    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
     			}else{
-    				clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-    				$(".groupsFirstChannelGeneralTableDiv").hide();
-					$(".clustersFirstChannelGeneralTableDiv").show();
-					loadClustersFirstChannelGeneralTable(clusterName)
+    	// 			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+    	// 			$(".groupsFirstChannelGeneralTableDiv").hide();
+					// $(".clustersFirstChannelGeneralTableDiv").show();
+					// loadClustersFirstChannelGeneralTable(clusterName)
 
-    				firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
-			    	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
+    	// 			firstChannel.visibleTableAPI = firstChannel.clustersFirstChannelGeneralTableAPI;
+			  //   	firstChannel.visibleTableJQ = firstChannel.clustersFirstChannelGeneralTableJQ;
     			}
 		    	// $("#clearSelectedslotsButton").hide()
 		    	// $("#addNewResourceButton").show()
@@ -640,21 +637,21 @@ window.onload = function(){
 	});
 
 
-	$('#clustersFirstChannelGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
-		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
-	});
+	// $('#clustersFirstChannelGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
+	// 	openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
+	// });
 
-	$('#clustersFirstChannelPlannedTable tbody').on('click','td:nth-child(4)',function(evt){
-		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
-	});
+	// $('#clustersFirstChannelPlannedTable tbody').on('click','td:nth-child(4)',function(evt){
+	// 	openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
+	// });
 
-	$('#clustersFirstChannelPlannedTable tbody').on('click','td:nth-child(5)',function(evt){
-		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
-	});
+	// $('#clustersFirstChannelPlannedTable tbody').on('click','td:nth-child(5)',function(evt){
+	// 	openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
+	// });
 
-	$('#clustersFirstChannelGeneralTable tbody').on('click','td:nth-child(5)',function(evt){
-		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
-	});
+	// $('#clustersFirstChannelGeneralTable tbody').on('click','td:nth-child(5)',function(evt){
+	// 	openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
+	// });
 
 	$("#deleteSelectedresourcesButton").off('click').on('click',function(evt){
 		page = firstChannel.visibleTableAPI.page.info().page;
@@ -670,7 +667,7 @@ window.onload = function(){
 		})
 		$.each(deleteRowsIndexes, function(index,value){
 			firstChannel.visibleTableJQ.fnDeleteRow(value-index, function(lg){
-				console.log(lg)
+				// console.log(lg)
 			});
 		})
 		commonData.updateSerialNo(firstChannel.visibleTableAPI);
@@ -712,12 +709,12 @@ window.onload = function(){
 		}
 	});
 
-	$("#clustersFirstChannelGeneralTable").off('keyup').on('keyup', function(event){
-		if(event.keyCode == 32){
-			trgt = $("#clustersFirstChannelGeneralTable tbody td.focus").closest('tr').find('.tableCheckbox input')
-			trgt.click();
-		}
-	});
+	// $("#clustersFirstChannelGeneralTable").off('keyup').on('keyup', function(event){
+	// 	if(event.keyCode == 32){
+	// 		trgt = $("#clustersFirstChannelGeneralTable tbody td.focus").closest('tr').find('.tableCheckbox input')
+	// 		trgt.click();
+	// 	}
+	// });
 
 	$("#groupsFirstChannelPlannedTable").off('keyup').on('keyup', function(event){
 		if(event.keyCode == 32){
@@ -726,12 +723,12 @@ window.onload = function(){
 		}
 	});
 
-	$("#clustersFirstChannelPlannedTable").off('keyup').on('keyup', function(event){
-		if(event.keyCode == 32){
-			trgt = $("#clustersFirstChannelPlannedTable tbody td.focus").closest('tr').find('.tableCheckbox input')
-			trgt.click();
-		}
-	});
+	// $("#clustersFirstChannelPlannedTable").off('keyup').on('keyup', function(event){
+	// 	if(event.keyCode == 32){
+	// 		trgt = $("#clustersFirstChannelPlannedTable tbody td.focus").closest('tr').find('.tableCheckbox input')
+	// 		trgt.click();
+	// 	}
+	// });
 
 
 	// this will clear the planned tab;le
@@ -784,8 +781,8 @@ window.onload = function(){
 		                        										'<span class="glyphicon glyphicon-calendar"></span>'+
 		                    										'</span>'+
 		                    									'</div>')	
-				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY HH:mm',stepping:20,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
-				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY HH:mm"));
+				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY_HH:mm',stepping:20,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
+				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY_HH:mm"));
 				
 				
 				$("#" + visibleTableJQ[0].id).off('keyup').on('keyup', function(evt){
@@ -798,7 +795,7 @@ window.onload = function(){
 				});
 
 				$(".window-mask").off('click').on('click',function(){
-					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY HH:mm');
+					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY_HH:mm');
 					text = ''
 					commonData.updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, startTime, '', 0);
 				})
@@ -957,23 +954,24 @@ window.onload = function(){
 
 			}
 			// visibleTableAPI.cell(rowNo,4).data(resourceType)
-		}else if(visibleTableJQ[0].id == "clustersFirstChannelGeneralTable"){
-			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,3).data(resourceName)
-				// visibleTableAPI.cell(rowNo,3).data(resourceType)
-			}
-			if(duration != 0)
-				visibleTableAPI.cell(rowNo,4).data(duration)
-		}else if(visibleTableJQ[0].id == "clustersFirstChannelPlannedTable"){
-			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,4).data(resourceName)
-				// visibleTableAPI.cell(rowNo,4).data(resourceType)
-			}
-			if(startTime != ""){
-				visibleTableAPI.cell(rowNo,3).data(startTime)
-
-			}
 		}
+		// else if(visibleTableJQ[0].id == "clustersFirstChannelGeneralTable"){
+		// 	if(resourceName != ""){
+		// 		visibleTableAPI.cell(rowNo,3).data(resourceName)
+		// 		// visibleTableAPI.cell(rowNo,3).data(resourceType)
+		// 	}
+		// 	if(duration != 0)
+		// 		visibleTableAPI.cell(rowNo,4).data(duration)
+		// }else if(visibleTableJQ[0].id == "clustersFirstChannelPlannedTable"){
+		// 	if(resourceName != ""){
+		// 		visibleTableAPI.cell(rowNo,4).data(resourceName)
+		// 		// visibleTableAPI.cell(rowNo,4).data(resourceType)
+		// 	}
+		// 	if(startTime != ""){
+		// 		visibleTableAPI.cell(rowNo,3).data(startTime)
+
+		// 	}
+		// }
 
 		commonData.updateSerialNo(visibleTableAPI);
 
@@ -993,41 +991,42 @@ window.onload = function(){
 	$("#addNewResourceButton").off('click').on('click',function(evt){
 		recordsTotal = firstChannel.visibleTableAPI.page.info().recordsTotal;
 
-		if(!firstChannel.resources || firstChannel.resources.length == 0){
-			$.notify('No resource available.','error')
-		}else{
-			var resourceType = 'image'
-			if(firstChannel.resources[0].split('.')[1].toUpperCase() == "JPG" || firstChannel.resources[0].split('.')[1].toUpperCase() == "JPEG"){
-				resourceType = 'image'
-			}else if(firstChannel.resources[0].split('.')[1].toUpperCase() == "MP4" || firstChannel.resources[0].split('.')[1].toUpperCase() == "WEBM"){
-				resourceType = 'video'
-			}
+		// if(!firstChannel.resources || firstChannel.resources.length == 0){
+		// 	$.notify('No resource available.','error')
+		// }else{
+			// var resourceType = 'image'
+			// if(firstChannel.resources[0].split('.')[1].toUpperCase() == "JPG" || firstChannel.resources[0].split('.')[1].toUpperCase() == "JPEG"){
+			// 	resourceType = 'image'
+			// }else if(firstChannel.resources[0].split('.')[1].toUpperCase() == "MP4" || firstChannel.resources[0].split('.')[1].toUpperCase() == "WEBM"){
+			// 	resourceType = 'video'
+			// }
 			dt = {};
 			if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelGeneralTable'){
 				groupOrClusterKey = "groupName";
 		    	groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-		    	dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  duration : 5};
+		    	dt = {sno :  recordsTotal + 1,resName : "",  duration : 5};
 			}
-			if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelGeneralTable'){
-				groupOrClusterKey = "clusterName";
-				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-				dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  duration : 5};
-			}
+			// if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelGeneralTable'){
+			// 	groupOrClusterKey = "clusterName";
+			// 	groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+			// 	dt = {sno :  recordsTotal + 1,resName : "",  duration : 5};
+			// }
 
 			if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelPlannedTable'){
 				groupOrClusterKey = "groupName";
 				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
-				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY HH:mm')
-				dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  startTime : startTime};
+				startTime = new moment(new Date()).subtract(remainder,'minutes').add('minutes',20).format('DD-MM-YYYY_HH:mm')
+				// startTime.add('minutes',20);
+				dt = {sno :  recordsTotal + 1,resName : "",  time : startTime};
 			}
-			if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelPlannedTable'){
-				groupOrClusterKey = "clusterName";
-				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-				remainder = new moment(new Date()).minutes()%20
-				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY HH:mm')
-				dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0],  startTime : startTime};
-			}
+			// if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelPlannedTable'){
+			// 	groupOrClusterKey = "clusterName";
+			// 	groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+			// 	remainder = new moment(new Date()).minutes()%20
+			// 	startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY HH:mm')
+			// 	dt = {sno :  recordsTotal + 1,resName : "",  time : startTime};
+			// }
 
 
 			// dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0], resourceType : resourceType, duration : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
@@ -1039,69 +1038,68 @@ window.onload = function(){
 
 			$(firstChannel.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeOut();
 			$(firstChannel.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeIn();
-		}
+		// }
 	})
 
 
 	$("#saveResourcesButton").off('click').on('click',function(evt){
 		firstChannelDataArray = firstChannel.visibleTableJQ.fnGetData();
-		postData = {}
-		groupOrClusterNameFromTable = firstChannelDataArray[0].groupName;
-		if(typeof(groupOrClusterNameFromTable) == 'undefined'){
-			groupOrClusterNameFromTable = firstChannelDataArray[0].clusterName;
-			postData.clusterName = groupOrClusterNameFromTable;
-		}else{
-			postData.groupName = groupOrClusterNameFromTable;
-		}
+		// postData = {}
+		// groupOrClusterNameFromTable = firstChannelDataArray[0].groupName;
+		// if(typeof(groupOrClusterNameFromTable) == 'undefined'){
+		// 	groupOrClusterNameFromTable = firstChannelDataArray[0].clusterName;
+		// 	// postData.clusterName = groupOrClusterNameFromTable;
+		// }else{
+		// 	// postData.groupName = groupOrClusterNameFromTable;
+		// }
 		
 		firstChannelDataArray = _.filter(firstChannelDataArray,function(value){
-			return value.resourceName != ""
+			return value.resName != ""
 		})
 		if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelGeneralTable'){
 			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'ch1_genGrp' + "/" + clientName + "/" + groupName
+			url = commonData.apiurl + 'shared/ch1_g' + "/" + "NO" + "/" + groupName
 		}
-		if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelGeneralTable'){
-			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'ch1_genDev' + "/" + clientName + "/" + clusterName
-		}
+		// if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelGeneralTable'){
+		// 	clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+		// 	url = commonData.apiurl + 'ch1_genDev' + "/" + clientName + "/" + clusterName
+		// }
 
 		if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelPlannedTable'){
 			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'ch1_planGrp' + "/" + clientName + "/" + groupName
+			url = commonData.apiurl + 'planned/ch1_p' + "/" + "NO" + "/" + groupName
 		}
-		if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelPlannedTable'){
-			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-			url = commonData.apiurl + 'ch1_planDev' + "/" + clientName + "/" + clusterName
-		}
+		// if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelPlannedTable'){
+		// 	clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+		// 	url = commonData.apiurl + 'ch1_planDev' + "/" + clientName + "/" + clusterName
+		// }
 
 
     	firstChannelDataArray = _.map(firstChannelDataArray, function(model) {
 			return _.omit(model, 'sno','groupName','clusterName');
 		});
-		postData.data = firstChannelDataArray;
+		// postData.data = firstChannelDataArray;
 
 		$.ajax({
 			  type: "POST",
 			  async : false,
 			  url: url,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  data: JSON.stringify([postData]),
+			  data: JSON.stringify(firstChannelDataArray),
 			  success: function(data){
 			  	$.notify('Success','success')
 			  	firstChannel.visibleTableAPI.ajax.reload();
-			  	checkIfAnyUpdate(function(result){
-			  		if(result == true){
-			  			$(parent.document.body).find('#updateFirebaseButton').show();
-			  			$(parent.document.body).find('#updateFirebaseError').hide();
-			  		}else if(result == false){
-			  			$(parent.document.body).find('#updateFirebaseButton').hide();
-			  			$(parent.document.body).find('#updateFirebaseError').hide();
-			  		}else{
-			  			$(parent.document.body).find('#updateFirebaseButton').hide();
-			  			$(parent.document.body).find('#updateFirebaseError').show();
-			  		}
-			  	})
+			  	// checkIfAnyUpdate(function(result){
+			  	// 	if(result == true){
+			  	// 		$(parent.document.body).find('#updateFirebaseButton').show();
+			  	// 		$(parent.document.body).find('#updateFirebaseError').hide();
+			  	// 	}else if(result == false){
+			  	// 		$(parent.document.body).find('#updateFirebaseButton').hide();
+			  	// 		$(parent.document.body).find('#updateFirebaseError').hide();
+			  	// 	}else{
+			  	// 		$(parent.document.body).find('#updateFirebaseButton').hide();
+			  	// 		$(parent.document.body).find('#updateFirebaseError').show();
+			  	// 	}
+			  	// })
 			  	// campaigns.groupsCampaignsTableAPI.ajax.reload(function(){
 					// $('#addNewResourceDialog').dialog('close');
 				  	// recordsTotal = resources.resourcesTableAPI.page.info().recordsTotal;

@@ -214,6 +214,18 @@ input[type=search]::-webkit-search-cancel-button {
   
 }
 
+li.disabled:hover {
+    background-color: grey;
+    cursor: not-allowed;
+
+}
+
+li.disabled {
+    padding: 8px;
+    margin-bottom: 7px;
+    background-color: grey;
+}
+
 @keyframes popout {
     from{transform:scale(1)}
     80%{transform:scale(1.1)}

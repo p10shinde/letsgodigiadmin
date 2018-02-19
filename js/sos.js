@@ -53,8 +53,7 @@ window.onload = function(){
 
 	function getAllGroups(){
 		$.ajax({
-			url : commonData.apiurl + "groups/" + clientName,
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			url : commonData.apiurl + "groups",
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
@@ -92,9 +91,8 @@ window.onload = function(){
 
 	function getAllClusters(){
 		$.ajax({
-			// url : commonData.apiurl + "clusters/" + clientName,
-			url : "data/clusters.json",
-			headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+			url : commonData.apiurl + "clusters",
+			// url : "data/clusters.json",
 			async : false,
 			datatype : 'json',
 			complete : function(jqXHR, textstatus){
@@ -143,18 +141,17 @@ window.onload = function(){
 
 		sos.groupsSosTableAPI = $('#groupsSosTable').DataTable({
 	        "ajax" : {
-				// url : commonData.apiurl + "sosGrp/" + clientName + "/" + groupName,
-				url : "data/sosGrp.json",
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+				url : commonData.apiurl + "planned/sos/" + "NO" + "/" + groupName,
+				// url : "data/sosGrp.json",
 				'async': 'false',
 				dataSrc : function(data){
 					// sno = 1;
-					groupName_temp = data[0].groupName;
-					$.each(data[0].data, function(index, value){
+					// groupName_temp = data[0].groupName;
+					$.each(data, function(index, value){
 						value.sno = index +1;
-						value.groupName = groupName_temp;
+						value.groupName = groupName;
 					})
-					return data[0].data;
+					return data;
 				},
 				complete : function(jqXHR, textStatus){
 					if(textStatus == "success"){
@@ -180,7 +177,7 @@ window.onload = function(){
 	    	  		}, sortable : false
 	    	  	},
 	            { "data": "groupName" },
-	            { "data": "startTime" ,
+	            { "data": "time" ,
 	        		// render : function(data, type, row){
 	        		// 	return new moment(data).format('DD-MM-YYYY HH:mm')
 	        		// }
@@ -194,64 +191,63 @@ window.onload = function(){
 	    sos.groupsSosTableJQ = $('#groupsSosTable').dataTable()
 	}
 
-	function loadClustersSosTable(clusterName){
-		if(sos.clustersSosTableJQ) {
-			sos.clustersSosTableJQ.fnClearTable();
-			sos.clustersSosTableJQ.fnDestroy();
-		}
+	// function loadClustersSosTable(clusterName){
+	// 	if(sos.clustersSosTableJQ) {
+	// 		sos.clustersSosTableJQ.fnClearTable();
+	// 		sos.clustersSosTableJQ.fnDestroy();
+	// 	}
 
-	    sos.clustersSosTableAPI = $('#clustersSosTable').DataTable({
-	        "ajax" : {
-				// url : commonData.apiurl + "sosDev/" + clientName + "/" + clusterName,
-				url : "data/sosCluster.json",
-				headers: {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-				'async': 'false',
-				dataSrc : function(data){
-					// sno = 1;
-					clusterName_temp = data[0].clusterName;
-					$.each(data[0].data, function(index, value){
-						value.sno = index +1;
-						value.clusterName = clusterName_temp;
-					})
-					return data[0].data;
-				},
-				complete : function(jqXHR, textStatus){
-					if(textStatus == "success"){
-						// console.log(jqXHR)
-					}	
-					else if(textStatus == "error"){
-						if(jqXHR.responseText)
-							$.notify(jqXHR.responseText,'error')
-					}
-				},
-				error : function(jqXHR, textStatus, errorThrown){
-					sos.clustersSosTableAPI.clear().draw();
-				}
-	 		},
-	 		keys : true,
-	        dataType: "json",
-	        columns: [
-	        	{ data : "sno"},
-	            { render : function(data, type, row){
-	        	  	return `<div class="tableCheckbox">
-	        	  				<input type="checkbox">
-	        	  			</div>`;
-	    	  		}, sortable : false
-	    	  	},
-	            { "data": "clusterName" },
-	            { "data": "startTime" ,
-	        		// render : function(data, type, row){
-	        		// 	return new moment(data).format('DD-MM-YYYY HH:mm')
-	        		// }
-	        	},
-	            { "data": "text" },
-	            // { "data": "updatedBy" },
-	            // { "data": "updatedAt" }
-	    	]
-	    });
+	//     sos.clustersSosTableAPI = $('#clustersSosTable').DataTable({
+	//         "ajax" : {
+	// 			// url : commonData.apiurl + "sosDev/" + clientName + "/" + clusterName,
+	// 			url : "data/sosCluster.json",
+	// 			'async': 'false',
+	// 			dataSrc : function(data){
+	// 				// sno = 1;
+	// 				clusterName_temp = data[0].clusterName;
+	// 				$.each(data[0].data, function(index, value){
+	// 					value.sno = index +1;
+	// 					value.clusterName = clusterName_temp;
+	// 				})
+	// 				return data[0].data;
+	// 			},
+	// 			complete : function(jqXHR, textStatus){
+	// 				if(textStatus == "success"){
+	// 					// console.log(jqXHR)
+	// 				}	
+	// 				else if(textStatus == "error"){
+	// 					if(jqXHR.responseText)
+	// 						$.notify(jqXHR.responseText,'error')
+	// 				}
+	// 			},
+	// 			error : function(jqXHR, textStatus, errorThrown){
+	// 				sos.clustersSosTableAPI.clear().draw();
+	// 			}
+	//  		},
+	//  		keys : true,
+	//         dataType: "json",
+	//         columns: [
+	//         	{ data : "sno"},
+	//             { render : function(data, type, row){
+	//         	  	return `<div class="tableCheckbox">
+	//         	  				<input type="checkbox">
+	//         	  			</div>`;
+	//     	  		}, sortable : false
+	//     	  	},
+	//             { "data": "clusterName" },
+	//             { "data": "startTime" ,
+	//         		// render : function(data, type, row){
+	//         		// 	return new moment(data).format('DD-MM-YYYY HH:mm')
+	//         		// }
+	//         	},
+	//             { "data": "text" },
+	//             // { "data": "updatedBy" },
+	//             // { "data": "updatedAt" }
+	//     	]
+	//     });
 
-	    sos.clustersSosTableJQ = $('#clustersSosTable').dataTable()
-	}
+	//     sos.clustersSosTableJQ = $('#clustersSosTable').dataTable()
+	// }
 
 	// // keep the dialog box in center when user changes orientation or resizes the window
 	// $("#EditorPanel").panel({
@@ -282,7 +278,7 @@ window.onload = function(){
 
     	recordsTotal = visibleTableAPI.page.info().recordsTotal;
 
-    	dt = {text : "",startTime : new moment().add(5,'minutes').format("DD-MM-YYYY HH:mm")};
+    	dt = {text : "",time : new moment().add(5,'minutes').format("DD-MM-YYYY_HH:mm")};
     	dt[groupOrClusterKey] = groupOrCluster;
     	dt["sno"] = recordsTotal + 1;
 
@@ -344,12 +340,12 @@ window.onload = function(){
 		                        										'<span class="glyphicon glyphicon-calendar"></span>'+
 		                    										'</span>'+
 		                    									'</div>')	
-				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY HH:mm',minDate : new moment(),maxDate : new moment().add(1,'days').endOf('day')});
-				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY HH:mm"));
+				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY_HH:mm',minDate : new moment(),maxDate : new moment().add(1,'days').endOf('day')});
+				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY_HH:mm"));
 				
 
 				$(".window-mask").off('click').on('click',function(){
-					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY HH:mm');
+					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY_HH:mm');
 					text = ''
 					updateTableWithNewRecord(sos.visibleTableAPI, sos.visibleTableJQ, startTime, text);
 				})
@@ -434,7 +430,6 @@ window.onload = function(){
 		// 		    url: commonData.apiurl + "sosGrp/" + clientName + "/" + groupName + "/" + startTime,
 		// 		    type: 'DELETE',
 		// 		    "async" : false,
-		// 		    headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 		// 		    success: function(result) {
 				        
 		// 		    },
@@ -452,7 +447,6 @@ window.onload = function(){
 		// 		    url: commonData.apiurl + "sosDev/" + clientName + "/" + clusterName + "/" + startTime,
 		// 		    type: 'DELETE',
 		// 		    "async" : false,
-		// 		    headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
 		// 		    success: function(result) {
 				        
 		// 		    },
@@ -517,30 +511,29 @@ window.onload = function(){
 	$("#saveSosButton").off('click').on('click', function(evt){
 		// groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 		sosDataArray = sos.visibleTableJQ.fnGetData(); 
-    	postData = {}
-		groupOrClusterNameFromTable = sosDataArray[0].groupName;
-		if(typeof(groupOrClusterNameFromTable) == 'undefined'){
-			groupOrClusterNameFromTable = sosDataArray[0].clusterName;
-			postData.clusterName = groupOrClusterNameFromTable;
-		}else{
-			postData.groupName = groupOrClusterNameFromTable;
-		}
+  //   	postData = {}
+		// groupOrClusterNameFromTable = sosDataArray[0].groupName;
+		// if(typeof(groupOrClusterNameFromTable) == 'undefined'){
+		// 	groupOrClusterNameFromTable = sosDataArray[0].clusterName;
+		// 	postData.clusterName = groupOrClusterNameFromTable;
+		// }else{
+		// 	postData.groupName = groupOrClusterNameFromTable;
+		// }
 		
 
 		sosDataArray = _.map(sosDataArray, function(model){
 			return _.omit(model,'sno','groupName','clusterName','clientName');
     	})
 
-		postData.data = sosDataArray;
+		// postData.data = sosDataArray;
 
-		if(sos.visibleTableJQ.attr('id') == "groupsSosTable"){
+		// if(sos.visibleTableJQ.attr('id') == "groupsSosTable"){
 
 			$.ajax({
 			  type: "POST",
 			  async : false,
-			  url: commonData.apiurl + 'sosGrp' + "/" + clientName + "/" + groupName,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  data: JSON.stringify([postData]),
+			  url: commonData.apiurl + 'planned/sos' + "/" + "NO" + "/" + groupName,
+			  data: JSON.stringify(sosDataArray),
 			  success: function(data){
 			  	$.notify('Success','success')
 			  	sos.groupsSosTableAPI.ajax.reload(function(){
@@ -550,18 +543,18 @@ window.onload = function(){
 				  	// $(clients.clientsTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeOut();
 					// $(clients.clientsTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeIn();
 			  	});
-			  	checkIfAnyUpdate(function(result){
-		  		if(result == true){
-		  			$(parent.document.body).find('#updateFirebaseButton').show();
-		  			$(parent.document.body).find('#updateFirebaseError').hide();
-		  		}else if(result == false){
-		  			$(parent.document.body).find('#updateFirebaseButton').hide();
-		  			$(parent.document.body).find('#updateFirebaseError').hide();
-		  		}else{
-		  			$(parent.document.body).find('#updateFirebaseButton').hide();
-		  			$(parent.document.body).find('#updateFirebaseError').show();
-		  		}
-		  	})
+			  // 	checkIfAnyUpdate(function(result){
+		  	// 	if(result == true){
+		  	// 		$(parent.document.body).find('#updateFirebaseButton').show();
+		  	// 		$(parent.document.body).find('#updateFirebaseError').hide();
+		  	// 	}else if(result == false){
+		  	// 		$(parent.document.body).find('#updateFirebaseButton').hide();
+		  	// 		$(parent.document.body).find('#updateFirebaseError').hide();
+		  	// 	}else{
+		  	// 		$(parent.document.body).find('#updateFirebaseButton').hide();
+		  	// 		$(parent.document.body).find('#updateFirebaseError').show();
+		  	// 	}
+		  	// })
 			  },
 			  error : function(jqXHR, textStatus){
 		 		if(jqXHR.responseText)
@@ -570,50 +563,50 @@ window.onload = function(){
 			  dataType: 'json',
 			  contentType: "application/json",
 			});
-		}else{
-			// clusters post
-			// clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-			// sosDataArray = sos.clustersSosTableJQ.fnGetData(); 
-			// sosDataArray = _.map(sosDataArray, function(model){
-	  //   		return _.omit(model, 'updatedBy','updatedAt','sno','clusterName','groupName',);
-	  //   	})
+		// }
+		// else{
+		// 	// clusters post
+		// 	// clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+		// 	// sosDataArray = sos.clustersSosTableJQ.fnGetData(); 
+		// 	// sosDataArray = _.map(sosDataArray, function(model){
+	 //  //   		return _.omit(model, 'updatedBy','updatedAt','sno','clusterName','groupName',);
+	 //  //   	})
 
-			$.ajax({
-			  type: "POST",
-			  async : false,
-			  url: commonData.apiurl + 'sosDev' + "/" + clientName + "/" + clusterName,
-			  headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-			  data: JSON.stringify([postData]),
-			  success: function(data){
-			  	$.notify('Success','success')
-			  	sos.clustersSosTableAPI.ajax.reload(function(){
-					// $('#addNewResourceDialog').dialog('close');
-				  	// recordsTotal = resources.resourcesTableAPI.page.info().recordsTotal;
-				  	// resources.resourcesTableAPI.page( 'first' ).draw( 'page' );
-				  	// $(clients.clientsTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeOut();
-					// $(clients.clientsTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeIn();
-			  	});
-			  	checkIfAnyUpdate(function(result){
-		  		if(result == true){
-		  			$(parent.document.body).find('#updateFirebaseButton').show();
-		  			$(parent.document.body).find('#updateFirebaseError').hide();
-		  		}else if(result == false){
-		  			$(parent.document.body).find('#updateFirebaseButton').hide();
-		  			$(parent.document.body).find('#updateFirebaseError').hide();
-		  		}else{
-		  			$(parent.document.body).find('#updateFirebaseButton').hide();
-		  			$(parent.document.body).find('#updateFirebaseError').show();
-		  		}
-		  	})
-			  },
-			  error : function(jqXHR, textStatus){
-		 		if(jqXHR.responseText)
-					$.notify(jqXHR.responseText,'error')
-			  },
-			  dataType: 'json',
-			  contentType: "application/json",
-			});
-		}
+		// 	$.ajax({
+		// 	  type: "POST",
+		// 	  async : false,
+		// 	  url: commonData.apiurl + 'sosDev' + "/" + clientName + "/" + clusterName,
+		// 	  data: JSON.stringify([postData]),
+		// 	  success: function(data){
+		// 	  	$.notify('Success','success')
+		// 	  	sos.clustersSosTableAPI.ajax.reload(function(){
+		// 			// $('#addNewResourceDialog').dialog('close');
+		// 		  	// recordsTotal = resources.resourcesTableAPI.page.info().recordsTotal;
+		// 		  	// resources.resourcesTableAPI.page( 'first' ).draw( 'page' );
+		// 		  	// $(clients.clientsTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeOut();
+		// 			// $(clients.clientsTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeIn();
+		// 	  	});
+		// 	  	checkIfAnyUpdate(function(result){
+		//   		if(result == true){
+		//   			$(parent.document.body).find('#updateFirebaseButton').show();
+		//   			$(parent.document.body).find('#updateFirebaseError').hide();
+		//   		}else if(result == false){
+		//   			$(parent.document.body).find('#updateFirebaseButton').hide();
+		//   			$(parent.document.body).find('#updateFirebaseError').hide();
+		//   		}else{
+		//   			$(parent.document.body).find('#updateFirebaseButton').hide();
+		//   			$(parent.document.body).find('#updateFirebaseError').show();
+		//   		}
+		//   	})
+		// 	  },
+		// 	  error : function(jqXHR, textStatus){
+		//  		if(jqXHR.responseText)
+		// 			$.notify(jqXHR.responseText,'error')
+		// 	  },
+		// 	  dataType: 'json',
+		// 	  contentType: "application/json",
+		// 	});
+		// }
 	})
 
 

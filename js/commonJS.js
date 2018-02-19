@@ -1,3 +1,4 @@
+disabledChannels = ['Second Channel','Full Screen','Groups','Clients','Users','Advertisers','Clusters','Devices']
 $.ajaxSetup({
     beforeSend: function(xhr) {
         xhr.setRequestHeader('token', sessionStorage.id_token);
@@ -19,7 +20,24 @@ commonData.image = sessionStorage.image;
 commonData.id_token = sessionStorage.id_token;
 
 var clientName = sessionStorage.clientName;
-	
+
+function configureView(usertype){
+	_channels = $("#channelMenu li");
+
+	if(usertype == 'SuperAdmin'){
+
+	}else if(usertype === 'Society'){
+		_.map(_channels,function(key,value){
+			if(_.contains(disabledChannels,key.innerText)){
+				key.className ='disabled'
+			}
+		})
+
+		$("#resourcesTabs").tabs('disableTab', 1);
+	}
+}
+
+
 	// function checkIfAnyUpdate(callback){
 	// 	$.ajax({
 	// 		url : commonData.apiurl + "anyUpdate/" + clientName,
@@ -50,26 +68,26 @@ var clientName = sessionStorage.clientName;
  //  		}
  //  	})
 
-	$(parent.document.body).find('#updateFirebaseButton').off('click').on('click', function(evt){
-		$.ajax({
-			type: "POST",
-		  	async : false,
-		  	url: commonData.apiurl + 'firebase/' + 'all',
-		  	headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
-		  	// data: JSON.stringify([resourceDataObj]),
-		  	complete : function(jqXHR, textstatus){
-				if(textstatus == "success"){
-					$(parent.document.body).find('#updateFirebaseButton').hide();
-		  			$(parent.document.body).find('#updateFirebaseError').hide();
-				}else if(textstatus == "error"){
+	// $(parent.document.body).find('#updateFirebaseButton').off('click').on('click', function(evt){
+	// 	$.ajax({
+	// 		type: "POST",
+	// 	  	async : false,
+	// 	  	url: commonData.apiurl + 'firebase/' + 'all',
+	// 	  	headers : {"Authorization": "Basic " + btoa(commonData.username + ":" + commonData.password)},
+	// 	  	// data: JSON.stringify([resourceDataObj]),
+	// 	  	complete : function(jqXHR, textstatus){
+	// 			if(textstatus == "success"){
+	// 				$(parent.document.body).find('#updateFirebaseButton').hide();
+	// 	  			$(parent.document.body).find('#updateFirebaseError').hide();
+	// 			}else if(textstatus == "error"){
 					
-				}
-				console.log(jqXHR);
-			},
-		  	dataType: 'json',
-		  	contentType: "application/json",
-		});
-	})
+	// 			}
+	// 			console.log(jqXHR);
+	// 		},
+	// 	  	dataType: 'json',
+	// 	  	contentType: "application/json",
+	// 	});
+	// })
 $("body").append('<div id="blockedDiv"></div>')
 // window.onload = function(){	
 	// XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
@@ -113,28 +131,29 @@ $("body").append('<div id="blockedDiv"></div>')
 XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
 	XMLHttpRequest.prototype.send = function(value) {
 		this.addEventListener('error', function(xx,yy){
-	        $(".ldBar div.ldBar-label").hide()
-			$(".ldBar").append('<label class="text-danger loadingError">Error</label>')
+	        // $(".ldBar div.ldBar-label").hide()
+			// $(".ldBar").append('<label class="text-danger loadingError">Error</label>')
 			setTimeout(function(){
 	        	$("#loadingDiv").hide();
 	        },1300)
 		}, false);
 		this.addEventListener("loadstart", function(xx,yy){
 	    	$("#loadingDiv").show();
-	    	$(".ldBar div.ldBar-label").show()
-	    	$(".ldBar div.loadingError").hide()
+	    	// $(".ldBar div.ldBar-label").show()
+	    	// $(".ldBar div.loadingError").hide()
 	    }, false);
 	    this.addEventListener("progress", function(xx,yy){
-	    	$(".ldBar div.ldBar-label").show()
-	    	$(".ldBar div.loadingError").hide()
-	    	loadedPer = xx.loaded/xx.total*100
-	    	if(isNaN(loadedPer) || !isFinite(loadedPer)) $(".ldBar")[0].ldBar.set(0)
-	    	else $(".ldBar")[0].ldBar.set(loadedPer)
+	    	// $(".ldBar div.ldBar-label").show()
+	    	// $(".ldBar div.loadingError").hide()
+	    	// loadedPer = xx.loaded/xx.total*100
+	    	// if(isNaN(loadedPer) || !isFinite(loadedPer)) $(".ldBar")[0].ldBar.set(0)
+	    	// else $(".ldBar")[0].ldBar.set(loadedPer)
 	    }, false);
 	    this.addEventListener("loadend", function(xx,yy){
 	        setTimeout(function(){
 	        	$("#loadingDiv").hide();
-	        	$(".ldBar")[0].ldBar.set(0)
+	        	// $(".ldBar")[0].ldBar.set(0)
+	        	// if(typeof($(".ldBar")[0].ldBar) != 'undefined') $(".ldBar")[0].ldBar.set(0)
 	        },1300)
 	    }, false);
 	    this.realSend(value);

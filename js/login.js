@@ -35,7 +35,7 @@ sessionStorage.apiurl = 'http://63.142.250.105:3050/api/';
 	    	$("#customBtn span.buttonText").text('Google ('+ gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName() + ")")
         	onSignIn(googleUser)
         }, function(error) {
-          alert(JSON.stringify(error, undefined, 2));
+          alert(error.error);
         });
   }
 

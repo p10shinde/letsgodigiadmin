@@ -18,7 +18,8 @@ $(function () {
     $('#fileuploadAdvt').fileupload({
         // Uncomment the following to send cross-domain cookies:
         //xhrFields: {withCredentials: true},
-        url: "http://" + sessionStorage.apiurl.split(":")[1] + ":49163/advt"
+        url: "http://" + sessionStorage.apiurl.split(":")[1] + ":3052/advt"
+        // url: "http://" + 'localhost' + ":3052/advt"
     });
 
     // Enable iframe cross-domain access via redirect option:
@@ -35,7 +36,8 @@ $(function () {
         // Demo settings:
         $('#fileuploadAdvt').fileupload('option', {
             // url: '//jquery-file-upload.appspot.com/',
-            url: "http://" + sessionStorage.apiurl.split(":")[1] + ":49163",
+            url: "http://" + sessionStorage.apiurl.split(":")[1] + ":3052",
+            // url: "http://" + 'localhost' + ":3052",
             // Enable image resizing, except for Android and Opera,
             // which actually support image resizing, but fail to
             // send Blob objects via XHR requests:
@@ -48,7 +50,8 @@ $(function () {
         if ($.support.cors) {
             $.ajax({
                 // url: '//jquery-file-upload.appspot.com/',
-                url: "http://" + sessionStorage.apiurl.split(":")[1] + ":49163",
+                url: "http://" + sessionStorage.apiurl.split(":")[1] + ":3052",
+                // url: "http://" + 'localhost' + ":3052",
                 type: 'HEAD'
             }).fail(function () {
                 $('<div class="alert alert-danger"/>')

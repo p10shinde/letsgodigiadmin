@@ -59,6 +59,10 @@ body{
   margin: auto;
 }
 
+#loadingIcon i{
+  font-size: 3vw !important;
+}
+
 .loadingError{
   position: absolute;
   top: 50%;

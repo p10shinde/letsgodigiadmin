@@ -201,14 +201,15 @@ window.onload = function(){
 	}
 
 
-	function openUserDialog(userID,userName,userEmail,userType,clientName,rowNo){
+	function openUserDialog(userID,userName,userEmail,clientName,userType,rowNo){
 		users.usersTableAPI.keys.disable();
 		users.rowNo = rowNo;
 		users.userID = userID;
 		users.userName = userName;
-		userTypes = ['SuperAdmin','Admin','User'];
+		userTypes = ['SuperAdmin','Society'];
 		userTypesOpts = ''
 		clientNameOpts = ''
+
 
 		$.each(userTypes,function(index,value){
 			userTypesOpts += '<option value="' + value + '">' + value +'</option>'
@@ -227,6 +228,7 @@ window.onload = function(){
 			title = 'Edit User'
 			buttonText = "Save"
 			disabled = "disabled";
+			users.clientNameOld = clientName;
 		}
 		$('#addNewUserDialog').dialog({
 		    title: title,
@@ -343,7 +345,7 @@ window.onload = function(){
 	    	$.ajax({
 			  type: "PUT",
 			  async : false,
-			  url: commonData.apiurl + "users/" + userDataObj.clientName + "/" + users.userID,
+			  url: commonData.apiurl + "users/" + users.clientNameOld + "/" + users.userID,
 			  data: JSON.stringify(userDataObj),
 			  success: function(data){
 			  	$.notify('Success','success')
