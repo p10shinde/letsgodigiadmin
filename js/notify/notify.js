@@ -188,7 +188,7 @@
 
 	var pluginOptions = {
 		clickToHide: true,
-		autoHide: false,
+		autoHide: true,
 		autoHideDelay: 7000,
 		arrowShow: true,
 		arrowSize: 5,
@@ -524,7 +524,7 @@
 			this.setGlobalPosition();
 		}
 		this.show(true);
-		if (this.options.autoHide) {
+		if (this.options.autoHide && this.options.className != 'error') {
 			clearTimeout(this.autohideTimer);
 			this.autohideTimer = setTimeout(this.show.bind(this, false), this.options.autoHideDelay);
 		}
