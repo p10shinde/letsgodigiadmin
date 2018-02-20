@@ -224,6 +224,7 @@ li.disabled {
     padding: 8px;
     margin-bottom: 7px;
     background-color: grey;
+    display: none;
 }
 
 @keyframes popout {

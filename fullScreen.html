@@ -90,19 +90,33 @@
             <div class="frame_elts">
                 <div class="easyui-layout" style="width:100%;height:100%;" id="mainlayout">
                     <div data-options="region:'center',minWidth:'400px',border:false" class="easyui-panel" title='' id="EditorPanel" style="width: 100%;padding: 5px">
-                        <div class="row" style="position: relative;height: 120px;">
+                        <div class="row" style="position: relative;">
                             <div class="col-md-12">
                                 <div id="displayFilterRadioDiv" style="padding: 0;height: 60px">
                                     <div class="row" >
-                                        <div class="col-md-3" style="padding-left: 0;height: inherit;">
+                                        <div class="col-md-2" style="padding-left: 0;height: inherit;">
                                             <div id="displayFilterRadio" style="width: 100%;position: absolute;padding: 5px">
                                                 <input type="radio" name="displayTypeRadio" id="groupRadio" checked value="Groups"><label for="groupRadio" style="padding-left: 10px;">Groups</label>
                                                 <input type="radio" name="displayTypeRadio" id="clusterRadio" style="margin-left: 40px" value="Clusters"><label for="clusterRadio" style="padding-left: 10px;">Clusters</label>
                                             </div>
                                         </div>
+                                        <div class="col-md-2" style="padding-left: 0;height: inherit;padding: 5px;">
+                                            <div>
+                                                <div id="groupSelectFilterDiv" style="width: 100%;position: absolute;">
+                                                    <select id="groupSelectFilter" style="width: 100%;height: inherit;">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div style="display: none">
+                                                <div id="clusterSelectFilterDiv" style="width: 100%;position: absolute;">
+                                                    <select id="clusterSelectFilter" style="width: 100%;;height: inherit">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="displayFilterDropdown" style="position: relative;height: 70px">
+                                <!-- <div id="displayFilterDropdown" style="position: relative;height: 70px">
                                     <div class="row" >
                                         <div class="col-md-2" style="padding-left: 0;height: inherit;">
                                             <div id="groupSelectFilterDiv" style="width: 100%;position: absolute;">
@@ -118,7 +132,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div id="tableButtons" style="position: absolute;top: 0;right: 15px;width: initial">
                                     <div class="row" >
                                         <div class="col-md-12" style="height: inherit;padding: 0">
@@ -137,7 +151,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="position: relative;height: calc(100% - 140px)">
+                        <div class="row" style="position: relative;height: calc(100% - 60px)">
                             <div class="col-md-12" style="height: 100%">
                                 <!-- <div id="fullScreenTabs" class="easyui-tabs" data-options="justified:'true',pill:'true'" style="width:100%;height:100%;"> -->
                                     <!-- <div title="General" id="fullScreenGeneralTab" style="width: 100%;height: 100%;padding: 0px;margin-top: 10px"> -->

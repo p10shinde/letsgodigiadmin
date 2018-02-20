@@ -257,11 +257,11 @@ window.onload = function(){
 					while(ctr<=50){
 						var format = 'HH:mm'
 						  var time = moment(new Date(startTime),format),
-						  sh1BeforeTime = moment('08:40', format),
+						  sh1BeforeTime = moment('06:45', format),
 						  sh1AfterTime = moment('14:20', format);
 
 						  sh2BeforeTime = moment('13:40', format),
-						  sh2AfterTime = moment('19:20', format);
+						  sh2AfterTime = moment('17:45', format);
 					  if (!startTime.isBetween(sh1BeforeTime, sh1AfterTime) && !startTime.isBetween(sh2BeforeTime, sh2AfterTime)){
 						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 						    obj = {};
@@ -601,40 +601,46 @@ window.onload = function(){
 					startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
 					endTime = new moment().add(1,'day').startOf('day').subtract(20,'minutes')//.format('DD-MM-YYYY hh:mm a')
 					var ctr = 0;
+					var snooo = 0;
 					var newData = [];
 					while(ctr<=50){
-					    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
-					    obj = {};
-					    obj.time = startTime.format('HH:mm')
-					    obj.sno = ctr+1;
+						var format = 'HH:mm'
+						  var time = moment(new Date(startTime),format),
+						  sh1BeforeTime = moment('06:45', format),
+						  sh1AfterTime = moment('14:20', format);
 
-					    foundData =_.where(data,{time : obj.time})
-					    if(foundData.length != 0){
-					    	foundData = foundData[0];
-						    obj.resName = foundData.resName;
-						    // obj.resourceType = foundData.resourceType;
-						    // obj.clusterName = foundData.clusterName;
-						    // obj.clientName = foundData.clientName;
-						    // obj.updatedBy = foundData.updatedBy;
-						    // obj.updatedAt = foundData.updatedAt;
-						 //    if(foundData.resourceName.split('.')[1].toUpperCase() == "JPG" || foundData.resourceName.split('.')[1].toUpperCase() == "JPEG"){
-							// 	obj.resourceType = "image"
-							// }else if(foundData.resourceName.split('.')[1].toUpperCase() == "MP4" || foundData.split('.')[1].toUpperCase() == "WEBM"){
-								
-							// 	obj.resourceType = "video"
-							// }
-						}else{
-							obj.resName = ""
-							// obj.resourceType = ""
-							// obj.clusterName = clusterName;
-						    // obj.clientName = clientName;
-						    // obj.updatedBy = "";
-						    // obj.updatedAt = "";
+						  sh2BeforeTime = moment('13:40', format),
+						  sh2AfterTime = moment('17:45', format);
+					  if (!startTime.isBetween(sh1BeforeTime, sh1AfterTime) && !startTime.isBetween(sh2BeforeTime, sh2AfterTime)){
+						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
+						    obj = {};
+						    obj.time = startTime.format('HH:mm')
+						    obj.sno = snooo+1;
+						    foundData =_.where(data,{time : obj.time})
+						    if(foundData.length != 0){
+						    	foundData = foundData[0];
+							    obj.resName = foundData.resName;
+							}else{
+								obj.resName = ""
+							}
+						    newData.push(obj);
+						    snooo++; 
 						}
+						// else if(!startTime.isBetween(sh2BeforeTime, sh2AfterTime)){
+						// 	obj = {};
+						//     obj.time = startTime.format('HH:mm')
+						//     obj.sno = ctr+1;
+						//     foundData =_.where(data,{time : obj.time})
+						//     if(foundData.length != 0){
+						//     	foundData = foundData[0];
+						// 	    obj.resName = foundData.resName;
+						// 	}else{
+						// 		obj.resName = ""
+						// 	}
+						//     newData.push(obj);
+						// }
 
-					    
 					    startTime.add(20,'minutes').format('HH:mm')
-					    newData.push(obj);
 					    ctr++
 					}
 

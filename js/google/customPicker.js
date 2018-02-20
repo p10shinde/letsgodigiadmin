@@ -5,6 +5,24 @@ var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercon
         var useProxy = false;
         var metaData = false;
         
+        folderMetadata = {};
+        function getFolderMetaData(folderName,callback){
+            $.ajax({
+                url : commonData.apiurl + "getGDFolder/" + folderName,
+                async : false,
+                datatype : 'json',
+                complete : function(jqXHR, textstatus){
+                    if(textstatus == "success"){
+                        callback({status : 'success',folderID : jqXHR.responseText})
+                    }else if(textstatus == "error"){
+                        callback({status : 'error',folderID : jqXHR.responseText})
+                    }
+                    
+                }
+            })
+        }
+
+
         function getXMLHttpRequest() 
         {
             if (window.XMLHttpRequest) {
@@ -81,7 +99,7 @@ var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercon
                                 $.notify(jqXHR.responseText,'error')
                         }
                         // console.log(jqXHR);
-                        callback(textstatus);
+                        callback(jqXHR);
                     },
                     dataType: 'json',
                     // contentType: "application/json",
@@ -98,13 +116,24 @@ var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercon
                             var url = 'https://www.googleapis.com/drive/v2/files/' + fileId;
                             getData(url, function(responseText) {
                                 metaData = JSON.parse(responseText);
-                                if(metaData.parents[0].id == '1MEX4b43bSW-FDmxqIy82p0ltcfEUlsmM'){
-                                    postToDelete(metaData.title,function(textstatus){
-                                        console.log('Completed WIth : ' + textstatus);
-                                    })
-                                }else{
-                                    $.notify("You can delete only society related content");
-                                }
+                                    getFolderMetaData($("#groupSelectFilter").multipleSelect('getSelects')[0],function(resJson){
+                                    if(resJson.status == "success"){
+                                        if(metaData.parents[0].id == resJson.folderID){
+                                            postToDelete(metaData.title,function(jqXHR){
+                                                console.log('Completed WIth : ' + jqXHR);
+                                                if(jqXHR.textstatus == 'success')
+                                                    $.notify("Success",'success')
+                                                else
+                                                    $.notify(jqXHR.responseText,'error')
+
+                                            })
+                                        }else{
+                                            $.notify("You can delete only society related content");
+                                        }
+                                    }else{
+                                        $.notify(resJson.folderID);
+                                    }
+                                });
                             });
                         }
                     }else if($("#resourcesTabs").tabs('getTabIndex',$("#resourcesTabs").tabs('getSelected')) == 1){ // for advt
@@ -113,13 +142,23 @@ var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercon
                             var url = 'https://www.googleapis.com/drive/v2/files/' + fileId;
                             getData(url, function(responseText) {
                                 metaData = JSON.parse(responseText);
-                                if(metaData.parents[0].id == '1-LKBGXh0btQukRumpr8UEtgfRLtUSMuC'){
-                                    postToDelete(fileId,function(textstatus){
-                                        console.log('Completed WIth : ' + textstatus);
-                                    })
-                                }else{
-                                    $.notify("You can delete only advertising related content");
-                                }
+                                    getFolderMetaData('advt',function(resJson){
+                                    if(resJson.status == "success"){
+                                        if(metaData.parents[0].id == resJson.folderID){
+                                            postToDelete(fileId,function(jqXHR){
+                                                console.log('Completed WIth : ' + jqXHR);
+                                                if(jqXHR.textstatus == 'success')
+                                                    $.notify("Success",'success')
+                                                else
+                                                    $.notify(jqXHR.responseText,'error')
+                                            })
+                                        }else{
+                                            $.notify("You can delete only advertising related content");
+                                        }
+                                    }else{
+                                        $.notify(resJson.folderID);
+                                    }
+                                });
                             });
                         }
                     }
@@ -138,19 +177,30 @@ var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercon
                         var url = 'https://www.googleapis.com/drive/v2/files/' + fileId;
                         getData(url, function(responseText) {
                             metaData = JSON.parse(responseText);
-                            
-                            if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "First Channel" && metaData.parents[0].id == '1MEX4b43bSW-FDmxqIy82p0ltcfEUlsmM')
-                                commonData.updateTableWithResource(firstChannel.visibleTableAPI,firstChannel.visibleTableJQ,'',data.docs[0].name,0)
-                            else if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Second Channel" && metaData.parents[0].id == '1-LKBGXh0btQukRumpr8UEtgfRLtUSMuC')
-                                commonData.updateTableWithResource(secondChannel.visibleTableAPI,secondChannel.visibleTableJQ,data.docs[0].name)
-                            // if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Third Channel")
-                            //     commonData.updateTableWithResource(thirdChannel.visibleTableAPI,thirdChannel.visibleTableJQ,data.docs[0].name)
-                            else if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Full Screen" && metaData.parents[0].id == '1-LKBGXh0btQukRumpr8UEtgfRLtUSMuC')
-                                commonData.updateTableWithResource(fullScreen.visibleTableAPI,fullScreen.visibleTableJQ,'',data.docs[0].name)
-                            else{
-                                $.notify("Please select relevent content only.",'error');
-                                picker.setVisible(true);
-                            }
+                            getFolderMetaData('advt',function(resJsonAdvt){
+                                if(resJsonAdvt.status == "success"){
+                                    getFolderMetaData($("#groupSelectFilter").multipleSelect('getSelects')[0],function(resJsonSoc){
+                                        if(resJsonSoc.status == "success"){
+                                            if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "First Channel" && metaData.parents[0].id == resJsonSoc.folderID)
+                                                commonData.updateTableWithResource(firstChannel.visibleTableAPI,firstChannel.visibleTableJQ,'',data.docs[0].name,0)
+                                            else if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Second Channel" && metaData.parents[0].id == resJsonAdvt.folderID)
+                                                commonData.updateTableWithResource(secondChannel.visibleTableAPI,secondChannel.visibleTableJQ,data.docs[0].name)
+                                            // if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Third Channel")
+                                            //     commonData.updateTableWithResource(thirdChannel.visibleTableAPI,thirdChannel.visibleTableJQ,data.docs[0].name)
+                                            else if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Full Screen" && metaData.parents[0].id == resJsonAdvt.folderID)
+                                                commonData.updateTableWithResource(fullScreen.visibleTableAPI,fullScreen.visibleTableJQ,'',data.docs[0].name)
+                                            else{
+                                                $.notify("Please select relevent content only.",'error');
+                                                picker.setVisible(true);
+                                            }
+                                        }else{
+                                            $.notify(resJsonAdvt.folderID,'error');
+                                        }
+                                    })
+                                }else{
+                                    $.notify(resJsonSoc.folderID,'error');
+                                }
+                            })
                         });                        
                     }
                 }else{

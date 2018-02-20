@@ -2,6 +2,13 @@ disabledChannels = ['Second Channel','Full Screen','Groups','Clients','Users','A
 $.ajaxSetup({
     beforeSend: function(xhr) {
         xhr.setRequestHeader('token', sessionStorage.id_token);
+    },
+    error : function(jqXHR, textStatus, errorThrown) {
+        // if (jqXHR.status == 404) {
+            // alert("Element not found.");
+        // } else {
+            $.notify("Error: " + textStatus + ": " + errorThrown,'error');
+        // }
     }
 });
 
