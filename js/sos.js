@@ -52,41 +52,64 @@ window.onload = function(){
 
 
 	function getAllGroups(){
-		$.ajax({
-			url : commonData.apiurl + "groups",
-			async : false,
-			datatype : 'json',
-			complete : function(jqXHR, textstatus){
-				if(textstatus == "success"){
-					groups = _.unique(jqXHR.responseJSON,'groupName')
-					groups = _.pluck(groups,'groupName')
-					var options = ""
-					$.each(groups, function(index,value){
-						options += `<option value="`+value+`">`+value+`</option>`
-					});
-					$("#groupSelectFilter").empty();
-					$("#groupSelectFilter").append(options);
-					
-					$("#groupSelectFilter").multipleSelect({
-						placeholder: "Select Group",
-						filter: true,
-						single : true,
-						onClick : function(view){
-							// alert(view.value)
-							groupName = view.value;
-							loadGroupsSosTable(groupName)
-							sos.visibleTableAPI = sos.groupsSosTableAPI;
-					    	sos.visibleTableJQ = sos.groupsSosTableJQ;
-						}
-					});
+		if(commonData.userType != 'Society'){
+			$.ajax({
+				url : commonData.apiurl + "groups",
+				async : false,
+				datatype : 'json',
+				complete : function(jqXHR, textstatus){
+					if(textstatus == "success"){
+						groups = _.unique(jqXHR.responseJSON,'groupName')
+						groups = _.pluck(groups,'groupName')
+						var options = ""
+						$.each(groups, function(index,value){
+							options += `<option value="`+value+`">`+value+`</option>`
+						});
+						$("#groupSelectFilter").empty();
+						$("#groupSelectFilter").append(options);
+						
+						$("#groupSelectFilter").multipleSelect({
+							placeholder: "Select Group",
+							filter: true,
+							single : true,
+							allSelected : false,
+							onClick : function(view){
+								// alert(view.value)
+								groupName = view.value;
+								loadGroupsSosTable(groupName)
+								sos.visibleTableAPI = sos.groupsSosTableAPI;
+						    	sos.visibleTableJQ = sos.groupsSosTableJQ;
+							}
+						});
 
-				}else if(textstatus == "error"){
-					if(jqXHR.responseText)
-						$.notify(jqXHR.responseText,'error')
+					}else if(textstatus == "error"){
+						if(jqXHR.responseText)
+							$.notify(jqXHR.responseText,'error')
+					}
+					console.log(jqXHR);
 				}
-				console.log(jqXHR);
-			}
-		})
+			})
+		}else{
+			var options = ""
+				options += `<option value="`+clientName+`">`+clientName+`</option>`
+			$("#groupSelectFilter").empty();
+			$("#groupSelectFilter").append(options);
+			$("#groupSelectFilter").attr('disabled',true);
+			
+			$("#groupSelectFilter").multipleSelect({
+				placeholder: "Select Group",
+				filter: true,
+				single : true,
+				allSelected : false,
+				onClick : function(view){
+					// alert(view.value)
+					groupName = view.value;
+					loadGroupsSosTable(groupName)
+					sos.visibleTableAPI = sos.groupsSosTableAPI;
+			    	sos.visibleTableJQ = sos.groupsSosTableJQ;
+				}
+			});			
+		}
 	}
 
 	function getAllClusters(){
@@ -110,6 +133,7 @@ window.onload = function(){
 						placeholder: "Select Cluster",
 						filter: true,
 						single : true,
+						allSelected : false,
 						onClick : function(view){
 							
 							clusterName = view.value;
@@ -129,7 +153,7 @@ window.onload = function(){
 	}
 
 	getAllGroups();
-	getAllClusters();
+	// getAllClusters();
 	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 	loadGroupsSosTable(groupName)
 
@@ -149,7 +173,7 @@ window.onload = function(){
 					// groupName_temp = data[0].groupName;
 					$.each(data, function(index, value){
 						value.sno = index +1;
-						value.groupName = groupName;
+						// value.groupName = groupName;
 					})
 					return data;
 				},
@@ -176,10 +200,10 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
-	            { "data": "groupName" },
+	            // { "data": "groupName" },
 	            { "data": "time" ,
 	        		// render : function(data, type, row){
-	        		// 	return new moment(data).format('DD-MM-YYYY HH:mm')
+	        		// 	return new moment(data).format('DD-MM-YYYY hh:mm_A')
 	        		// }
 	        	},
 	            { "data": "text" },
@@ -237,7 +261,7 @@ window.onload = function(){
 	//             { "data": "clusterName" },
 	//             { "data": "startTime" ,
 	//         		// render : function(data, type, row){
-	//         		// 	return new moment(data).format('DD-MM-YYYY HH:mm')
+	//         		// 	return new moment(data).format('DD-MM-YYYY hh:mm_A')
 	//         		// }
 	//         	},
 	//             { "data": "text" },
@@ -278,7 +302,7 @@ window.onload = function(){
 
     	recordsTotal = visibleTableAPI.page.info().recordsTotal;
 
-    	dt = {text : "",time : new moment().add(5,'minutes').format("DD-MM-YYYY_HH:mm")};
+    	dt = {text : "",time : new moment().add(5,'minutes').format("DD-MM-YYYY_hh:mm_A")};
     	dt[groupOrClusterKey] = groupOrCluster;
     	dt["sno"] = recordsTotal + 1;
 
@@ -293,30 +317,30 @@ window.onload = function(){
 
     sos.visibleTableAPI = sos.groupsSosTableAPI;
 	sos.visibleTableJQ = sos.groupsSosTableJQ;
+	$('#groupsSosTable tbody').on('click','td:nth-child(3)',function(evt){
+		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
+	});
+
 	$('#groupsSosTable tbody').on('click','td:nth-child(4)',function(evt){
 		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
 	});
 
-	$('#groupsSosTable tbody').on('click','td:nth-child(5)',function(evt){
-		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
-	});
 
 
+	// $('#clustersSosTable tbody').on('click','td:nth-child(4)',function(evt){
+	// 	openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
+	// });
 
-	$('#clustersSosTable tbody').on('click','td:nth-child(4)',function(evt){
-		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
-	});
-
-	$('#clustersSosTable tbody').on('click','td:nth-child(5)',function(evt){
-		openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
-	});
+	// $('#clustersSosTable tbody').on('click','td:nth-child(5)',function(evt){
+	// 	openFieldEditorDialog(sos.visibleTableAPI, sos.visibleTableJQ, evt);
+	// });
 
 	function openFieldEditorDialog(visibleTableAPI, visibleTableJQ, evt){
 		visibleTableAPI.keys.disable();
 		trgtTd = $(evt.target);
 		trgtTdValue = trgtTd.text();
 		if(trgtTd[0].nodeName == "TD"){
-			if(trgtTd.index() == 3){
+			if(trgtTd.index() == 2){
 				sos.trgtTd = trgtTd
 				$("#modifyFieldDialog").dialog({
 		            constrain : true,
@@ -332,24 +356,24 @@ window.onload = function(){
 		            shadow : false
 				});
 				$("#modifyFieldDialog div.elementHolder").empty();
-				$("#modifyFieldDialog div.elementHolder").append('<div class="input-group date" style="width:' + (parseInt(trgtTd.width()) + 16 -39) + 'px">'+
+				$("#modifyFieldDialog div.elementHolder").append('<div class="input-group date" style="width:' + (parseInt(trgtTd.width()) + 7 -39) + 'px">'+
 																	'<input class="myDateTimePicker form-control" id="startTime" '+
-																	'style="height:' + (parseInt(trgtTd.height()) + 16) + 'px;'+
-																	'width : ' + (parseInt(trgtTd.width()) + 16 -39) + 'px"></input>'+
+																	'style="height:' + (parseInt(trgtTd.height()) + 7) + 'px;'+
+																	'width : ' + (parseInt(trgtTd.width()) + 7 -39) + 'px"></input>'+
 																	'<span class="input-group-addon">'+
 		                        										'<span class="glyphicon glyphicon-calendar"></span>'+
 		                    										'</span>'+
 		                    									'</div>')	
-				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY_HH:mm',minDate : new moment(),maxDate : new moment().add(1,'days').endOf('day')});
-				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY_HH:mm"));
+				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY_hh:mm_A',minDate : new moment(),maxDate : new moment().add(1,'days').endOf('day')});
+				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY_hh:mm_A"));
 				
 
 				$(".window-mask").off('click').on('click',function(){
-					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY_HH:mm');
+					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY_hh:mm_A');
 					text = ''
 					updateTableWithNewRecord(sos.visibleTableAPI, sos.visibleTableJQ, startTime, text);
 				})
-			}else if(trgtTd.index() == 4){
+			}else if(trgtTd.index() == 3){
 				sos.trgtTd = trgtTd;
 				sosText = trgtTd.text();
 				$("#modifyFieldDialog").dialog({
@@ -367,8 +391,8 @@ window.onload = function(){
 				});
 				$("#modifyFieldDialog div.elementHolder").empty();
 
-					sosTextArea = `<textarea id="sosText" value="`+ sosText +`" style="height:` + (parseInt(trgtTd.height())+16) + `px;
-							 	width:` + (parseInt(trgtTd.width()) + 16) + `px">`+ sosText +`</textarea>`
+					sosTextArea = `<textarea id="sosText" value="`+ sosText +`" style="height:` + (parseInt(trgtTd.height())+7) + `px;
+							 	width:` + (parseInt(trgtTd.width()) + 7) + `px;resize:vertical;">`+ sosText +`</textarea>`
 
 					$("#modifyFieldDialog div.elementHolder").append(sosTextArea)
 					
@@ -393,36 +417,40 @@ window.onload = function(){
 
 
 	$("#deleteSelectedSosButton").off('click').on('click',function(evt){
-		if($("#groupsSosTableDiv").is(':visible')){
-	    	visibleTableAPI = sos.groupsSosTableAPI;
-	    	visibleTableJQ = sos.groupsSosTableJQ;
-	    	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+		if(confirm("Are you you want to delete selected entries permanently and update?")){
+			$("#loadingDiv").show();
+			if($("#groupsSosTableDiv").is(':visible')){
+		    	visibleTableAPI = sos.groupsSosTableAPI;
+		    	visibleTableJQ = sos.groupsSosTableJQ;
+		    	groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 
-    	}else if($("#clustersSosTableDiv").is(':visible')){
-    		visibleTableAPI = sos.clustersSosTableAPI;
-	    	visibleTableJQ = sos.clustersSosTableJQ;
-	    	clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-    	}
-		page = visibleTableAPI.page.info().page;
-		checkboxTD = visibleTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				// startTime = $(value).find('td:nth-child(3)').text();
-				deleteRowsIndexes.push(rowNo)
-			}
+	    	}else if($("#clustersSosTableDiv").is(':visible')){
+	    		visibleTableAPI = sos.clustersSosTableAPI;
+		    	visibleTableJQ = sos.clustersSosTableJQ;
+		    	clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
+	    	}
+			page = visibleTableAPI.page.info().page;
+			checkboxTD = visibleTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					// startTime = $(value).find('td:nth-child(3)').text();
+					deleteRowsIndexes.push(rowNo)
+				}
 
-		})
+			})
 
-		$.each(deleteRowsIndexes, function(index,value){
-			visibleTableJQ.fnDeleteRow(value-index, function(lg){
-				console.log(lg)
-			});
-		})
-		updateSerialNo(visibleTableAPI);
-		visibleTableAPI.page( page ).draw( 'page' );
+			$.each(deleteRowsIndexes, function(index,value){
+				visibleTableJQ.fnDeleteRow(value-index, function(lg){
+					console.log(lg)
+				});
+			})
+			updateSerialNo(visibleTableAPI);
+			visibleTableAPI.page( page ).draw( 'page' );
+			$("#saveSosButton").click();
+		}
 
 		// if($("#groupsSosTableDiv").is(':visible')){
 		// 	$.each(deleteRowsIndexes, function(index,startTime){
@@ -489,9 +517,9 @@ window.onload = function(){
     	rowNo = parseInt(sos.trgtTd.closest('tr').find('td').first().text()) -1
     	page = visibleTableAPI.page.info().page;
 		if(startTime != "")
-			visibleTableAPI.cell(rowNo,3).data(startTime);
+			visibleTableAPI.cell(rowNo,2).data(startTime);
 		if(sosText != "")
-			visibleTableAPI.cell(rowNo,4).data(sosText);
+			visibleTableAPI.cell(rowNo,3).data(sosText);
 
 		updateSerialNo(visibleTableAPI);
 
@@ -509,6 +537,7 @@ window.onload = function(){
 	}
 
 	$("#saveSosButton").off('click').on('click', function(evt){
+		$("#loadingDiv").show();
 		// groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 		sosDataArray = sos.visibleTableJQ.fnGetData(); 
   //   	postData = {}
@@ -522,7 +551,7 @@ window.onload = function(){
 		
 
 		sosDataArray = _.map(sosDataArray, function(model){
-			return _.omit(model,'sno','groupName','clusterName','clientName');
+			return _.omit(model,'sno','clusterName','clientName');
     	})
 
 		// postData.data = sosDataArray;
@@ -537,6 +566,7 @@ window.onload = function(){
 			  success: function(data){
 			  	$.notify('Success','success')
 			  	sos.groupsSosTableAPI.ajax.reload(function(){
+			  		$("#loadingDiv").hide();
 					// $('#addNewResourceDialog').dialog('close');
 				  	// recordsTotal = resources.resourcesTableAPI.page.info().recordsTotal;
 				  	// resources.resourcesTableAPI.page( 'first' ).draw( 'page' );

@@ -1,6 +1,6 @@
-fullScreen = {}
-fullScreen.resources = [];
-// fullScreen.resources = ["img1.jpg","img2.jpg","vid1.mp4","vid2.mp4","vid3.mp4","vid4.mp4","img3.jpg","img4.jpg"];
+fullScreenn = {}
+fullScreenn.resources = [];
+// fullScreenn.resources = ["img1.jpg","img2.jpg","vid1.mp4","vid2.mp4","vid3.mp4","vid4.mp4","img3.jpg","img4.jpg"];
 window.onload = function(){
 	// XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
 	// XMLHttpRequest.prototype.send = function(value) {
@@ -37,7 +37,7 @@ window.onload = function(){
 	// 			if(textstatus == "success"){
 	// 				// groups = _.unique(jqXHR.responseJSON,'groupName')
 	// 				// groups = _.pluck(groups,'groupName')
-	// 				fullScreen.resources = jqXHR.responseJSON;
+	// 				fullScreenn.resources = jqXHR.responseJSON;
 
 	// 			}else if(textstatus == "error"){
 	// 				if(jqXHR.responseText)
@@ -52,11 +52,11 @@ window.onload = function(){
 	$("input[name='displayTypeRadio']").on('change',function(){
 		console.log(this.value)
 		if(this.value == "Groups"){
-			// tabIndex = $("#fullScreenTabs").tabs('getTabIndex',$("#fullScreenTabs").tabs('getSelected'))
+			// tabIndex = $("#fullScreennTabs").tabs('getTabIndex',$("#fullScreennTabs").tabs('getSelected'))
 			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0]
 				loadGroupsFullScreenGeneralTable(groupName)
-				fullScreen.visibleTableAPI = fullScreen.groupsFullScreenGeneralTableAPI;
-		    	fullScreen.visibleTableJQ = fullScreen.groupsFullScreenGeneralTableJQ;
+				fullScreenn.visibleTableAPI = fullScreenn.groupsFullScreenGeneralTableAPI;
+		    	fullScreenn.visibleTableJQ = fullScreenn.groupsFullScreenGeneralTableJQ;
 		    	$(".clustersFullScreenGeneralTableDiv").hide();
 				$(".groupsFullScreenGeneralTableDiv").show();
 		    
@@ -65,11 +65,11 @@ window.onload = function(){
 			$("#groupSelectFilterDiv").parent().show();
 			
 		}else if(this.value == "Clusters"){
-			// tabIndex = $("#fullScreenTabs").tabs('getTabIndex',$("#fullScreenTabs").tabs('getSelected'))
+			// tabIndex = $("#fullScreennTabs").tabs('getTabIndex',$("#fullScreennTabs").tabs('getSelected'))
 			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0]
 				loadClustersFullScreenGeneralTable(clusterName)
-				fullScreen.visibleTableAPI = fullScreen.clustersFullScreenGeneralTableAPI;
-		    	fullScreen.visibleTableJQ = fullScreen.clustersFullScreenGeneralTableJQ;
+				fullScreenn.visibleTableAPI = fullScreenn.clustersFullScreenGeneralTableAPI;
+		    	fullScreenn.visibleTableJQ = fullScreenn.clustersFullScreenGeneralTableJQ;
 		    	$(".groupsFullScreenGeneralTableDiv").hide();
 				$(".clustersFullScreenGeneralTableDiv").show();
 		    
@@ -101,12 +101,13 @@ window.onload = function(){
 						placeholder: "Select Group",
 						filter: true,
 						single : true,
+						allSelected : false,
 						onClick : function(view){
 							
 							groupName = view.value;
 								loadGroupsFullScreenGeneralTable(groupName)
-								fullScreen.visibleTableAPI = fullScreen.groupsFullScreenGeneralTableAPI;
-						    	fullScreen.visibleTableJQ = fullScreen.groupsFullScreenGeneralTableJQ;
+								fullScreenn.visibleTableAPI = fullScreenn.groupsFullScreenGeneralTableAPI;
+						    	fullScreenn.visibleTableJQ = fullScreenn.groupsFullScreenGeneralTableJQ;
 						   	// getAllResources(groupName)
 						}
 					});
@@ -141,12 +142,13 @@ window.onload = function(){
 						placeholder: "Select Cluster",
 						filter: true,
 						single : true,
+						allSelected : false,
 						onClick : function(view){
 							
 							groupName = view.value;
 								loadClustersFullScreenGeneralTable(groupName)
-								fullScreen.visibleTableAPI = fullScreen.clustersFullScreenGeneralTableAPI;
-						    	fullScreen.visibleTableJQ = fullScreen.clustersFullScreenGeneralTableJQ;
+								fullScreenn.visibleTableAPI = fullScreenn.clustersFullScreenGeneralTableAPI;
+						    	fullScreenn.visibleTableJQ = fullScreenn.clustersFullScreenGeneralTableJQ;
 						   // getAllResources(groupName)
 						}
 					});
@@ -167,12 +169,12 @@ window.onload = function(){
 
 
 	function loadGroupsFullScreenGeneralTable(groupName){
-		if(fullScreen.groupsFullScreenGeneralTableJQ) {
-			fullScreen.groupsFullScreenGeneralTableJQ.fnClearTable();
-			fullScreen.groupsFullScreenGeneralTableJQ.fnDestroy();
+		if(fullScreenn.groupsFullScreenGeneralTableJQ) {
+			fullScreenn.groupsFullScreenGeneralTableJQ.fnClearTable();
+			fullScreenn.groupsFullScreenGeneralTableJQ.fnDestroy();
 		}
 
-		fullScreen.groupsFullScreenGeneralTableAPI = $('#groupsFullScreenGeneralTable').DataTable({
+		fullScreenn.groupsFullScreenGeneralTableAPI = $('#groupsFullScreenGeneralTable').DataTable({
 	        "ajax" : {
 				url : commonData.apiurl + "planned/fs/" + "NO" + "/" + groupName,
 				// url : "data/fullscreenGrp.json",
@@ -181,7 +183,7 @@ window.onload = function(){
 					// groupName_temp = data[0].groupName;
 					$.each(data, function(index, value){
 						value.sno = index + 1;
-						value.groupName = groupName;
+						// value.groupName = groupName;
 					})
 					return data;
 				},
@@ -195,11 +197,11 @@ window.onload = function(){
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown){
-					fullScreen.groupsFullScreenGeneralTableAPI.clear().draw();
-					// fullScreen.visibleTableAPI = undefined;
-			  //   	fullScreen.visibleTableJQ = undefined;
-			  //   	fullScreen.groupsFullScreenGeneralTableAPI = undefined;
-    	// 			fullScreen.groupsFullScreenGeneralTableJQ = undefined;
+					fullScreenn.groupsFullScreenGeneralTableAPI.clear().draw();
+					// fullScreenn.visibleTableAPI = undefined;
+			  //   	fullScreenn.visibleTableJQ = undefined;
+			  //   	fullScreenn.groupsFullScreenGeneralTableAPI = undefined;
+    	// 			fullScreenn.groupsFullScreenGeneralTableJQ = undefined;
 				}
 	 		},
 	 		keys : true,
@@ -217,7 +219,7 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
-	            { "data": "groupName" },
+	            // { "data": "groupName" },
 	            { "data": "time" },
 	            { "data": "resName" },
 	            // { "data": "resourceType" },
@@ -226,22 +228,22 @@ window.onload = function(){
 	            // { "data": "updatedAt" }
 	    	],
 	    	drawCallback : function(settings){
-	    		// $("#fullScreenGeneralTable tbody td:nth-child(1)").prepend('<div class="reorderHandler">::</div>')
+	    		// $("#fullScreennGeneralTable tbody td:nth-child(1)").prepend('<div class="reorderHandler">::</div>')
 	    	}
 	    });
-	    fullScreen.groupsFullScreenGeneralTableJQ = $('#groupsFullScreenGeneralTable').dataTable();
+	    fullScreenn.groupsFullScreenGeneralTableJQ = $('#groupsFullScreenGeneralTable').dataTable();
 
-	    // fullScreen.visibleTableAPI = fullScreen.groupsFullScreenGeneralTableAPI;
-    	// fullScreen.visibleTableJQ = fullScreen.groupsFullScreenGeneralTableJQ;
+	    // fullScreenn.visibleTableAPI = fullScreenn.groupsFullScreenGeneralTableAPI;
+    	// fullScreenn.visibleTableJQ = fullScreenn.groupsFullScreenGeneralTableJQ;
 	}
 
 	function loadClustersFullScreenGeneralTable(clusterName){
-		if(fullScreen.clustersFullScreenGeneralTableJQ) {
-			fullScreen.clustersFullScreenGeneralTableJQ.fnClearTable();
-			fullScreen.clustersFullScreenGeneralTableJQ.fnDestroy();
+		if(fullScreenn.clustersFullScreenGeneralTableJQ) {
+			fullScreenn.clustersFullScreenGeneralTableJQ.fnClearTable();
+			fullScreenn.clustersFullScreenGeneralTableJQ.fnDestroy();
 		}
 
-		fullScreen.clustersFullScreenGeneralTableAPI = $('#clustersFullScreenGeneralTable').DataTable({
+		fullScreenn.clustersFullScreenGeneralTableAPI = $('#clustersFullScreenGeneralTable').DataTable({
 	        "ajax" : {
 				url : commonData.apiurl + "planned/fs/" + clusterName + "/" + "NO",
 				// url : "data/fullscreenCluster.json",
@@ -250,7 +252,7 @@ window.onload = function(){
 					// clusterName_temp = data[0].clusterName;
 					$.each(data, function(index, value){
 						value.sno = index +1;
-						value.clusterName = clusterName;
+						// value.clusterName = clusterName;
 					})
 					return data;
 				},
@@ -264,7 +266,7 @@ window.onload = function(){
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown){
-					fullScreen.clustersFullScreenGeneralTableAPI.clear().draw();
+					fullScreenn.clustersFullScreenGeneralTableAPI.clear().draw();
 				}
 	 		},
 	 		keys : true,
@@ -282,7 +284,7 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
-	            { "data": "clusterName" },
+	            // { "data": "clusterName" },
 	            { "data": "time" },
 	            { "data": "resName" },
 	            // { "data": "resourceType" },
@@ -291,64 +293,68 @@ window.onload = function(){
 	            // { "data": "updatedAt" }
 	    	],
 	    	drawCallback : function(settings){
-	    		// $("#fullScreenGeneralTable tbody td:nth-child(1)").prepend('<div class="reorderHandler">::</div>')
+	    		// $("#fullScreennGeneralTable tbody td:nth-child(1)").prepend('<div class="reorderHandler">::</div>')
 	    	}
 	    });
-	    fullScreen.clustersFullScreenGeneralTableJQ = $('#clustersFullScreenGeneralTable').dataTable();
+	    fullScreenn.clustersFullScreenGeneralTableJQ = $('#clustersFullScreenGeneralTable').dataTable();
 
-	    // fullScreen.visibleTableAPI = fullScreen.clustersFullScreenGeneralTableAPI;
-    	// fullScreen.visibleTableJQ = fullScreen.clustersFullScreenGeneralTableJQ;
+	    // fullScreenn.visibleTableAPI = fullScreenn.clustersFullScreenGeneralTableAPI;
+    	// fullScreenn.visibleTableJQ = fullScreenn.clustersFullScreenGeneralTableJQ;
 	}
 
 	
 
-    fullScreen.visibleTableAPI = fullScreen.groupsFullScreenGeneralTableAPI;
-	fullScreen.visibleTableJQ = fullScreen.groupsFullScreenGeneralTableJQ;
+    fullScreenn.visibleTableAPI = fullScreenn.groupsFullScreenGeneralTableAPI;
+	fullScreenn.visibleTableJQ = fullScreenn.groupsFullScreenGeneralTableJQ;
     
 
-    $('#groupsFullScreenGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
-		openFieldEditorDialog(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, evt);
+    $('#groupsFullScreenGeneralTable tbody').on('click','td:nth-child(3)',function(evt){
+		openFieldEditorDialog(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ, evt);
 	});
 
 
-	$('#groupsFullScreenGeneralTable tbody').on('click','td:nth-child(5)',function(evt){
-		openFieldEditorDialog(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, evt);
+	$('#groupsFullScreenGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
+		openFieldEditorDialog(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ, evt);
+	});
+
+
+	$('#clustersFullScreenGeneralTable tbody').on('click','td:nth-child(3)',function(evt){
+		openFieldEditorDialog(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ, evt);
 	});
 
 
 	$('#clustersFullScreenGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
-		openFieldEditorDialog(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, evt);
-	});
-
-
-	$('#clustersFullScreenGeneralTable tbody').on('click','td:nth-child(5)',function(evt){
-		openFieldEditorDialog(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, evt);
+		openFieldEditorDialog(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ, evt);
 	});
 
 	$("#deleteSelectedresourcesButton").off('click').on('click',function(evt){
-		page = fullScreen.visibleTableAPI.page.info().page;
-		checkboxTD = fullScreen.visibleTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				deleteRowsIndexes.push(rowNo)
-			}
+		if(confirm("Are you you want to clear selected entries permanently and update?")){
+			$("#loadingDiv").show();
+			page = fullScreenn.visibleTableAPI.page.info().page;
+			checkboxTD = fullScreenn.visibleTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					deleteRowsIndexes.push(rowNo)
+				}
 
-		})
-		$.each(deleteRowsIndexes, function(index,value){
-			fullScreen.visibleTableJQ.fnDeleteRow(value-index, function(lg){
-				console.log(lg)
-			});
-		})
-		commonData.updateSerialNo(fullScreen.visibleTableAPI);
-		fullScreen.visibleTableAPI.page( page ).draw( 'page' );
+			})
+			$.each(deleteRowsIndexes, function(index,value){
+				fullScreenn.visibleTableJQ.fnDeleteRow(value-index, function(lg){
+					console.log(lg)
+				});
+			})
+			commonData.updateSerialNo(fullScreenn.visibleTableAPI);
+			fullScreenn.visibleTableAPI.page( page ).draw( 'page' );
+			$("#saveResourcesButton").click();
+		}
 	});
 
 	$("#clearSelectedslotsButton").off('click').on('click',function(evt){
-		page = fullScreen.visibleTableAPI.page.info().page;
-		checkboxTD = fullScreen.visibleTableAPI.rows().nodes().toJQuery();
+		page = fullScreenn.visibleTableAPI.page.info().page;
+		checkboxTD = fullScreenn.visibleTableAPI.rows().nodes().toJQuery();
 		clearRowsIndexes = []
 		$.each(checkboxTD, function(index, value){
 			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
@@ -359,18 +365,20 @@ window.onload = function(){
 
 		})
 		$.each(clearRowsIndexes, function(index,value){
-			// fullScreen.visibleTableAPI.cell(value,3).data("")
-			fullScreen.visibleTableAPI.cell(value,4).data("")
+			// fullScreenn.visibleTableAPI.cell(value,3).data("")
+			fullScreenn.visibleTableAPI.cell(value,4).data("")
 
-			$(fullScreen.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeOut();
-			$(fullScreen.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeIn();
+			$(fullScreenn.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeOut();
+			$(fullScreenn.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeIn();
 		})
-		// commonData.updateSerialNo(fullScreen.visibleTableAPI);
-		fullScreen.visibleTableAPI.page( page ).draw( 'page' );
+		// commonData.updateSerialNo(fullScreenn.visibleTableAPI);
+		fullScreenn.visibleTableAPI.page( page ).draw( 'page' );
 
 		$.each(checkboxTD, function(index, value){
 			$(value).find('td:nth-child(2) input').attr('checked',false)
 		})
+
+		$("#saveResourcesButton").click();
 	});
 
 
@@ -392,7 +400,7 @@ window.onload = function(){
 
 	// this will clear the planned tab;le
 	// $('table tbody').on('click','td:nth-child(6)',function(evt){
- //    	deleteOrEditGroup(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, evt);
+ //    	deleteOrEditGroup(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ, evt);
 	// });
 	
 	// // tabel buttons : only edit is working
@@ -416,8 +424,8 @@ window.onload = function(){
 		trgtTd = $(evt.target);
 		trgtTdValue = trgtTd.text();
 		if(trgtTd[0].nodeName == "TD"){
-			if((visibleTableJQ[0].id == "groupsFullScreenGeneralTable" && trgtTd.index() == 3) || (visibleTableJQ[0].id == "clustersFullScreenGeneralTable" && trgtTd.index() == 3)){
-				fullScreen.trgtTd = trgtTd
+			if((visibleTableJQ[0].id == "groupsFullScreenGeneralTable" && trgtTd.index() == 2) || (visibleTableJQ[0].id == "clustersFullScreenGeneralTable" && trgtTd.index() == 2)){
+				fullScreenn.trgtTd = trgtTd
 				$("#modifyFieldDialog").dialog({
 		            constrain : true,
 		            top : trgtTd.offset().top,
@@ -432,16 +440,16 @@ window.onload = function(){
 		            shadow : false
 				});
 				$("#modifyFieldDialog div.elementHolder").empty();
-				$("#modifyFieldDialog div.elementHolder").append('<div class="input-group date" style="width:' + (parseInt(trgtTd.width()) + 16 -39) + 'px">'+
+				$("#modifyFieldDialog div.elementHolder").append('<div class="input-group date" style="width:' + (parseInt(trgtTd.width()) + 7 -39) + 'px">'+
 																	'<input class="myDateTimePicker form-control" id="startTime" '+
-																	'style="height:' + (parseInt(trgtTd.height()) + 16) + 'px;'+
-																	'width : ' + (parseInt(trgtTd.width()) + 16 -39) + 'px"></input>'+
+																	'style="height:' + (parseInt(trgtTd.height()) + 7) + 'px;'+
+																	'width : ' + (parseInt(trgtTd.width()) + 7 -39) + 'px"></input>'+
 																	'<span class="input-group-addon">'+
 		                        										'<span class="glyphicon glyphicon-calendar"></span>'+
 		                    										'</span>'+
 		                    									'</div>')	
-				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'HH:mm',stepping:60,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
-				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"HH:mm"));
+				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'hh:mm_A',stepping:60,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
+				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"hh:mm_A"));
 				
 				
 				$("#" + visibleTableJQ[0].id).off('keyup').on('keyup', function(evt){
@@ -449,18 +457,18 @@ window.onload = function(){
 					// 	commonData.updateTableWithResource();
 					// }else 
 					if(evt.keyCode == 27){
-						revertTableUpdate(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ);
+						revertTableUpdate(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ);
 					}
 				});
 
 				$(".window-mask").off('click').on('click',function(){
-					startTime = $("#startTime").data("DateTimePicker").date().format('HH:mm');
+					startTime = $("#startTime").data("DateTimePicker").date().format('hh:mm_A');
 					text = ''
-					commonData.updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, startTime, '');
+					commonData.updateTableWithResource(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ, startTime, '');
 				})
-			}else if((visibleTableJQ[0].id == "groupsFullScreenGeneralTable" && trgtTd.index() == 4) || 
-				(visibleTableJQ[0].id == "clustersFullScreenGeneralTable" && trgtTd.index() == 4)){
-				fullScreen.trgtTd = trgtTd
+			}else if((visibleTableJQ[0].id == "groupsFullScreenGeneralTable" && trgtTd.index() == 3) || 
+				(visibleTableJQ[0].id == "clustersFullScreenGeneralTable" && trgtTd.index() == 3)){
+				fullScreenn.trgtTd = trgtTd
 				createPicker();
 				// $("#modifyFieldDialog").dialog({
 		  //           constrain : true,
@@ -482,7 +490,7 @@ window.onload = function(){
 				// videosArray = [];
 				// imagesOptGroup = "<optgroup label='Images'>"
 				// videosOptGroup = "<optgroup label='Videos'>"
-				// $.each(fullScreen.resources,function(index,value){
+				// $.each(fullScreenn.resources,function(index,value){
 				// 	if(value.split('.')[1].toUpperCase() == "JPG" || value.split('.')[1].toUpperCase() == "JPEG"){
 				// 		// imagesArray.push(value);
 				// 		imagesOptGroup += '<option value="' + value + '">' + value +'</option>'
@@ -497,7 +505,7 @@ window.onload = function(){
 
 				// resourcesSelect = `<select class='resourceSelect' 
 				// 				 	style="height:` + (parseInt(trgtTd.height()) + 30) + `px;
-				// 				 	width:` + (parseInt(trgtTd.width()) + 16) + `px">` + 
+				// 				 	width:` + (parseInt(trgtTd.width()) + 7) + `px">` + 
 				// 				 	imagesOptGroup + videosOptGroup + `</select>`
 
 				// $("#modifyFieldDialog div.elementHolder").append(resourcesSelect)
@@ -507,7 +515,7 @@ window.onload = function(){
 				// 	filter: true,
 				// 	placeholder : 'Select Resource',
 				// 	onClick: function(view) {
-				// 		commonData.updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ,'', view.value)
+				// 		commonData.updateTableWithResource(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ,'', view.value)
 				// 		// console.log(view.value)
 				// 		// console.log(view.checked)
 		  //           }
@@ -523,7 +531,7 @@ window.onload = function(){
 				// 	// 	commonData.updateTableWithResource();
 				// 	// }else 
 				// 	if(evt.keyCode == 27){
-				// 		revertTableUpdate(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ);
+				// 		revertTableUpdate(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ);
 				// 	}
 				// });
 
@@ -531,7 +539,7 @@ window.onload = function(){
 
 				// $(".window-mask").off('click').on('click',function(){
 				// 	resource = $("select.resourceSelect").multipleSelect('getSelects').length!=0 ? $("select.resourceSelect").multipleSelect('getSelects') : [""] 
-				// 	commonData.updateTableWithResource(fullScreen.visibleTableAPI, fullScreen.visibleTableJQ, '', resource[0]);
+				// 	commonData.updateTableWithResource(fullScreenn.visibleTableAPI, fullScreenn.visibleTableJQ, '', resource[0]);
 					
 				// })
 			}
@@ -540,7 +548,7 @@ window.onload = function(){
 
 
 	commonData.updateTableWithResource = function(visibleTableAPI, visibleTableJQ, startTime, resourceName){
-		rowNo = parseInt(fullScreen.trgtTd.closest('tr').find('td').first().text()) -1
+		rowNo = parseInt(fullScreenn.trgtTd.closest('tr').find('td').first().text()) -1
 		// resources.resourcesTableJQ.fnUpdate({resourceName : resourceName, resourceType : 'image'},rowNo);
 		// var resourceType = 'image'
 		// if(resourceName != ""){
@@ -558,21 +566,21 @@ window.onload = function(){
 		page = visibleTableAPI.page.info().page;
 		if(visibleTableJQ[0].id == "groupsFullScreenGeneralTable"){
 			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,4).data(resourceName)
+				visibleTableAPI.cell(rowNo,3).data(resourceName)
 				// visibleTableAPI.cell(rowNo,4).data(duration)
 			}
 			if(startTime != ""){
-				visibleTableAPI.cell(rowNo,3).data(startTime)
+				visibleTableAPI.cell(rowNo,2).data(startTime)
 
 			}
 			
 		}else if(visibleTableJQ[0].id == "clustersFullScreenGeneralTable"){
 			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,4).data(resourceName)
+				visibleTableAPI.cell(rowNo,3).data(resourceName)
 				// visibleTableAPI.cell(rowNo,3).data(resourceType)
 			}
 			if(startTime != ""){
-				visibleTableAPI.cell(rowNo,3).data(startTime)
+				visibleTableAPI.cell(rowNo,2).data(startTime)
 
 			}
 			
@@ -595,66 +603,67 @@ window.onload = function(){
 	}
 
 	$("#addNewResourceButton").off('click').on('click',function(evt){
-		recordsTotal = fullScreen.visibleTableAPI.page.info().recordsTotal;
+		recordsTotal = fullScreenn.visibleTableAPI.page.info().recordsTotal;
 
-		// if(!fullScreen.resources || fullScreen.resources.length == 0){
+		// if(!fullScreenn.resources || fullScreenn.resources.length == 0){
 		// 	$.notify('No resource available.','error')
 		// }else{
 			// var resourceType = 'image'
-			// if(fullScreen.resources[0].split('.')[1].toUpperCase() == "JPG" || fullScreen.resources[0].split('.')[1].toUpperCase() == "JPEG"){
+			// if(fullScreenn.resources[0].split('.')[1].toUpperCase() == "JPG" || fullScreenn.resources[0].split('.')[1].toUpperCase() == "JPEG"){
 			// 	resourceType = 'image'
-			// }else if(fullScreen.resources[0].split('.')[1].toUpperCase() == "MP4" || fullScreen.resources[0].split('.')[1].toUpperCase() == "WEBM"){
+			// }else if(fullScreenn.resources[0].split('.')[1].toUpperCase() == "MP4" || fullScreenn.resources[0].split('.')[1].toUpperCase() == "WEBM"){
 			// 	resourceType = 'video'
 			// }
 			dt = {};
-			if(fullScreen.visibleTableJQ.attr('id') == 'groupsFullScreenGeneralTable'){
+			if(fullScreenn.visibleTableJQ.attr('id') == 'groupsFullScreenGeneralTable'){
 				groupOrClusterKey = "groupName";
 		    	groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
-		    	startTime = new moment().add(1,'hours').startOf('hour').format('HH:mm')
+		    	startTime = new moment().add(1,'hours').startOf('hour').format('hh:mm_A')
 		    	dt = {sno :  recordsTotal + 1,resName : "", time : startTime};
 			}
-			if(fullScreen.visibleTableJQ.attr('id') == 'clustersFullScreenGeneralTable'){
+			if(fullScreenn.visibleTableJQ.attr('id') == 'clustersFullScreenGeneralTable'){
 				groupOrClusterKey = "clusterName";
 				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
-				startTime = new moment().add(1,'hours').startOf('hour').format('HH:mm')
+				startTime = new moment().add(1,'hours').startOf('hour').format('hh:mm_A')
 				dt = {sno :  recordsTotal + 1,resName : "", time : startTime};
 			}
 
 			
 
 
-			// dt = {sno :  recordsTotal + 1,resourceName : fullScreen.resources[0], resourceType : resourceType, duration : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
+			// dt = {sno :  recordsTotal + 1,resourceName : fullScreenn.resources[0], resourceType : resourceType, duration : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
 			
 			dt[groupOrClusterKey] = groupOrCluster;
 
-			fullScreen.visibleTableJQ.fnAddData(dt);
-			fullScreen.visibleTableAPI.page( 'last' ).draw( 'page' );
+			fullScreenn.visibleTableJQ.fnAddData(dt);
+			fullScreenn.visibleTableAPI.page( 'last' ).draw( 'page' );
 
-			$(fullScreen.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeOut();
-			$(fullScreen.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeIn();
+			$(fullScreenn.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeOut();
+			$(fullScreenn.visibleTableAPI.rows().nodes().toJQuery()[recordsTotal]).fadeIn();
 		// }
 	})
 
 
 	$("#saveResourcesButton").off('click').on('click',function(evt){
-		fullScreenDataArray = fullScreen.visibleTableJQ.fnGetData();
+		$("#loadingDiv").show();
+		fullScreennDataArray = fullScreenn.visibleTableJQ.fnGetData();
 		// postData = {}
-		// groupOrClusterNameFromTable = fullScreenDataArray[0].groupName;
+		// groupOrClusterNameFromTable = fullScreennDataArray[0].groupName;
 		// if(typeof(groupOrClusterNameFromTable) == 'undefined'){
-		// 	groupOrClusterNameFromTable = fullScreenDataArray[0].clusterName;
+		// 	groupOrClusterNameFromTable = fullScreennDataArray[0].clusterName;
 		// 	postData.clusterName = groupOrClusterNameFromTable;
 		// }else{
 		// 	postData.groupName = groupOrClusterNameFromTable;
 		// }
 		
-		fullScreenDataArray = _.filter(fullScreenDataArray,function(value){
+		fullScreennDataArray = _.filter(fullScreennDataArray,function(value){
 			return value.resourceName != ""
 		})
-		if(fullScreen.visibleTableJQ.attr('id') == 'groupsFullScreenGeneralTable'){
+		if(fullScreenn.visibleTableJQ.attr('id') == 'groupsFullScreenGeneralTable'){
 			groupName = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 			url = commonData.apiurl + 'planned/fs' + "/" + "NO" + "/" + groupName
 		}
-		if(fullScreen.visibleTableJQ.attr('id') == 'clustersFullScreenGeneralTable'){
+		if(fullScreenn.visibleTableJQ.attr('id') == 'clustersFullScreenGeneralTable'){
 			clusterName = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 			url = commonData.apiurl + 'planned/fs' + "/" + clusterName + "/" + "NO"
 		}
@@ -662,19 +671,19 @@ window.onload = function(){
 		
 
 
-    	fullScreenDataArray = _.map(fullScreenDataArray, function(model) {
+    	fullScreennDataArray = _.map(fullScreennDataArray, function(model) {
 			return _.omit(model, 'sno','groupName','clusterName');
 		});
-		// postData.data = fullScreenDataArray;
+		// postData.data = fullScreennDataArray;
 
 		$.ajax({
 			  type: "POST",
 			  async : false,
 			  url: url,
-			  data: JSON.stringify(fullScreenDataArray),
+			  data: JSON.stringify(fullScreennDataArray),
 			  success: function(data){
 			  	$.notify('Success','success')
-			  	fullScreen.visibleTableAPI.ajax.reload();
+			  	fullScreenn.visibleTableAPI.ajax.reload();
 			  	// checkIfAnyUpdate(function(result){
 			  	// 	if(result == true){
 			  	// 		$(parent.document.body).find('#updateFirebaseButton').show();

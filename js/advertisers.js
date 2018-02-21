@@ -102,41 +102,44 @@ window.onload = function(){
 	});
 
 	$("#deleteSelectedAdvertiserButton").off('click').on('click',function(evt){
-		page = advertisers.advertisersTableAPI.page.info().page;
-		checkboxTD = advertisers.advertisersTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				advertiserName = $(value).find('td:nth-child(3)').text();
-				deleteRowsIndexes.push(advertiserName);
-			}
-
-		})
-		$.each(deleteRowsIndexes, function(index,advertiserName){
-			$.ajax({
-			    url: commonData.apiurl + "advertisers/" + advertiserName,
-			    type: 'DELETE',
-			    "async" : false,
-			    success: function(result) {
-			        
-			    },
-			    error : function(jqXHR, textStatus){
-					if(jqXHR.responseText){
-			 			$.notify(jqXHR.responseText,'error')
-			 		}
+		if(confirm("Are you you want to delete selected entries?")){
+			$("#loadingDiv").show();
+			page = advertisers.advertisersTableAPI.page.info().page;
+			checkboxTD = advertisers.advertisersTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					advertiserName = $(value).find('td:nth-child(3)').text();
+					deleteRowsIndexes.push(advertiserName);
 				}
-			});
+
+			})
+			$.each(deleteRowsIndexes, function(index,advertiserName){
+				$.ajax({
+				    url: commonData.apiurl + "advertisers/" + advertiserName,
+				    type: 'DELETE',
+				    "async" : false,
+				    success: function(result) {
+				        
+				    },
+				    error : function(jqXHR, textStatus){
+						if(jqXHR.responseText){
+				 			$.notify(jqXHR.responseText,'error')
+				 		}
+					}
+				});
 
 
-			// advertisers.advertisersTableJQ.fnDeleteRow(value-index, function(lg){
-			// 	console.log(lg)
-			// });
-		})
-		// updateSerialNo();
-		advertisers.advertisersTableAPI.page( 'first' ).draw( 'page' );
-		advertisers.advertisersTableAPI.ajax.reload()
+				// advertisers.advertisersTableJQ.fnDeleteRow(value-index, function(lg){
+				// 	console.log(lg)
+				// });
+			})
+			// updateSerialNo();
+			advertisers.advertisersTableAPI.page( 'first' ).draw( 'page' );
+			advertisers.advertisersTableAPI.ajax.reload()
+		}
 	});
 
 	$("#advertisersTable").off('keyup').on('keyup', function(event){
@@ -186,8 +189,8 @@ window.onload = function(){
 		}
 		$('#addNewAdvertiserDialog').dialog({
 		    title: title,
-		    width: 400,
-		    height: 200,
+		    // width: 400,
+		    // height: 200,
 		    closed: false,
 		    cache: false,
 		    constrain: true,
@@ -231,6 +234,7 @@ window.onload = function(){
 	}
 
     function updateTableWithNewRecord(){
+    	$("#loadingDiv").show();
     	advertiserName = $("#advertiserName").val();
     	advertiserLocation = $("#advertiserLocation").val();;
     	// advertiserData = [];

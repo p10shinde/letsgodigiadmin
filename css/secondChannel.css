@@ -50,8 +50,15 @@ table th:nth-child(2){
   width: 15px !important;
 }
 
-table th:nth-child(8){
-  width: 15px !important;
+#groupsSecondChannelPlannedTable th:nth-child(3), #clustersSecondChannelPlannedTable th:nth-child(3){
+  width: 100px !important;
+}
+#groupsSecondChannelPlannedTable td:nth-child(3), #clustersSecondChannelPlannedTable td:nth-child(3){
+  text-align: center !important;
+}
+
+table th:nth-child(5){
+  width: 60px !important;
 }
 
 

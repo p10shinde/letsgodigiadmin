@@ -1,4 +1,4 @@
-if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientName || !sessionStorage.userName || !sessionStorage.id_token){
+if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientLocation || !sessionStorage.userName || !sessionStorage.id_token){
 	window.location.href = 'login.html'
 }else{
 	window.onload = function(){
@@ -6,7 +6,7 @@ if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientN
 		$("#userImage")[0].src = sessionStorage.image
 
 		$("#userStatusButton").html(sessionStorage.userName + ' <span class="caret"></span>')
-		$("#clientName").text(sessionStorage.clientName);
+		$("#clientName").text(sessionStorage.clientLocation);
 		$("#channelMenu li").first().click()
 		$("#channelMenu li").off('click').on('click',function(evt){
 			if($(this).hasClass('disabled'))
@@ -44,7 +44,7 @@ if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientN
 			sessionStorage.removeItem('userName');
 			sessionStorage.removeItem('userId');
 			sessionStorage.removeItem('userType');
-			sessionStorage.removeItem('clientName');
+			sessionStorage.removeItem('clientLocation');
 			
 			sessionStorage.removeItem('apiurl');
 			window.location.reload();

@@ -2,42 +2,66 @@ resources = {}
 resources.itemsArray = [];//["img1.jpg","img2.jpg","vid1.mp4","vid2.mp4","vid3.mp4","vid4.mp4","img3.jpg","img4.jpg"];
 
 function getAllGroups(){
-	$.ajax({
-		url : commonData.apiurl + "groups",
-		async : false,
-		datatype : 'json',
-		complete : function(jqXHR, textstatus){
-			if(textstatus == "success"){
-				groups = _.unique(jqXHR.responseJSON,'groupName')
-				groups = _.pluck(groups,'groupName')
-				var options = ""
-				$.each(groups, function(index,value){
-					options += `<option value="`+value+`">`+value+`</option>`
-				});
-				$("#groupSelectFilter").empty();
-				$("#groupSelectFilter").append(options);
-				
-				$("#groupSelectFilter").multipleSelect({
-					placeholder: "Select Group",
-					filter: true,
-					single : true,
-					onClick : function(view){
-						tabIndex = $("#resourcesTabs").tabs('getTabIndex',$("#resourcesTabs").tabs('getSelected'))
-						groupName = view.value;
-						if(tabIndex == 0){
-							loadSocietyContent(groupName);
-					    }
-					}
-				});
-				loadSocietyContent($("#groupSelectFilter").multipleSelect('getSelects')[0]);
+	if(commonData.userType != 'Society'){
+		$.ajax({
+			url : commonData.apiurl + "groups",
+			async : false,
+			datatype : 'json',
+			complete : function(jqXHR, textstatus){
+				if(textstatus == "success"){
+					groups = _.unique(jqXHR.responseJSON,'groupName')
+					groups = _.pluck(groups,'groupName')
+					var options = ""
+					$.each(groups, function(index,value){
+						options += `<option value="`+value+`">`+value+`</option>`
+					});
+					$("#groupSelectFilter").empty();
+					$("#groupSelectFilter").append(options);
+					
+					$("#groupSelectFilter").multipleSelect({
+						placeholder: "Select Group",
+						filter: true,
+						single : true,
+						allSelected : false,
+						onClick : function(view){
+							tabIndex = $("#resourcesTabs").tabs('getTabIndex',$("#resourcesTabs").tabs('getSelected'))
+							groupName = view.value;
+							if(tabIndex == 0){
+								loadSocietyContent(groupName);
+						    }
+						}
+					});
+					loadSocietyContent($("#groupSelectFilter").multipleSelect('getSelects')[0]);
 
-			}else if(textstatus == "error"){
-				if(jqXHR.responseText)
-					$.notify(jqXHR.responseText,'error')
+				}else if(textstatus == "error"){
+					if(jqXHR.responseText)
+						$.notify(jqXHR.responseText,'error')
+				}
+				console.log(jqXHR);
 			}
-			console.log(jqXHR);
-		}
-	})
+		})
+	}else{
+		var options = ""
+		options += `<option value="`+clientName+`">`+clientName+`</option>`
+		$("#groupSelectFilter").empty();
+		$("#groupSelectFilter").append(options);
+		$("#groupSelectFilter").attr('disabled',true);
+		
+		$("#groupSelectFilter").multipleSelect({
+			placeholder: "Select Group",
+			filter: true,
+			single : true,
+			allSelected : false,
+			onClick : function(view){
+				tabIndex = $("#resourcesTabs").tabs('getTabIndex',$("#resourcesTabs").tabs('getSelected'))
+				groupName = view.value;
+				if(tabIndex == 0){
+					loadSocietyContent(groupName);
+			    }
+			}
+		});
+		loadSocietyContent($("#groupSelectFilter").multipleSelect('getSelects')[0]);
+	}
 }
 
 

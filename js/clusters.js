@@ -104,45 +104,48 @@ window.onload = function(){
 	// });
 
 	$("#deleteSelectedClusterButton").off('click').on('click',function(evt){
-		page = clusters.clustersTableAPI.page.info().page;
-		checkboxTD = clusters.clustersTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		deleteRowGroupNames = [];
-		
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				clusterName = $(value).find('td:nth-child(3)').text();
-				grpName = $(value).find('td:nth-child(4)').text();
-				deleteRowGroupNames.push(grpName)
-				deleteRowsIndexes.push(clusterName);
-			}
-
-		})
-		$.each(deleteRowsIndexes, function(index,clusterName){
-			$.ajax({
-			    url: commonData.apiurl + "clusters/" +deleteRowsIndexes[index] + "/" + deleteRowGroupNames[index],
-			    type: 'DELETE',
-			    "async" : false,
-			    success: function(result) {
-			        
-			    },
-			    error : function(jqXHR, textStatus){
-					if(jqXHR.responseText){
-			 			$.notify(jqXHR.responseText,'error')
-			 		}
+		if(confirm("Are you you want to delete selected entries?")){
+			$("#loadingDiv").show();
+			page = clusters.clustersTableAPI.page.info().page;
+			checkboxTD = clusters.clustersTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			deleteRowGroupNames = [];
+			
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					clusterName = $(value).find('td:nth-child(3)').text();
+					grpName = $(value).find('td:nth-child(4)').text();
+					deleteRowGroupNames.push(grpName)
+					deleteRowsIndexes.push(clusterName);
 				}
-			});
+
+			})
+			$.each(deleteRowsIndexes, function(index,clusterName){
+				$.ajax({
+				    url: commonData.apiurl + "clusters/" +deleteRowsIndexes[index] + "/" + deleteRowGroupNames[index],
+				    type: 'DELETE',
+				    "async" : false,
+				    success: function(result) {
+				        
+				    },
+				    error : function(jqXHR, textStatus){
+						if(jqXHR.responseText){
+				 			$.notify(jqXHR.responseText,'error')
+				 		}
+					}
+				});
 
 
-			// clusters.clustersTableJQ.fnDeleteRow(value-index, function(lg){
-			// 	console.log(lg)
-			// });
-		})
-		// updateSerialNo();
-		clusters.clustersTableAPI.page( 'first' ).draw( 'page' );
-		clusters.clustersTableAPI.ajax.reload()
+				// clusters.clustersTableJQ.fnDeleteRow(value-index, function(lg){
+				// 	console.log(lg)
+				// });
+			})
+			// updateSerialNo();
+			clusters.clustersTableAPI.page( 'first' ).draw( 'page' );
+			clusters.clustersTableAPI.ajax.reload()
+		}
 	});
 
 	$("#clustersTable").off('keyup').on('keyup', function(event){
@@ -193,8 +196,8 @@ window.onload = function(){
 		}
 		$('#addNewClusterDialog').dialog({
 		    title: title,
-		    width: 400,
-		    height: 200,
+		    // width: 400,
+		    // height: 200,
 		    closed: false,
 		    cache: false,
 		    constrain: true,
@@ -240,6 +243,7 @@ getAllGroups();
 						placeholder: "Select Group",
 						filter: true,
 						single : true,
+						allSelected : false,
 						onClick : function(view){
 							// tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
 							// clusterName = view.value;
@@ -289,6 +293,7 @@ getAllGroups();
 	}
 
     function updateTableWithNewRecord(){
+    	$("#loadingDiv").show();
     	clusterName = $("#clusterName").val();
 
     	// groupNameOld = groupName;

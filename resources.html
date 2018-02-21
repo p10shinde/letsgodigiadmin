@@ -168,18 +168,26 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div class="row" style="position: relative;height: 120px;">
+                        <div class="row" style="position: relative;">
                             <div class="col-md-12">
                                 <div id="displayFilterRadioDiv" style="padding: 0;height: 60px">
                                     <div class="row" >
-                                        <div class="col-md-3" style="padding-left: 0;height: inherit;">
+                                        <div class="col-md-1" style="padding-left: 0;height: inherit;">
                                             <div id="displayFilterRadio" style="width: 100%;position: absolute;padding: 5px">
                                                 <input type="radio" name="displayTypeRadio" id="groupRadio" checked value="Groups"><label for="groupRadio" style="padding-left: 10px;">Groups</label>
                                             </div>
                                         </div>
+                                        <div class="col-md-2" style="padding-left: 0;height: inherit;padding: 5px;">
+                                            <div>
+                                                <div id="groupSelectFilterDiv" style="width: 100%;position: absolute;">
+                                                    <select id="groupSelectFilter" style="width: 100%;height: inherit;">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="displayFilterDropdown" style="position: relative;height: 70px">
+                                <!-- <div id="displayFilterDropdown" style="position: relative;height: 70px">
                                     <div class="row" >
                                         <div class="col-md-2" style="padding-left: 0;height: inherit;">
                                             <div id="groupSelectFilterDiv" style="width: 100%;position: absolute;">
@@ -188,7 +196,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
@@ -207,7 +215,7 @@
                                                             <!-- <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript> -->
                                                             <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
                                                             <div class="row fileupload-buttonbar">
-                                                                <div class="col-lg-7">
+                                                                <div class="col-lg-7" style="text-align: center">
                                                                     <!-- The fileinput-button span is used to style the file input field as button -->
                                                                     <span class="btn btn-success fileinput-button">
                                                                         <i class="glyphicon glyphicon-plus"></i>
@@ -226,19 +234,19 @@
                                                                         <i class="fa fa-image"></i>
                                                                         <span>View Files</span>
                                                                     </button>
-                                                                    <button type="button" class="btn btn-danger manageDrive" onclick="manageDrive()" title="Delete files from drive">
+                                                                    <button type="button" class="btn btn-danger manageDrive" onclick="manageDrive()" title="Select to delete files from drive">
                                                                         <i class="glyphicon glyphicon-pencil"></i>
-                                                                        <span>Manage Drive</span>
+                                                                        <span>Delete from drive</span>
                                                                     </button>
-                                                                    <button type="button" class="btn btn-danger delete" title="Delete selected files(Not uploaded to drive)">
+                                                                    <!-- <button type="button" class="btn btn-danger delete" title="Delete selected files(Not uploaded to drive)">
                                                                         <i class="glyphicon glyphicon-trash"></i>
                                                                         <span>Delete</span>
-                                                                    </button>
+                                                                    </button> -->
                                                                     <!-- <button type="button" class="btn btn-info updateDriveSociety">
                                                                         <i class="glyphicon glyphicon-fire"></i>
                                                                         <span>Update Drive</span>
                                                                     </button> -->
-                                                                    <input type="checkbox" class="toggle">
+                                                                    <!-- <input type="checkbox" class="toggle"> -->
                                                                     <!-- The global file processing state -->
                                                                     <span class="fileupload-process"></span>
                                                                 </div>
@@ -290,7 +298,7 @@
                                                                         <span class="text-danger">Pending</span>
                                                                     </td>
                                                                     <td>
-                                                                        <button type="button" class="btn btn-info uploadToGoogleDrive" style="float: right;" disabled onclick="alws(this)">
+                                                                        <button type="button" title="Upload to drive" class="btn btn-info uploadToGoogleDrive" style="float: right;" disabled onclick="alws(this)">
                                                                             <i class="fa fa-upload"></i>
                                                                             <!-- <span>Upload To Drive</span> -->
                                                                         </button>
@@ -355,18 +363,18 @@
                                                                         {% } %}
                                                                     </td>
                                                                     <td>
-                                                                        <button type="button" class="btn btn-info uploadToGoogleDrive" style="float: right;" {%=file.error?"disabled":"enabled"%}  onclick="alws(this)">
+                                                                        <button type="button" title="Upload to drive" class="btn btn-info uploadToGoogleDrive" style="float: right;" {%=file.error?"disabled":"enabled"%}  onclick="alws(this)">
                                                                             <i class="fa fa-upload"></i>
                                                                             <!-- <span>Upload To Drive</span> -->
                                                                         </button>
                                                                     </td>
                                                                     <td >
                                                                         {% if (file.deleteUrl) { %}
-                                                                            <button class="btn btn-danger delete" style="float: right;" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                                                                            <button class="btn btn-danger delete" title="Reject content" style="float: right;" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
                                                                                 <i class="glyphicon glyphicon-trash"></i>
-                                                                                <span>Delete</span>
+                                                                                <span>Reject</span>
                                                                             </button>
-                                                                            <input type="checkbox" name="delete" value="1" class="toggle">    
+                                                                            <!-- <input type="checkbox" name="delete" value="1" class="toggle"> -->    
                                                                         {% } else { %}
                                                                             <button class="btn btn-warning cancel">
                                                                                 <i class="glyphicon glyphicon-ban-circle"></i>
@@ -397,7 +405,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div title="Advertise" id="resourcesAdvtTab" style="width: 100%;height: 100%;padding: 0px;margin-top: 10px">
+                                    <div title="Advertisement" id="resourcesAdvtTab" style="width: 100%;height: 100%;padding: 0px;margin-top: 10px">
                                         <div class="row" style="position: relative;height: 26px;">
                                             <div class="col-md-12">
                                                 <div class="resourcesAdvtTableDiv" style="margin-top: 10px;width: 100%;padding-bottom: 10px;">
@@ -409,7 +417,7 @@
                                                             <!-- <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript> -->
                                                             <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
                                                             <div class="row fileupload-buttonbar">
-                                                                <div class="col-lg-7">
+                                                                <div class="col-lg-7" style="text-align: center">
                                                                     <!-- The fileinput-button span is used to style the file input field as button -->
                                                                     <span class="btn btn-success fileinput-button">
                                                                         <i class="glyphicon glyphicon-plus"></i>
@@ -428,19 +436,19 @@
                                                                         <i class="fa fa-image"></i>
                                                                         <span>View Files</span>
                                                                     </button>
-                                                                    <button type="button" class="btn btn-danger manageDrive" onclick="manageDrive()" title="Delete files from drive">
+                                                                    <button type="button" class="btn btn-danger manageDrive" onclick="manageDrive()" title="Select to delete files from drive">
                                                                         <i class="glyphicon glyphicon-pencil"></i>
-                                                                        <span>Manage Drive</span>
+                                                                        <span>Delete from drive</span>
                                                                     </button>
-                                                                    <button type="button" class="btn btn-danger delete" title="Delete selected files(Not uploaded to drive)">
+                                                                    <!-- <button type="button" class="btn btn-danger delete" title="Delete selected files(Not uploaded to drive)">
                                                                         <i class="glyphicon glyphicon-trash"></i>
                                                                         <span>Delete</span>
-                                                                    </button>
+                                                                    </button> -->
                                                                     <!-- <button type="button" class="btn btn-info updateDriveAdvt">
                                                                         <i class="glyphicon glyphicon-fire"></i>
                                                                         <span>Update Drive</span>
                                                                     </button> -->
-                                                                    <input type="checkbox" class="toggle">
+                                                                    <!-- <input type="checkbox" class="toggle"> -->
                                                                     <!-- The global file processing state -->
                                                                     <span class="fileupload-process"></span>
                                                                 </div>
@@ -492,7 +500,7 @@
                                                                         <span class="text-danger">Pending</span>
                                                                     </td>
                                                                     <td>
-                                                                        <button type="button" class="btn btn-info uploadToGoogleDrive" style="float: right;" disabled onclick="alws(this)">
+                                                                        <button type="button" class="btn btn-info uploadToGoogleDrive" title="Upload to drive" style="float: right;" disabled onclick="alws(this)">
                                                                             <i class="fa fa-upload"></i>
                                                                             <!-- <span>Upload To Drive</span> -->
                                                                         </button>
@@ -557,18 +565,18 @@
                                                                         {% } %}
                                                                     </td>
                                                                     <td>
-                                                                        <button type="button" class="btn btn-info uploadToGoogleDrive" style="float: right;"  {%=file.error?"disabled":"enabled"%}  onclick="alws(this)">
+                                                                        <button type="button" title="Upload to drive" class="btn btn-info uploadToGoogleDrive" style="float: right;"  {%=file.error?"disabled":"enabled"%}  onclick="alws(this)">
                                                                             <i class="fa fa-upload"></i>
                                                                             <!-- <span>Upload To Drive</span> -->
                                                                         </button>
                                                                     </td>
                                                                     <td>
                                                                         {% if (file.deleteUrl) { %}
-                                                                            <button class="btn btn-danger delete" style="float: right;" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                                                                            <button class="btn btn-danger delete" title="Reject content" style="float: right;" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
                                                                                 <i class="glyphicon glyphicon-trash"></i>
-                                                                                <!-- <span>Delete</span> -->
+                                                                                <span>Reject</span>
                                                                             </button>
-                                                                            <input type="checkbox" name="delete" value="1" class="toggle">
+                                                                            <!-- <input type="checkbox" name="delete" value="1" class="toggle"> -->
                                                                         {% } else { %}
                                                                             <button class="btn btn-warning cancel">
                                                                                 <i class="glyphicon glyphicon-ban-circle"></i>

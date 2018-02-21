@@ -91,7 +91,7 @@ window.onload = function(){
             // },
             { "data": "userType" },
             { "data": "updatedBy" },
-            { "data": "updatedBy" },
+            { "data": "updatedAt" },
         	{ render : function(data, type, row){
         	  	return `<div class="tableButtons">
         	  				<button class="btn btn-info btn-xs editUser"><i class="fa fa-pencil" style="font-size: 8px;"></i></button>
@@ -125,43 +125,45 @@ window.onload = function(){
 	});
 
 	$("#deleteSelectedUserButton").off('click').on('click',function(evt){
-
-		page = users.usersTableAPI.page.info().page;
-		checkboxTD = users.usersTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = [];
-		deleteRowClientNames = [];
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				userID = $(value).find('td:nth-child(3)').text();
-				clName = $(value).find('td:nth-child(6)').text();
-				deleteRowClientNames.push(clName)
-				deleteRowsIndexes.push(userID)
-			}
-
-		})
-
-
-		$.each(deleteRowsIndexes, function(index,userID){
-			$.ajax({
-			    url: commonData.apiurl + "users/" + deleteRowClientNames[index] + "/" + userID,
-			    type: 'DELETE',
-			    "async" : false,
-			    success: function(result) {
-			        
-			    },
-			    error : function(jqXHR, textStatus){
-					if(jqXHR.responseText){
-			 			$.notify(jqXHR.responseText,'error')
-			 		}
+		if(confirm("Are you you want to delete selected entries?")){
+			$("#loadingDiv").show();
+			page = users.usersTableAPI.page.info().page;
+			checkboxTD = users.usersTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = [];
+			deleteRowClientNames = [];
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					userID = $(value).find('td:nth-child(3)').text();
+					clName = $(value).find('td:nth-child(6)').text();
+					deleteRowClientNames.push(clName)
+					deleteRowsIndexes.push(userID)
 				}
-			});
-			users.usersTableAPI.ajax.reload();
-			
-		})
-			users.usersTableAPI.page( 'first' ).draw( 'page' );
-		});
+
+			})
+
+
+			$.each(deleteRowsIndexes, function(index,userID){
+				$.ajax({
+				    url: commonData.apiurl + "users/" + deleteRowClientNames[index] + "/" + userID,
+				    type: 'DELETE',
+				    "async" : false,
+				    success: function(result) {
+				        
+				    },
+				    error : function(jqXHR, textStatus){
+						if(jqXHR.responseText){
+				 			$.notify(jqXHR.responseText,'error')
+				 		}
+					}
+				});
+				users.usersTableAPI.ajax.reload();
+				
+			})
+				users.usersTableAPI.page( 'first' ).draw( 'page' );
+		}
+	});
 
 	$("#usersTable").off('keyup').on('keyup', function(event){
 		if(event.keyCode == 32){
@@ -232,8 +234,8 @@ window.onload = function(){
 		}
 		$('#addNewUserDialog').dialog({
 		    title: title,
-		    width: 400,
-		    height: 320,
+		    // width: 400,
+		    // height: 320,
 		    closed: false,
 		    cache: false,
 		    constrain: true,
@@ -272,11 +274,13 @@ window.onload = function(){
 
 		$("select.userType").multipleSelect({
 			single: true,
-			filter: true
+			filter: true,
+			allSelected : false
 		})
 		$("select.clientName").multipleSelect({
 			single: true,
-			filter: true
+			filter: true,
+			allSelected : false,
 		})
 
 		
@@ -310,6 +314,7 @@ window.onload = function(){
 	}
 
     function updateTableWithNewRecord(){
+    	$("#loadingDiv").show();
     	userDataObj = {}
     	userDataObj.userID = $("#userID").val()
     	userDataObj.userName = $("#userName").val()

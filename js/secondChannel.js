@@ -152,6 +152,7 @@ window.onload = function(){
 						placeholder: "Select Group",
 						filter: true,
 						single : true,
+						allSelected : false,
 						onClick : function(view){
 							tabIndex = $("#secondChannelTabs").tabs('getTabIndex',$("#secondChannelTabs").tabs('getSelected'))
 							groupName = view.value;
@@ -203,6 +204,7 @@ window.onload = function(){
 						placeholder: "Select Cluster",
 						filter: true,
 						single : true,
+						allSelected : false,
 						onClick : function(view){
 							tabIndex = $("#secondChannelTabs").tabs('getTabIndex',$("#secondChannelTabs").tabs('getSelected'))
 							clusterName = view.value;
@@ -255,7 +257,7 @@ window.onload = function(){
 					var snooo = 0;
 					var newData = [];
 					while(ctr<=50){
-						var format = 'HH:mm'
+						var format = 'hh:mm_A'
 						  var time = moment(new Date(startTime),format),
 						  sh1BeforeTime = moment('06:45', format),
 						  sh1AfterTime = moment('14:20', format);
@@ -265,7 +267,7 @@ window.onload = function(){
 					  if (!startTime.isBetween(sh1BeforeTime, sh1AfterTime) && !startTime.isBetween(sh2BeforeTime, sh2AfterTime)){
 						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 						    obj = {};
-						    obj.time = startTime.format('HH:mm')
+						    obj.time = startTime.format('hh:mm_A')
 						    obj.sno = snooo+1;
 						    foundData =_.where(data,{time : obj.time})
 						    if(foundData.length != 0){
@@ -279,7 +281,7 @@ window.onload = function(){
 						}
 						// else if(!startTime.isBetween(sh2BeforeTime, sh2AfterTime)){
 						// 	obj = {};
-						//     obj.time = startTime.format('HH:mm')
+						//     obj.time = startTime.format('hh:mm_A')
 						//     obj.sno = ctr+1;
 						//     foundData =_.where(data,{time : obj.time})
 						//     if(foundData.length != 0){
@@ -291,7 +293,7 @@ window.onload = function(){
 						//     newData.push(obj);
 						// }
 
-					    startTime.add(20,'minutes').format('HH:mm')
+					    startTime.add(20,'minutes').format('hh:mm_A')
 					    ctr++
 					}
 
@@ -367,7 +369,7 @@ window.onload = function(){
 					// groupName_temp = data.groupName;
 					$.each(data, function(index, value){
 						value.sno = index + 1;
-						value.groupName = groupName;
+						// value.groupName = groupName;
 						value.duration = 5;
 					})
 					return data;
@@ -378,7 +380,7 @@ window.onload = function(){
 					// while(ctr<=50){
 					//     // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 					//     obj = {};
-					//     obj.startTime = startTime.format('HH:mm')
+					//     obj.startTime = startTime.format('hh:mm_A')
 					//     obj.sno = ctr+1;
 
 					//     foundData =_.where(data[0].data,{startTime : obj.startTime})
@@ -406,7 +408,7 @@ window.onload = function(){
 					// 	}
 
 					    
-					//     startTime.add(20,'minutes').format('HH:mm')
+					//     startTime.add(20,'minutes').format('hh:mm_A')
 					//     newData.push(obj);
 					//     ctr++
 					// }
@@ -450,7 +452,7 @@ window.onload = function(){
 	        	// 	// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
 	        	// 	// }
 	        	// },
-	            { "data": "groupName" },
+	            // { "data": "groupName" },
 	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            // { "data": "updatedBy" },
@@ -484,7 +486,7 @@ window.onload = function(){
 					// groupName_temp = data.groupName;
 					$.each(data, function(index, value){
 						value.sno = index + 1;
-						value.groupName = groupName;
+						// value.groupName = groupName;
 						value.duration = 5;
 					})
 					return data;
@@ -495,7 +497,7 @@ window.onload = function(){
 					// while(ctr<=50){
 					//     // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 					//     obj = {};
-					//     obj.startTime = startTime.format('HH:mm')
+					//     obj.startTime = startTime.format('hh:mm_A')
 					//     obj.sno = ctr+1;
 
 					//     foundData =_.where(data[0].data,{startTime : obj.startTime})
@@ -523,7 +525,7 @@ window.onload = function(){
 					// 	}
 
 					    
-					//     startTime.add(20,'minutes').format('HH:mm')
+					//     startTime.add(20,'minutes').format('hh:mm_A')
 					//     newData.push(obj);
 					//     ctr++
 					// }
@@ -567,7 +569,7 @@ window.onload = function(){
 	        	// 	// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
 	        	// 	// }
 	        	// },
-	            { "data": "groupName" },
+	            // { "data": "groupName" },
 	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            // { "data": "updatedBy" },
@@ -604,7 +606,7 @@ window.onload = function(){
 					var snooo = 0;
 					var newData = [];
 					while(ctr<=50){
-						var format = 'HH:mm'
+						var format = 'hh:mm_A'
 						  var time = moment(new Date(startTime),format),
 						  sh1BeforeTime = moment('06:45', format),
 						  sh1AfterTime = moment('14:20', format);
@@ -614,7 +616,7 @@ window.onload = function(){
 					  if (!startTime.isBetween(sh1BeforeTime, sh1AfterTime) && !startTime.isBetween(sh2BeforeTime, sh2AfterTime)){
 						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 						    obj = {};
-						    obj.time = startTime.format('HH:mm')
+						    obj.time = startTime.format('hh:mm_A')
 						    obj.sno = snooo+1;
 						    foundData =_.where(data,{time : obj.time})
 						    if(foundData.length != 0){
@@ -628,7 +630,7 @@ window.onload = function(){
 						}
 						// else if(!startTime.isBetween(sh2BeforeTime, sh2AfterTime)){
 						// 	obj = {};
-						//     obj.time = startTime.format('HH:mm')
+						//     obj.time = startTime.format('hh:mm_A')
 						//     obj.sno = ctr+1;
 						//     foundData =_.where(data,{time : obj.time})
 						//     if(foundData.length != 0){
@@ -640,7 +642,7 @@ window.onload = function(){
 						//     newData.push(obj);
 						// }
 
-					    startTime.add(20,'minutes').format('HH:mm')
+					    startTime.add(20,'minutes').format('hh:mm_A')
 					    ctr++
 					}
 
@@ -718,7 +720,7 @@ window.onload = function(){
 					$.each(data, function(index, value){
 						value.sno = index + 1;
 						value.duration = 5;
-						value.clusterName = clusterName;
+						// value.clusterName = clusterName;
 					})
 					return data;
 					// startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
@@ -728,7 +730,7 @@ window.onload = function(){
 					// while(ctr<=50){
 					//     // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 					//     obj = {};
-					//     obj.startTime = startTime.format('HH:mm')
+					//     obj.startTime = startTime.format('hh:mm_A')
 					//     obj.sno = ctr+1;
 
 					//     foundData =_.where(data[0].data,{startTime : obj.startTime})
@@ -756,7 +758,7 @@ window.onload = function(){
 					// 	}
 
 					    
-					//     startTime.add(20,'minutes').format('HH:mm')
+					//     startTime.add(20,'minutes').format('hh:mm_A')
 					//     newData.push(obj);
 					//     ctr++
 					// }
@@ -800,7 +802,7 @@ window.onload = function(){
 	        	// 	// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
 	        	// 	// }
 	        	// },
-	            { "data": "clusterName" },
+	            // { "data": "clusterName" },
 	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            // { "data": "updatedBy" },
@@ -836,7 +838,7 @@ window.onload = function(){
 					$.each(data, function(index, value){
 						value.sno = index + 1;
 						value.duration = 5;
-						value.clusterName = clusterName;
+						// value.clusterName = clusterName;
 					})
 					return data;
 					// startTime = new moment().startOf('day').add(7,'hours')//.format('DD-MM-YYYY hh:mm a')
@@ -846,7 +848,7 @@ window.onload = function(){
 					// while(ctr<=50){
 					//     // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 					//     obj = {};
-					//     obj.startTime = startTime.format('HH:mm')
+					//     obj.startTime = startTime.format('hh:mm_A')
 					//     obj.sno = ctr+1;
 
 					//     foundData =_.where(data[0].data,{startTime : obj.startTime})
@@ -874,7 +876,7 @@ window.onload = function(){
 					// 	}
 
 					    
-					//     startTime.add(20,'minutes').format('HH:mm')
+					//     startTime.add(20,'minutes').format('hh:mm_A')
 					//     newData.push(obj);
 					//     ctr++
 					// }
@@ -918,7 +920,7 @@ window.onload = function(){
 	        	// 	// 	return new moment(data).format('DD-MM-YYYY hh:mm a')
 	        	// 	// }
 	        	// },
-	            { "data": "clusterName" },
+	            // { "data": "clusterName" },
 	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            // { "data": "updatedBy" },
@@ -1032,69 +1034,78 @@ window.onload = function(){
 	});
 
 
-	$('#groupsSecondChannelShared1Table tbody').on('click','td:nth-child(4)',function(evt){
+	$('#groupsSecondChannelShared1Table tbody').on('click','td:nth-child(3)',function(evt){
 		openFieldEditorDialog(secondChannel.visibleTableAPI, secondChannel.visibleTableJQ, evt);
 	});
 
-	$('#clustersSecondChannelShared1Table tbody').on('click','td:nth-child(4)',function(evt){
+	$('#clustersSecondChannelShared1Table tbody').on('click','td:nth-child(3)',function(evt){
 		openFieldEditorDialog(secondChannel.visibleTableAPI, secondChannel.visibleTableJQ, evt);
 	});
 
 
-	$('#groupsSecondChannelShared2Table tbody').on('click','td:nth-child(4)',function(evt){
+	$('#groupsSecondChannelShared2Table tbody').on('click','td:nth-child(3)',function(evt){
 		openFieldEditorDialog(secondChannel.visibleTableAPI, secondChannel.visibleTableJQ, evt);
 	});
 
-	$('#clustersSecondChannelShared2Table tbody').on('click','td:nth-child(4)',function(evt){
+	$('#clustersSecondChannelShared2Table tbody').on('click','td:nth-child(3)',function(evt){
 		openFieldEditorDialog(secondChannel.visibleTableAPI, secondChannel.visibleTableJQ, evt);
 	});
 
 	$("#deleteSelectedresourcesButtonDiv").off('click').on('click','#deleteSelectedslotsButton',function(evt){
-		page = secondChannel.visibleTableAPI.page.info().page;
-		checkboxTD = secondChannel.visibleTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				deleteRowsIndexes.push(rowNo)
-			}
+		if(confirm("Are you you want to delete selected entries permanently and update?")){
+			$("#loadingDiv").show();
+			page = secondChannel.visibleTableAPI.page.info().page;
+			checkboxTD = secondChannel.visibleTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					deleteRowsIndexes.push(rowNo)
+				}
 
-		})
-		$.each(deleteRowsIndexes, function(index,value){
-			secondChannel.visibleTableJQ.fnDeleteRow(value-index, function(lg){
-				console.log(lg)
-			});
-		})
-		commonData.updateSerialNo(secondChannel.visibleTableAPI);
-		secondChannel.visibleTableAPI.page( page ).draw( 'page' );
+			})
+			$.each(deleteRowsIndexes, function(index,value){
+				secondChannel.visibleTableJQ.fnDeleteRow(value-index, function(lg){
+					console.log(lg)
+				});
+			})
+			commonData.updateSerialNo(secondChannel.visibleTableAPI);
+			secondChannel.visibleTableAPI.page( page ).draw( 'page' );
+			$("#saveResourcesButton").click();
+
+		}
 	});
 
 	$("#clearSelectedslotsButton").off('click').on('click',function(evt){
-		page = secondChannel.visibleTableAPI.page.info().page;
-		checkboxTD = secondChannel.visibleTableAPI.rows().nodes().toJQuery();
-		clearRowsIndexes = []
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				clearRowsIndexes.push(rowNo)
-			}
+		if(confirm("Are you you want to clear selected entries permanently and update?")){
+			$("#loadingDiv").show();
+			page = secondChannel.visibleTableAPI.page.info().page;
+			checkboxTD = secondChannel.visibleTableAPI.rows().nodes().toJQuery();
+			clearRowsIndexes = []
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					clearRowsIndexes.push(rowNo)
+				}
 
-		})
-		$.each(clearRowsIndexes, function(index,value){
-			secondChannel.visibleTableAPI.cell(value,3).data("")
-			secondChannel.visibleTableAPI.cell(value,4).data("")
+			})
+			$.each(clearRowsIndexes, function(index,value){
+				secondChannel.visibleTableAPI.cell(value,3).data("")
+				secondChannel.visibleTableAPI.cell(value,4).data("")
 
-			$(secondChannel.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeOut();
-			$(secondChannel.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeIn();
-		})
-		// commonData.updateSerialNo(secondChannel.visibleTableAPI);
-		secondChannel.visibleTableAPI.page( page ).draw( 'page' );
+				$(secondChannel.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeOut();
+				$(secondChannel.visibleTableAPI.rows().nodes().toJQuery()[value]).fadeIn();
+			})
+			// commonData.updateSerialNo(secondChannel.visibleTableAPI);
+			secondChannel.visibleTableAPI.page( page ).draw( 'page' );
 
-		$.each(checkboxTD, function(index, value){
-			$(value).find('td:nth-child(2) input').attr('checked',false)
-		})
+			$.each(checkboxTD, function(index, value){
+				$(value).find('td:nth-child(2) input').attr('checked',false)
+			})
+			$("#saveResourcesButton").click();
+		}
 	});
 
 
@@ -1139,7 +1150,7 @@ window.onload = function(){
 		trgtTd = $(evt.target);
 		trgtTdValue = trgtTd.text();
 		if(trgtTd[0].nodeName == "TD"){
-			if(trgtTd.index() == 3){
+			if(trgtTd.index() == 2 || trgtTd.index() == 3){
 				secondChannel.trgtTd = trgtTd;
 				createPicker();
 				// $("#modifyFieldDialog").dialog({
@@ -1240,7 +1251,7 @@ window.onload = function(){
 			}
 		}else{
 			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,3).data(resourceName)
+				visibleTableAPI.cell(rowNo,2).data(resourceName)
 				// visibleTableAPI.cell(rowNo,4).data(resourceType)
 			}
 		}
@@ -1284,14 +1295,14 @@ window.onload = function(){
 				groupOrClusterKey = "groupName";
 				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
-				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_HH:mm')
+				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_hh:mm_A')
 				dt = {sno :  recordsTotal + 1,resName : "", duration : 5};
 			}
 			if(secondChannel.visibleTableJQ.attr('id') == 'clustersSecondChannelShared1Table'){
 				groupOrClusterKey = "clusterName";
 				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
-				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_HH:mm')
+				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_hh:mm_A')
 				dt = {sno :  recordsTotal + 1,resName : "", duration : 5};
 			}
 
@@ -1299,14 +1310,14 @@ window.onload = function(){
 				groupOrClusterKey = "groupName";
 				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
-				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_HH:mm')
+				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_hh:mm_A')
 				dt = {sno :  recordsTotal + 1,resName : "", duration : 5};
 			}
 			if(secondChannel.visibleTableJQ.attr('id') == 'clustersSecondChannelShared2Table'){
 				groupOrClusterKey = "clusterName";
 				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
-				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_HH:mm')
+				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_hh:mm_A')
 				dt = {sno :  recordsTotal + 1,resName : "", duration : 5};
 			}
 
@@ -1324,6 +1335,7 @@ window.onload = function(){
 	})
 
 	$("#saveResourcesButton").off('click').on('click', function(evt){
+		$("#loadingDiv").show();
 		secondChannelDataArray = secondChannel.visibleTableJQ.fnGetData();
 		postData = []
 		// groupOrClusterNameFromTable = secondChannelDataArray[0].groupName;
@@ -1365,7 +1377,7 @@ window.onload = function(){
 		
 
     	secondChannelDataArray = _.map(secondChannelDataArray, function(model) {
-			return _.omit(model, 'groupName','clusterName','clientName','sno');
+			return _.omit(model,'clientName','sno');
 		});
 
 		// postData.data = secondChannelDataArray;

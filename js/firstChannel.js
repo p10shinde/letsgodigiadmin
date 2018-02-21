@@ -97,48 +97,78 @@ window.onload = function(){
 
 
 	function getAllGroups(){
-		$.ajax({
-			url : commonData.apiurl + "groups",
-			async : false,
-			datatype : 'json',
-			complete : function(jqXHR, textstatus){
-				if(textstatus == "success"){
-					groups = _.unique(jqXHR.responseJSON,'groupName')
-					groups = _.pluck(groups,'groupName')
-					var options = ""
-					$.each(groups, function(index,value){
-						options += `<option value="`+value+`">`+value+`</option>`
-					});
-					$("#groupSelectFilter").empty();
-					$("#groupSelectFilter").append(options);
-					
-					$("#groupSelectFilter").multipleSelect({
-						placeholder: "Select Group",
-						filter: true,
-						single : true,
-						onClick : function(view){
-							tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
-							groupName = view.value;
-							if(tabIndex == 0){
-								loadGroupsFirstChannelGeneralTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
-						    }else{
-						    	loadGroupsFirstChannelPlannedTable(groupName)
-								firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelPlannedTableAPI;
-						    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelPlannedTableJQ;
-						    }
-						    // getAllResources(groupName);
-						}
-					});
+		if(commonData.userType != 'Society'){
 
-				}else if(textstatus == "error"){
-					if(jqXHR.responseText)
-						$.notify(jqXHR.responseText,'error')
+			$.ajax({
+				url : commonData.apiurl + "groups",
+				async : false,
+				datatype : 'json',
+				complete : function(jqXHR, textstatus){
+					if(textstatus == "success"){
+						groups = _.unique(jqXHR.responseJSON,'groupName')
+						groups = _.pluck(groups,'groupName')
+						var options = ""
+						$.each(groups, function(index,value){
+							options += `<option value="`+value+`">`+value+`</option>`
+						});
+						$("#groupSelectFilter").empty();
+						$("#groupSelectFilter").append(options);
+						
+						$("#groupSelectFilter").multipleSelect({
+							placeholder: "Select Group",
+							filter: true,
+							single : true,
+							allSelected : false,
+							onClick : function(view){
+								tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
+								groupName = view.value;
+								if(tabIndex == 0){
+									loadGroupsFirstChannelGeneralTable(groupName)
+									firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
+							    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
+							    }else{
+							    	loadGroupsFirstChannelPlannedTable(groupName)
+									firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelPlannedTableAPI;
+							    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelPlannedTableJQ;
+							    }
+							    // getAllResources(groupName);
+							}
+						});
+
+					}else if(textstatus == "error"){
+						if(jqXHR.responseText)
+							$.notify(jqXHR.responseText,'error')
+					}
+					console.log(jqXHR);
 				}
-				console.log(jqXHR);
-			}
-		})
+			})
+		}else{
+			var options = ""
+			options += `<option value="`+clientName+`">`+clientName+`</option>`
+			$("#groupSelectFilter").empty();
+			$("#groupSelectFilter").append(options);
+			$("#groupSelectFilter").attr('disabled',true);
+			$("#groupSelectFilter").multipleSelect({
+					placeholder: "Select Group",
+					filter: true,
+					single : true,
+					allSelected : false,
+					onClick : function(view){
+						tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
+						groupName = view.value;
+						if(tabIndex == 0){
+							loadGroupsFirstChannelGeneralTable(groupName)
+							firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelGeneralTableAPI;
+					    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelGeneralTableJQ;
+					    }else{
+					    	loadGroupsFirstChannelPlannedTable(groupName)
+							firstChannel.visibleTableAPI = firstChannel.groupsFirstChannelPlannedTableAPI;
+					    	firstChannel.visibleTableJQ = firstChannel.groupsFirstChannelPlannedTableJQ;
+					    }
+					    // getAllResources(groupName);
+					}
+				});
+		}
 	}
 
 	// function getAllClusters(){
@@ -208,7 +238,7 @@ window.onload = function(){
 					// groupName_temp = data[0].groupName;
 					$.each(data, function(index, value){
 						value.sno = index + 1;
-						value.groupName = groupName;
+						// value.groupName = groupName;
 					})
 					return data;
 				},
@@ -244,7 +274,7 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
-	            { "data": "groupName" },
+	            // { "data": "groupName" },
 	            { "data": "resName" },
 	            // { "data": "resourceType" },
 	            { "data": "duration" },
@@ -340,7 +370,7 @@ window.onload = function(){
 					// groupName_temp = data[0].groupName;
 					$.each(data, function(index, value){
 						value.sno = index +1;
-						value.groupName = groupName;
+						// value.groupName = groupName;
 					})
 					return data;
 
@@ -352,7 +382,7 @@ window.onload = function(){
 						while(ctr<=60){
 						    // console.log(startTime.format('DD-MM-YYYY hh:mm a'))
 						    obj = {};
-						    obj.time = startTime.format('DD-MM-YYY_HH:mm')
+						    obj.time = startTime.format('DD-MM-YYYY_hh:mm_A')
 						    obj.sno = ctr+1;
 
 						    foundData =_.where(data,{time : obj.time})
@@ -361,7 +391,7 @@ window.onload = function(){
 						    	foundData = foundData[0];
 							    obj.resName = foundData.resName;
 							    // obj.resourceType = foundData.resourceType;
-							    obj.groupName = groupName;
+							    // obj.groupName = groupName;
 							    // obj.clientName = clientName;
 							    // obj.updatedBy = foundData.updatedBy;
 							    // obj.updatedAt = foundData.updatedAt;
@@ -374,14 +404,14 @@ window.onload = function(){
 							}else{
 								obj.resName = ""
 								// obj.resourceType = ""
-								obj.groupName = groupName;
+								// obj.groupName = groupName;
 							    // obj.clientName = clientName;
 							    // obj.updatedBy = "";
 							    // obj.updatedAt = "";
 							}
 
 						    
-						    startTime.add(20,'minutes').format('DD-MM-YYYY_HH:mm')
+						    startTime.add(20,'minutes').format('DD-MM-YYYY_hh:mm_A')
 						    newData.push(obj);
 						    ctr++
 						}
@@ -419,7 +449,7 @@ window.onload = function(){
 	        	  			</div>`;
 	    	  		}, sortable : false
 	    	  	},
-	            { "data": "groupName" },
+	            // { "data": "groupName" },
 	            { "data": "time"
 	          //    ,
 	        		// render : function(data, type, row){
@@ -620,7 +650,7 @@ window.onload = function(){
     	}
     })
 
-    $('#groupsFirstChannelGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
+    $('#groupsFirstChannelGeneralTable tbody').on('click','td:nth-child(3)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
@@ -628,11 +658,11 @@ window.onload = function(){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
-	$('#groupsFirstChannelPlannedTable tbody').on('click','td:nth-child(5)',function(evt){
+	$('#groupsFirstChannelPlannedTable tbody').on('click','td:nth-child(3)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
-	$('#groupsFirstChannelGeneralTable tbody').on('click','td:nth-child(5)',function(evt){
+	$('#groupsFirstChannelGeneralTable tbody').on('click','td:nth-child(4)',function(evt){
 		openFieldEditorDialog(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, evt);
 	});
 
@@ -654,24 +684,28 @@ window.onload = function(){
 	// });
 
 	$("#deleteSelectedresourcesButton").off('click').on('click',function(evt){
-		page = firstChannel.visibleTableAPI.page.info().page;
-		checkboxTD = firstChannel.visibleTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				deleteRowsIndexes.push(rowNo)
-			}
+		if(confirm("Are you you want to delete selected entries permanently and update?")){
+			$("#loadingDiv").show();
+			page = firstChannel.visibleTableAPI.page.info().page;
+			checkboxTD = firstChannel.visibleTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					deleteRowsIndexes.push(rowNo)
+				}
 
-		})
-		$.each(deleteRowsIndexes, function(index,value){
-			firstChannel.visibleTableJQ.fnDeleteRow(value-index, function(lg){
-				// console.log(lg)
-			});
-		})
-		commonData.updateSerialNo(firstChannel.visibleTableAPI);
-		firstChannel.visibleTableAPI.page( page ).draw( 'page' );
+			})
+			$.each(deleteRowsIndexes, function(index,value){
+				firstChannel.visibleTableJQ.fnDeleteRow(value-index, function(lg){
+					// console.log(lg)
+				});
+			})
+			commonData.updateSerialNo(firstChannel.visibleTableAPI);
+			firstChannel.visibleTableAPI.page( page ).draw( 'page' );
+			$("#saveResourcesButton").click();
+		}
 	});
 
 	$("#clearSelectedslotsButton").off('click').on('click',function(evt){
@@ -757,7 +791,7 @@ window.onload = function(){
 		trgtTd = $(evt.target);
 		trgtTdValue = trgtTd.text();
 		if(trgtTd[0].nodeName == "TD"){
-			if((visibleTableJQ[0].id == "groupsFirstChannelPlannedTable" && trgtTd.index() == 3) || (visibleTableJQ[0].id == "clustersFirstChannelPlannedTable" && trgtTd.index() == 3)){
+			if((visibleTableJQ[0].id == "groupsFirstChannelPlannedTable" && trgtTd.index() == 2) || (visibleTableJQ[0].id == "clustersFirstChannelPlannedTable" && trgtTd.index() == 2)){
 				firstChannel.trgtTd = trgtTd
 				$("#modifyFieldDialog").dialog({
 		            constrain : true,
@@ -773,16 +807,16 @@ window.onload = function(){
 		            shadow : false
 				});
 				$("#modifyFieldDialog div.elementHolder").empty();
-				$("#modifyFieldDialog div.elementHolder").append('<div class="input-group date" style="width:' + (parseInt(trgtTd.width()) + 16 -39) + 'px">'+
+				$("#modifyFieldDialog div.elementHolder").append('<div class="input-group date" style="width:' + (parseInt(trgtTd.width()) + 7 -39) + 'px">'+
 																	'<input class="myDateTimePicker form-control" id="startTime" '+
-																	'style="height:' + (parseInt(trgtTd.height()) + 16) + 'px;'+
-																	'width : ' + (parseInt(trgtTd.width()) + 16 -39) + 'px"></input>'+
+																	'style="height:' + (parseInt(trgtTd.height()) + 7) + 'px;'+
+																	'width : ' + (parseInt(trgtTd.width()) + 7 -39) + 'px"></input>'+
 																	'<span class="input-group-addon">'+
 		                        										'<span class="glyphicon glyphicon-calendar"></span>'+
 		                    										'</span>'+
 		                    									'</div>')	
-				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY_HH:mm',stepping:20,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
-				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY_HH:mm"));
+				$("#modifyFieldDialog .myDateTimePicker").datetimepicker({format: 'DD-MM-YYYY_hh:mm_A',stepping:20,minDate : new moment(),maxDate : new moment().add(7,'days').endOf('day')});
+				$("#modifyFieldDialog .myDateTimePicker").data("DateTimePicker").date(new moment(trgtTdValue,"DD-MM-YYYY_hh:mm_A"));
 				
 				
 				$("#" + visibleTableJQ[0].id).off('keyup').on('keyup', function(evt){
@@ -795,14 +829,14 @@ window.onload = function(){
 				});
 
 				$(".window-mask").off('click').on('click',function(){
-					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY_HH:mm');
+					startTime = $("#startTime").data("DateTimePicker").date().format('DD-MM-YYYY_hh:mm_A');
 					text = ''
 					commonData.updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, startTime, '', 0);
 				})
-			}else if((visibleTableJQ[0].id == "groupsFirstChannelGeneralTable" && trgtTd.index() == 3) || 
-				(visibleTableJQ[0].id == "clustersFirstChannelGeneralTable" && trgtTd.index() == 3) ||
-				(visibleTableJQ[0].id == "groupsFirstChannelPlannedTable" && trgtTd.index() == 4) || 
-				(visibleTableJQ[0].id == "clustersFirstChannelPlannedTable" && trgtTd.index() == 4)){
+			}else if((visibleTableJQ[0].id == "groupsFirstChannelGeneralTable" && trgtTd.index() == 2) || 
+				(visibleTableJQ[0].id == "clustersFirstChannelGeneralTable" && trgtTd.index() == 2) ||
+				(visibleTableJQ[0].id == "groupsFirstChannelPlannedTable" && trgtTd.index() == 3) || 
+				(visibleTableJQ[0].id == "clustersFirstChannelPlannedTable" && trgtTd.index() == 3)){
 				firstChannel.trgtTd = trgtTd
 				createPicker();
 				
@@ -878,7 +912,7 @@ window.onload = function(){
 				// 	commonData.updateTableWithResource(firstChannel.visibleTableAPI, firstChannel.visibleTableJQ, '', resource[0], 0);
 					
 				// })
-			}else if(trgtTd.index() == 4){
+			}else if(trgtTd.index() == 3){
 				firstChannel.trgtTd = trgtTd;
 				duration = trgtTd.text();
 				$("#modifyFieldDialog").dialog({
@@ -896,8 +930,8 @@ window.onload = function(){
 				});
 				$("#modifyFieldDialog div.elementHolder").empty();
 
-					durationInput = `<input type="text" id="duration" value="`+ duration +`" style="height:` + (parseInt(trgtTd.height())+16) + `px;
-							 	width:` + (parseInt(trgtTd.width()) + 16) + `px">`;
+					durationInput = `<input type="text" id="duration" value="`+ duration +`" style="height:` + (parseInt(trgtTd.height())+7) + `px;
+							 	width:` + (parseInt(trgtTd.width()) + 7) + `px">`;
 
 					$("#modifyFieldDialog div.elementHolder").append(durationInput)
 					
@@ -939,18 +973,18 @@ window.onload = function(){
 		page = visibleTableAPI.page.info().page;
 		if(visibleTableJQ[0].id == "groupsFirstChannelGeneralTable"){
 			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,3).data(resourceName)
+				visibleTableAPI.cell(rowNo,2).data(resourceName)
 				// visibleTableAPI.cell(rowNo,4).data(duration)
 			}
 			if(duration != 0)
-				visibleTableAPI.cell(rowNo,4).data(duration)
+				visibleTableAPI.cell(rowNo,3).data(duration)
 		}else if(visibleTableJQ[0].id == "groupsFirstChannelPlannedTable"){
 			if(resourceName != ""){
-				visibleTableAPI.cell(rowNo,4).data(resourceName)
+				visibleTableAPI.cell(rowNo,3).data(resourceName)
 				// visibleTableAPI.cell(rowNo,4).data(duration)
 			}
 			if(startTime != ""){
-				visibleTableAPI.cell(rowNo,3).data(startTime)
+				visibleTableAPI.cell(rowNo,2).data(startTime)
 
 			}
 			// visibleTableAPI.cell(rowNo,4).data(resourceType)
@@ -1002,8 +1036,8 @@ window.onload = function(){
 			// }
 			dt = {};
 			if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelGeneralTable'){
-				groupOrClusterKey = "groupName";
-		    	groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+				// groupOrClusterKey = "groupName";
+		    	// groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 		    	dt = {sno :  recordsTotal + 1,resName : "",  duration : 5};
 			}
 			// if(firstChannel.visibleTableJQ.attr('id') == 'clustersFirstChannelGeneralTable'){
@@ -1013,10 +1047,10 @@ window.onload = function(){
 			// }
 
 			if(firstChannel.visibleTableJQ.attr('id') == 'groupsFirstChannelPlannedTable'){
-				groupOrClusterKey = "groupName";
-				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
+				// groupOrClusterKey = "groupName";
+				// groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
-				startTime = new moment(new Date()).subtract(remainder,'minutes').add('minutes',20).format('DD-MM-YYYY_HH:mm')
+				startTime = new moment(new Date()).subtract(remainder,'minutes').add('minutes',20).format('DD-MM-YYYY_hh:mm_A')
 				// startTime.add('minutes',20);
 				dt = {sno :  recordsTotal + 1,resName : "",  time : startTime};
 			}
@@ -1031,7 +1065,7 @@ window.onload = function(){
 
 			// dt = {sno :  recordsTotal + 1,resourceName : firstChannel.resources[0], resourceType : resourceType, duration : 15, clientName : clientName, updatedBy : "",updatedAt : ""};
 			
-			dt[groupOrClusterKey] = groupOrCluster;
+			// dt[groupOrClusterKey] = groupOrCluster;
 
 			firstChannel.visibleTableJQ.fnAddData(dt);
 			firstChannel.visibleTableAPI.page( 'last' ).draw( 'page' );
@@ -1043,6 +1077,7 @@ window.onload = function(){
 
 
 	$("#saveResourcesButton").off('click').on('click',function(evt){
+		$("#loadingDiv").show();
 		firstChannelDataArray = firstChannel.visibleTableJQ.fnGetData();
 		// postData = {}
 		// groupOrClusterNameFromTable = firstChannelDataArray[0].groupName;
@@ -1076,7 +1111,7 @@ window.onload = function(){
 
 
     	firstChannelDataArray = _.map(firstChannelDataArray, function(model) {
-			return _.omit(model, 'sno','groupName','clusterName');
+			return _.omit(model, 'sno');
 		});
 		// postData.data = firstChannelDataArray;
 

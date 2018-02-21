@@ -46,6 +46,16 @@ window.onload = function(){
 	    },2000)
 	});
 
+	$("#tickerText").keydown(function(e){
+		if (e.keyCode == 13)
+		{
+		  // prevent default behavior
+		  e.preventDefault();
+		  //alert("ok");
+		  return false;
+		  }
+	});	
+
 	$('[data-toggle="tooltip"]').tooltip();
 
 	$("input[name='displayTypeRadio']").on('change',function(){
@@ -65,44 +75,69 @@ window.onload = function(){
 
 
 	function getAllGroups(){
-		$.ajax({
-			url : commonData.apiurl + "groups",
-			async : false,
-			datatype : 'json',
-			complete : function(jqXHR, textstatus){
-				if(textstatus == "success"){
+		if(commonData.userType != 'Society'){
+			$.ajax({
+				url : commonData.apiurl + "groups",
+				async : false,
+				datatype : 'json',
+				complete : function(jqXHR, textstatus){
+					if(textstatus == "success"){
 
-					groups = _.unique(jqXHR.responseJSON,'groupName')
-					groups = _.pluck(groups,'groupName')
-					var options = ""
-					$.each(groups, function(index,value){
-						options += `<option value="`+value+`">`+value+`</option>`
-					});
-					$("#groupSelectFilter").empty();
-					$("#groupSelectFilter").append(options);
-					
-					$("#groupSelectFilter").multipleSelect({
-						placeholder: "Select Group",
-						filter: true,
-						single : true,
-						onClick : function(view){
-							if($("input[name='displayTypeRadio']")[0].checked){
-								groupName = view.value;
-								getTickerForGroup(groupName)
-							}else{
-								clusterName = view.value;
-								getTickerForCluster(clusterName);
+						groups = _.unique(jqXHR.responseJSON,'groupName')
+						groups = _.pluck(groups,'groupName')
+						var options = ""
+						$.each(groups, function(index,value){
+							options += `<option value="`+value+`">`+value+`</option>`
+						});
+						$("#groupSelectFilter").empty();
+						$("#groupSelectFilter").append(options);
+						
+						$("#groupSelectFilter").multipleSelect({
+							placeholder: "Select Group",
+							filter: true,
+							single : true,
+							allSelected : false,
+							onClick : function(view){
+								if($("input[name='displayTypeRadio']")[0].checked){
+									groupName = view.value;
+									getTickerForGroup(groupName)
+								}else{
+									clusterName = view.value;
+									getTickerForCluster(clusterName);
+								}
 							}
-						}
-					});
+						});
 
-				}else if(textstatus == "error"){
-					if(jqXHR.responseText)
-						$.notify(jqXHR.responseText,'error')
+					}else if(textstatus == "error"){
+						if(jqXHR.responseText)
+							$.notify(jqXHR.responseText,'error')
+					}
+					console.log(jqXHR);
 				}
-				console.log(jqXHR);
-			}
-		})
+			})
+		}else{
+			var options = ""
+			options += `<option value="`+clientName+`">`+clientName+`</option>`
+			$("#groupSelectFilter").empty();
+			$("#groupSelectFilter").append(options);
+			$("#groupSelectFilter").attr('disabled',true);
+			
+			$("#groupSelectFilter").multipleSelect({
+				placeholder: "Select Group",
+				filter: true,
+				single : true,
+				allSelected : false,
+				onClick : function(view){
+					if($("input[name='displayTypeRadio']")[0].checked){
+						groupName = view.value;
+						getTickerForGroup(groupName)
+					}else{
+						clusterName = view.value;
+						getTickerForCluster(clusterName);
+					}
+				}
+			});
+		}
 	}
 
 	// function getAllClusters(){
@@ -209,6 +244,7 @@ window.onload = function(){
 	// }
 
 	$("#saveTickersButton").off('click').on('click',function(evt){
+		$("#loadingDiv").show();
 		groupOrClusterName = "";
 		postData = {}
 		if($("input[name='displayTypeRadio']")[0].checked){

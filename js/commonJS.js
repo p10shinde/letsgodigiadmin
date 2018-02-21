@@ -1,3 +1,5 @@
+GoogleData = {}
+GoogleData.client_id = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercontent.com';
 disabledChannels = ['Second Channel','Full Screen','Groups','Clients','Users','Advertisers','Clusters','Devices']
 $.ajaxSetup({
     beforeSend: function(xhr) {
@@ -12,21 +14,21 @@ $.ajaxSetup({
     }
 });
 
-if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientName || !sessionStorage.userName || !sessionStorage.id_token){
+if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientLocation || !sessionStorage.userName || !sessionStorage.id_token){
 	window.location.href = 'login.html'
 }else{
 commonData = {};
 commonData.username = sessionStorage.username;
 commonData.usernamefull = sessionStorage.usernamefull;
 commonData.useremail = sessionStorage.useremail;
-// commonData.usertype = sessionStorage.usertype;
+commonData.userType = sessionStorage.userType;
 commonData.password = sessionStorage.password;
 commonData.apiurl = sessionStorage.apiurl;
 commonData.googleId = sessionStorage.googleId;
 commonData.image = sessionStorage.image;
 commonData.id_token = sessionStorage.id_token;
 
-var clientName = sessionStorage.clientName;
+var clientName = sessionStorage.clientLocation;
 
 function configureView(usertype){
 	_channels = $("#channelMenu li");

@@ -58,10 +58,11 @@ table td{
   border-right: 1px solid #ccc;
   border-left: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  vertical-align: middle !important;
 }
 
 table td:nth-child(6){
-      width: 15%;
+      width: 9%;
       
 }
 table td:nth-child(5){
@@ -70,12 +71,12 @@ table td:nth-child(5){
 }
 
 table td:nth-child(5) button{
-  position: absolute;
+  /*position: absolute;*/
   margin-left: -20px;
 }
 
 table td:nth-child(6) button{
-  position: absolute;
+  /*position: absolute;*/
   margin-left: -20px;
 }
 

@@ -102,41 +102,44 @@ window.onload = function(){
 	});
 
 	$("#deleteSelectedClientButton").off('click').on('click',function(evt){
-		page = clients.clientsTableAPI.page.info().page;
-		checkboxTD = clients.clientsTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				clientName = $(value).find('td:nth-child(3)').text();
-				deleteRowsIndexes.push(clientName);
-			}
-
-		})
-		$.each(deleteRowsIndexes, function(index,clientName){
-			$.ajax({
-			    url: commonData.apiurl + "clients/" + clientName,
-			    type: 'DELETE',
-			    "async" : false,
-			    success: function(result) {
-			        
-			    },
-			    error : function(jqXHR, textStatus){
-					if(jqXHR.responseText){
-			 			$.notify(jqXHR.responseText,'error')
-			 		}
+		if(confirm("Are you you want to delete selected entries?")){
+			$("#loadingDiv").show();
+			page = clients.clientsTableAPI.page.info().page;
+			checkboxTD = clients.clientsTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					clientName = $(value).find('td:nth-child(3)').text();
+					deleteRowsIndexes.push(clientName);
 				}
-			});
+
+			})
+			$.each(deleteRowsIndexes, function(index,clientName){
+				$.ajax({
+				    url: commonData.apiurl + "clients/" + clientName,
+				    type: 'DELETE',
+				    "async" : false,
+				    success: function(result) {
+				        
+				    },
+				    error : function(jqXHR, textStatus){
+						if(jqXHR.responseText){
+				 			$.notify(jqXHR.responseText,'error')
+				 		}
+					}
+				});
 
 
-			// clients.clientsTableJQ.fnDeleteRow(value-index, function(lg){
-			// 	console.log(lg)
-			// });
-		})
-		// updateSerialNo();
-		clients.clientsTableAPI.page( 'first' ).draw( 'page' );
-		clients.clientsTableAPI.ajax.reload()
+				// clients.clientsTableJQ.fnDeleteRow(value-index, function(lg){
+				// 	console.log(lg)
+				// });
+			})
+			// updateSerialNo();
+			clients.clientsTableAPI.page( 'first' ).draw( 'page' );
+			clients.clientsTableAPI.ajax.reload()
+		}
 	});
 
 	$("#clientsTable").off('keyup').on('keyup', function(event){
@@ -186,8 +189,8 @@ window.onload = function(){
 		}
 		$('#addNewClientDialog').dialog({
 		    title: title,
-		    width: 400,
-		    height: 200,
+		    // width: 400,
+		    // height: 200,
 		    closed: false,
 		    cache: false,
 		    constrain: true,
@@ -231,6 +234,7 @@ window.onload = function(){
 	}
 
     function updateTableWithNewRecord(){
+    	$("#loadingDiv").show();
     	clientName = $("#clientName").val();
     	clientLocation = $("#clientLocation").val();;
     	// clientData = [];

@@ -104,44 +104,47 @@ window.onload = function(){
 	// });
 
 	$("#deleteSelectedGroupButton").off('click').on('click',function(evt){
-		page = groups.groupsTableAPI.page.info().page;
-		checkboxTD = groups.groupsTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		deleteRowClientNames = [];
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				groupName = $(value).find('td:nth-child(3)').text();
-				clName = $(value).find('td:nth-child(4)').text();
-				deleteRowClientNames.push(clName)
-				deleteRowsIndexes.push(groupName);
-			}
-
-		})
-		$.each(deleteRowsIndexes, function(index,groupName){
-			$.ajax({
-			    url: commonData.apiurl + "groups/" + deleteRowClientNames[index] + "/" + groupName,
-			    type: 'DELETE',
-			    "async" : false,
-			    success: function(result) {
-			        
-			    },
-			    error : function(jqXHR, textStatus){
-					if(jqXHR.responseText){
-			 			$.notify(jqXHR.responseText,'error')
-			 		}
+		if(confirm("Are you you want to delete selected entries?")){
+			$("#loadingDiv").show();
+			page = groups.groupsTableAPI.page.info().page;
+			checkboxTD = groups.groupsTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			deleteRowClientNames = [];
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					groupName = $(value).find('td:nth-child(3)').text();
+					clName = $(value).find('td:nth-child(4)').text();
+					deleteRowClientNames.push(clName)
+					deleteRowsIndexes.push(groupName);
 				}
-			});
+
+			})
+			$.each(deleteRowsIndexes, function(index,groupName){
+				$.ajax({
+				    url: commonData.apiurl + "groups/" + deleteRowClientNames[index] + "/" + groupName,
+				    type: 'DELETE',
+				    "async" : false,
+				    success: function(result) {
+				        
+				    },
+				    error : function(jqXHR, textStatus){
+						if(jqXHR.responseText){
+				 			$.notify(jqXHR.responseText,'error')
+				 		}
+					}
+				});
 
 
-			// groups.groupsTableJQ.fnDeleteRow(value-index, function(lg){
-			// 	console.log(lg)
-			// });
-		})
-		// updateSerialNo();
-		groups.groupsTableAPI.page( 'first' ).draw( 'page' );
-		groups.groupsTableAPI.ajax.reload()
+				// groups.groupsTableJQ.fnDeleteRow(value-index, function(lg){
+				// 	console.log(lg)
+				// });
+			})
+			// updateSerialNo();
+			groups.groupsTableAPI.page( 'first' ).draw( 'page' );
+			groups.groupsTableAPI.ajax.reload()
+		}
 	});
 
 	$("#groupsTable").off('keyup').on('keyup', function(event){
@@ -192,8 +195,8 @@ window.onload = function(){
 		}
 		$('#addNewGroupDialog').dialog({
 		    title: title,
-		    width: 400,
-		    height: 200,
+		    // width: 400,
+		    // height: 200,
 		    closed: false,
 		    cache: false,
 		    constrain: true,
@@ -239,7 +242,7 @@ getAllClients();
 						placeholder: "Select Client",
 						single : true,
 						filter: true,
-						
+						allSelected : false,
 						onClick : function(view){
 							// tabIndex = $("#firstChannelTabs").tabs('getTabIndex',$("#firstChannelTabs").tabs('getSelected'))
 							// groupName = view.value;
@@ -289,6 +292,7 @@ getAllClients();
 	}
 
     function updateTableWithNewRecord(){
+    	$("#loadingDiv").show();
     	groupName = $("#groupName").val();
 
     	clientNameOld = clientName;

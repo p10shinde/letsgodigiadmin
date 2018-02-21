@@ -1,5 +1,5 @@
 google.load('picker', '1');
-var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercontent.com';
+var clientId = GoogleData.client_id;
         var scopes = 'https://www.googleapis.com/auth/drive';
         var oauthToken ;
         var useProxy = false;
@@ -106,7 +106,7 @@ var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercon
                 })
             // })
         }
-
+        //for resources tab -- when user tries to either delete or view files
         function pickerCallbackManage(data){
             if(data.action == 'picked'){
                 if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Resources"){
@@ -188,9 +188,9 @@ var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercon
                                             // if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Third Channel")
                                             //     commonData.updateTableWithResource(thirdChannel.visibleTableAPI,thirdChannel.visibleTableJQ,data.docs[0].name)
                                             else if($(window.parent.document.body).find("ul#channelMenu li.active").text() == "Full Screen" && metaData.parents[0].id == resJsonAdvt.folderID)
-                                                commonData.updateTableWithResource(fullScreen.visibleTableAPI,fullScreen.visibleTableJQ,'',data.docs[0].name)
+                                                commonData.updateTableWithResource(fullScreenn.visibleTableAPI,fullScreenn.visibleTableJQ,'',data.docs[0].name)
                                             else{
-                                                $.notify("Please select relevent content only.",'error');
+                                                $.notify("Please select LGD related content only.",'error');
                                                 picker.setVisible(true);
                                             }
                                         }else{
@@ -210,25 +210,47 @@ var clientId = '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercon
                         var url = 'https://www.googleapis.com/drive/v2/files/' + fileId;
                         getData(url, function(responseText) {
                             metaData = JSON.parse(responseText);
+                            if($("#resourcesTabs").tabs('getTabIndex',$("#resourcesTabs").tabs('getSelected')) == 0){ // for society
+                                getFolderMetaData($("#groupSelectFilter").multipleSelect('getSelects')[0],function(resJsonSoc){
+                                    showGallery(1,metaData,resJsonSoc)
+                                })
+                            }else{
+                                getFolderMetaData('advt',function(resJsonAdvt){
+                                    showGallery(2,metaData,resJsonAdvt)
+                                })
+                            }
                             
-                            //check parent folder id here
-                            if(metaData.parents[0].id == '1MEX4b43bSW-FDmxqIy82p0ltcfEUlsmM' || metaData.parents[0].id == '1-LKBGXh0btQukRumpr8UEtgfRLtUSMuC'){
-                                    blueimp.Gallery([
-                                    {
-                                        title: metaData.title,
-                                        href: metaData.webContentLink,
-                                        type: metaData.mimeType,
-                                        thumbnail: metaData.webContentLink
-                                    }
-                                ],{
-                                container : '#blueimp-gallery-common'});
-                                }else{
-                                    $.notify("Please select relevent content only.",'error');
-                                    picker.setVisible(true);
-                                }
                         });
                     }
                 }
+            }
+        }
+
+        function showGallery(tabId,metaData,resJson){
+            //check parent folder id here
+            if(tabId == 1 && metaData.parents[0].id == resJson.folderID){
+                blueimp.Gallery([
+                    {
+                        title: metaData.title,
+                        href: metaData.webContentLink,
+                        type: metaData.mimeType,
+                        thumbnail: metaData.webContentLink
+                    }
+                ],{
+                container : '#blueimp-gallery-common'});
+            }else if(tabId == 2 && metaData.parents[0].id == resJson.folderID){
+                blueimp.Gallery([
+                    {
+                        title: metaData.title,
+                        href: metaData.webContentLink,
+                        type: metaData.mimeType,
+                        thumbnail: metaData.webContentLink
+                    }
+                ],{
+                container : '#blueimp-gallery-common'});
+            }else{
+                $.notify("Please select LGD related content only.",'error');
+                picker.setVisible(true);
             }
         }
         

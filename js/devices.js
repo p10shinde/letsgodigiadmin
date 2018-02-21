@@ -95,42 +95,42 @@ window.onload = function(){
 
 	$("#deleteSelectedDeviceButton").off('click').on('click',function(evt){
 		
-
-
-
-		// page = devices.devicesTableAPI.page.info().page;
-		checkboxTD = devices.devicesTableAPI.rows().nodes().toJQuery();
-		deleteRowsIndexes = []
-		$.each(checkboxTD, function(index, value){
-			isChecked = $(value).find('td:nth-child(2) input').is(':checked')
-			if(isChecked){
-				rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
-				deviceName = $(value).find('td:nth-child(3)').text();
-				deleteRowsIndexes.push(deviceName)
-			}
-
-		})
-		$.each(deleteRowsIndexes, function(index,deviceName){
-			$.ajax({
-			    url: commonData.apiurl + "devices/" + clientName + "/" + deviceName,
-			    type: 'DELETE',
-			    "async" : false,
-			    success: function(result) {
-			        
-			    },
-			    error : function(jqXHR, textStatus){
-					if(jqXHR.responseText){
-			 			$.notify(jqXHR.responseText,'error')
-			 		}
+		if(confirm("Are you you want to delete selected entries?")){
+			$("#loadingDiv").show();
+			// page = devices.devicesTableAPI.page.info().page;
+			checkboxTD = devices.devicesTableAPI.rows().nodes().toJQuery();
+			deleteRowsIndexes = []
+			$.each(checkboxTD, function(index, value){
+				isChecked = $(value).find('td:nth-child(2) input').is(':checked')
+				if(isChecked){
+					rowNo = parseInt($(value).find('td:nth-child(1)').text()) - 1;
+					deviceName = $(value).find('td:nth-child(3)').text();
+					deleteRowsIndexes.push(deviceName)
 				}
-			});
-			// devices.devicesTableJQ.fnDeleteRow(value-index, function(lg){
-				// console.log(lg)
-			// });
-		})
-		// updateSerialNo();
-		devices.devicesTableAPI.page( 'first' ).draw( 'page' );
-		devices.devicesTableAPI.ajax.reload();
+
+			})
+			$.each(deleteRowsIndexes, function(index,deviceName){
+				$.ajax({
+				    url: commonData.apiurl + "devices/" + clientName + "/" + deviceName,
+				    type: 'DELETE',
+				    "async" : false,
+				    success: function(result) {
+				        
+				    },
+				    error : function(jqXHR, textStatus){
+						if(jqXHR.responseText){
+				 			$.notify(jqXHR.responseText,'error')
+				 		}
+					}
+				});
+				// devices.devicesTableJQ.fnDeleteRow(value-index, function(lg){
+					// console.log(lg)
+				// });
+			})
+			// updateSerialNo();
+			devices.devicesTableAPI.page( 'first' ).draw( 'page' );
+			devices.devicesTableAPI.ajax.reload();
+		}
 	});
 
 	$("#devicesTable").off('keyup').on('keyup', function(event){
@@ -180,8 +180,8 @@ window.onload = function(){
 		}
 		$('#addNewDeviceDialog').dialog({
 		    title: title,
-		    width: 400,
-		    height: 200,
+		    // width: 400,
+		    // height: 200,
 		    closed: false,
 		    cache: false,
 		    constrain: true,
@@ -225,6 +225,7 @@ window.onload = function(){
 	}
 
     function updateTableWithNewRecord(){
+    	$("#loadingDiv").show();
     	deviceName = $("#deviceName").val();
     	deviceLocation = $("#deviceLocation").val();;
     	deviceDataObj = {}

@@ -1,11 +1,11 @@
 body{
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-family: arial, sans-serif;
     color: rgb(117,117,117);
 }
 
 * {
-    font-size: 14px !important;
+    font-size: 12px !important;
     box-sizing: border-box !important;
     font-stretch: normal !important;
     font-weight: 700 !important;
@@ -70,4 +70,21 @@ body{
   -webkit-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   text-shadow: 0 0 3px #fff;
+}
+
+.ms-drop.bottom{
+  background: #f5e5ca;
+}
+
+.ms-choice{
+  background: #e59c33;
+  color: white;
+}
+
+.table > tbody > tr > td{
+  padding: 3px !important;
+}
+
+.table > tbody > tr> td:nth-child(1) {
+  text-align: center !important;
 }

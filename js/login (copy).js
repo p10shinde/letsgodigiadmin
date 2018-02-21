@@ -3,16 +3,16 @@ sessionStorage.apiurl = 'http://63.142.250.105:3050/api/';
     gapi.load('auth2', function(){
       // Retrieve the singleton for the GoogleAuth library and set up the client.
       auth2 = gapi.auth2.init({
-        client_id: '848626933775-1ev04tltptuh8a332unt3aqhohaqh839.apps.googleusercontent.com',
+        client_id: GoogleData.client_id,
         cookiepolicy: 'single_host_origin',
       });
 
       //after user signs in change button text
       auth2.then(function(GoogleAuth){
-        	if(gapi.auth2.getAuthInstance().isSignedIn.get())
-  	    	$("#customBtn span.buttonText").text('Google ('+ gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName() + ")")
-  	    }, function(err){
-  	    	console.log(err)
+      	if(gapi.auth2.getAuthInstance().isSignedIn.get())
+	    	$("#customBtn span.buttonText").text('Google ('+ gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName() + ")")
+	    }, function(err){
+	    	console.log(err)
 	    })
 
       auth2.isSignedIn.listen(function(state){
@@ -24,16 +24,6 @@ sessionStorage.apiurl = 'http://63.142.250.105:3050/api/';
 	    else
 	    	$("#customBtn span.buttonText").text('Google')
       })
-      // function renderButton() {
-        // gapi.signin.render('my-signin2', {
-        //   'scope': 'profile email openid',
-        //   'width': 240,
-        //   'height': 50,
-        //   'longtitle': true,
-        //   'theme': 'dark',
-        //   'cookie_policy' : 'single_host_origin'
-        // });
-    // }
 
       attachSignin(document.getElementById('customBtn'));
     });
@@ -69,7 +59,7 @@ function sendToken(id_token,googleUser){
      	  	sessionStorage.userId = result.userID; //email
      	  	sessionStorage.userName = result.userName;
      	  	sessionStorage.userType = result.userType;
-     	  	sessionStorage.clientName = result.clientLocation;
+     	  	sessionStorage.clientName = result.clientName;
 
 			// sessionStorage.username = 'sAdmin';
 			// sessionStorage.usertype = 'Super Admin';
@@ -81,10 +71,9 @@ function sendToken(id_token,googleUser){
 			window.location = window.location.pathname.split('login.html')[0]
 	    },
 	    error : function(jqXHR, textStatus){
-			if(jqXHR.responseJSON){
-        $.notify(jqXHR.responseJSON.Error,'error')
-      }else
-	 			$.notify(jqXHR.statusText,'error')
+			if(jqXHR.responseText){
+	 			$.notify(jqXHR.responseText,'error')
+	 		}
 		},
 		dataType: 'json',
 	});
