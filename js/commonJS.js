@@ -14,7 +14,7 @@ $.ajaxSetup({
     }
 });
 
-if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientLocation || !sessionStorage.userName || !sessionStorage.id_token){
+if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientLocation || !sessionStorage.userName || !sessionStorage.id_token || !sessionStorage.clientName){
 	window.location.href = 'login.html'
 }else{
 commonData = {};

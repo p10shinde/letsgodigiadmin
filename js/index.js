@@ -1,4 +1,4 @@
-if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientLocation || !sessionStorage.userName || !sessionStorage.id_token){
+if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientLocation || !sessionStorage.userName || !sessionStorage.id_token || !sessionStorage.clientName){
 	window.location.href = 'login.html'
 }else{
 	window.onload = function(){
@@ -45,6 +45,7 @@ if(!sessionStorage.apiurl || !sessionStorage.userName || !sessionStorage.clientL
 			sessionStorage.removeItem('userId');
 			sessionStorage.removeItem('userType');
 			sessionStorage.removeItem('clientLocation');
+			sessionStorage.removeItem('clientName');
 			
 			sessionStorage.removeItem('apiurl');
 			window.location.reload();

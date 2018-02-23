@@ -1296,14 +1296,14 @@ window.onload = function(){
 				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
 				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_hh:mm_A')
-				dt = {sno :  recordsTotal + 1,resName : "", duration : 5};
+				dt = {sno :  recordsTotal + 1,resName : ""};
 			}
 			if(secondChannel.visibleTableJQ.attr('id') == 'clustersSecondChannelShared1Table'){
 				groupOrClusterKey = "clusterName";
 				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
 				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_hh:mm_A')
-				dt = {sno :  recordsTotal + 1,resName : "", duration : 5};
+				dt = {sno :  recordsTotal + 1,resName : ""};
 			}
 
 			if(secondChannel.visibleTableJQ.attr('id') == 'groupsSecondChannelShared2Table'){
@@ -1311,14 +1311,14 @@ window.onload = function(){
 				groupOrCluster = $("#groupSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
 				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_hh:mm_A')
-				dt = {sno :  recordsTotal + 1,resName : "", duration : 5};
+				dt = {sno :  recordsTotal + 1,resName : ""};
 			}
 			if(secondChannel.visibleTableJQ.attr('id') == 'clustersSecondChannelShared2Table'){
 				groupOrClusterKey = "clusterName";
 				groupOrCluster = $("#clusterSelectFilter").multipleSelect('getSelects')[0];
 				remainder = new moment(new Date()).minutes()%20
 				startTime = new moment(new Date()).subtract(remainder,'minutes').format('DD-MM-YYYY_hh:mm_A')
-				dt = {sno :  recordsTotal + 1,resName : "", duration : 5};
+				dt = {sno :  recordsTotal + 1,resName : ""};
 			}
 
 

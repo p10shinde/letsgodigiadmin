@@ -69,7 +69,8 @@ function sendToken(id_token,googleUser){
      	  	sessionStorage.userId = result.userID; //email
      	  	sessionStorage.userName = result.userName;
      	  	sessionStorage.userType = result.userType;
-     	  	sessionStorage.clientName = result.clientLocation;
+          sessionStorage.clientLocation = result.clientLocation;
+     	  	sessionStorage.clientName = result.clientName;
 
 			// sessionStorage.username = 'sAdmin';
 			// sessionStorage.usertype = 'Super Admin';
