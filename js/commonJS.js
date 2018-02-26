@@ -27,8 +27,9 @@ commonData.apiurl = sessionStorage.apiurl;
 commonData.googleId = sessionStorage.googleId;
 commonData.image = sessionStorage.image;
 commonData.id_token = sessionStorage.id_token;
+commonData.id_token = sessionStorage.clientLocation;
 
-var clientName = sessionStorage.clientLocation;
+var clientName = sessionStorage.clientName;
 
 function configureView(usertype){
 	_channels = $("#channelMenu li");
